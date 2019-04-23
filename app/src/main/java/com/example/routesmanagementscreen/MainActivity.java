@@ -48,6 +48,7 @@ import cz.msebera.android.httpclient.client.ResponseHandler;
 import cz.msebera.android.httpclient.client.methods.HttpPost;
 import cz.msebera.android.httpclient.client.methods.HttpGet;
 import cz.msebera.android.httpclient.client.utils.URIBuilder;
+import cz.msebera.android.httpclient.client.methods.HttpDelete;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.impl.client.BasicResponseHandler;
 import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
@@ -279,6 +280,7 @@ public class MainActivity extends AppCompatActivity {
         ((EditText) v).setText(null);
     }
 
+    // Communication with the server and DB
 
     private class SendRequestToServlet extends AsyncTask<String, Integer, String> {
         protected String doInBackground(String... Args) {
@@ -365,6 +367,55 @@ public class MainActivity extends AppCompatActivity {
         {
             //initializeRouteList();
             m_adapter.notifyDataSetChanged(); //TODO: Sivan check if this shit works, if it doesn't use the function in the comment
+        }
+    }
+
+    private class DeleteRouteRequestFromServlet extends AsyncTask<String, Integer, String>
+    {
+        String m_routeToDeleteID;// TODO !!! change “1” to be the actual route ID
+
+        public DeleteRouteRequestFromServlet(String i_routeToDeleteID)
+        {
+            m_routeToDeleteID = i_routeToDeleteID;
+        }
+
+        protected String doInBackground(String... Args)
+        {
+            String output = null;
+
+            try
+            {
+
+                URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/SaveRouteToDB/RouteServlet");
+                        builder.setParameter("m_postID", m_routeToDeleteID);
+                HttpDelete http_delete = new HttpDelete(builder.build());
+                http_delete.setHeader("Accept", "application/json");
+                http_delete.setHeader("Content-type", "application/json; charset-UTF-8");
+                HttpClient httpClient = HttpClientBuilder.create().build();
+
+                // get the response of the server
+                HttpResponse httpResponse = httpClient.execute(http_delete);
+                HttpEntity httpEntity = httpResponse.getEntity();
+                output = EntityUtils.toString(httpEntity);
+
+            }
+            catch (UnsupportedEncodingException e)
+            {
+                e.printStackTrace();
+            }
+            catch (ClientProtocolException e)
+            {
+                e.printStackTrace();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            catch (URISyntaxException e)
+            {
+                e.printStackTrace();
+            }
+            return output;
         }
     }
 
