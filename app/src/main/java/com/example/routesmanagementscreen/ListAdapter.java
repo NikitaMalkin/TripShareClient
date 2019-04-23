@@ -48,18 +48,15 @@ public class ListAdapter extends BaseAdapter {
 
         ListItem currentItem = (ListItem) getItem(position);
         viewHolder.itemName.setText(currentItem.getItemName());
-        viewHolder.itemDescription.setText(currentItem.getItemDescription());
 
         return convertView;
     }
 
     private class ViewHolder {
         TextView itemName;
-        TextView itemDescription;
 
         public ViewHolder(View view) {
             itemName = (TextView)view.findViewById(R.id.text_view_item_name);
-            itemDescription = (TextView) view.findViewById(R.id.text_view_item_description);
         }
     }
 }

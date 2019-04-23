@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.os.ConfigurationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -34,7 +35,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Calendar;
+import java.util.Locale;
 
 import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.HttpResponse;
@@ -58,14 +62,16 @@ public class MainActivity extends AppCompatActivity {
     private Handler m_handler;
     private ArrayList<ListItem> m_routesListSource = new ArrayList<>();
     private ListAdapter m_adapter;
+    private boolean m_serverIsOnline = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        m_serverIsOnline = checkServerStatus();
         initializeViews();
         initializeLocationModules();
-        new GetRoutesFromDB().execute();
+        initializeExistingRoutes();
     }
 
     @Override
@@ -74,6 +80,27 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.appbar, menu);
         return true;
     }
+
+    private void initializeExistingRoutes()
+    {
+        initializeRouteList();
+
+        if (m_serverIsOnline)
+        {
+            new GetRoutesFromDB().execute();
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "Could not connect to server, unable to fetch existing routes.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private boolean checkServerStatus()
+    {
+        //TODO: Need to actually ping the server and see if it is online, currently this function simply disables server interaction and sets the application in offline mode. Maybe instead of saving server status to a variable, call this function everytime we want to see if the server has become online.
+        return false;
+    }
+
 
     private void initializeRouteList() {
         // instantiate the custom list adapter
@@ -86,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeViews() {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        myToolbar.setTitle("Route Management");
         m_longDisplay = findViewById(R.id.textviewCurrentLong);
         m_latDisplay = findViewById(R.id.textviewCurrentLat);
         m_chronometer = findViewById(R.id.chronometer);
@@ -99,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!hasFocus) {
                     EditText edittext = (EditText) v;
                     if (edittext.getText().length() == 0)
-                        ((EditText) v).setText("Name your route");
+                        ((EditText) v).setText(getCurrentDateAndTime());
                 }
             }
         });
@@ -183,12 +211,25 @@ public class MainActivity extends AppCompatActivity {
         View savingView = findViewById(R.id.view_saving);
         View buttonCancel = findViewById(R.id.buttonCancel);
         View buttonSave = findViewById(R.id.buttonSave);
+        EditText routeName = (EditText) findViewById(R.id.textViewRouteName);
 
+
+        //routeName.setText(getCurrentDateAndTime());
+        routeName.setHint(getCurrentDateAndTime());
         m_handler.removeCallbacksAndMessages(null);
         recordingView.setVisibility(View.GONE);
         savingView.setVisibility(View.VISIBLE);
 
         m_chronometer.stop();
+    }
+
+    private String getCurrentDateAndTime()
+    {
+        Calendar currentDate = Calendar.getInstance();
+        //String result = currentDate.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH) + currentDate.getDisplayName(Calendar.DAY_OF_MONTH, Calendar.LONG, Locale.ENGLISH) + currentDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
+        String result = currentDate.getTime().toString();
+
+        return result;
     }
 
     public void buttonCancelSavingClicked(View view) {
@@ -208,14 +249,20 @@ public class MainActivity extends AppCompatActivity {
         recButton.setVisibility(View.VISIBLE);
 
         m_routeToAdd.setRouteName(routeName.getText().toString());
-        m_routeToAdd.setRouteDescription("This trip was out of this world!!!!!"); // TODO
 
-        ListItem itemToAdd = new ListItem(routeName.getText().toString(), "description");
+        ListItem itemToAdd = new ListItem(routeName.getText().toString());
         m_routesListSource.add(itemToAdd);
         m_adapter.notifyDataSetChanged();
 
-        // Send the route to the server to save in the DB
-        new SendRequestToServlet().execute();
+        if (m_serverIsOnline)
+        {
+            // Send the route to the server to save in the DB
+            new SendRequestToServlet().execute();
+        }
+        else
+        {
+            //TODO: Save the route locally (file?) and once connection to the server is restored, send the route to server.
+        }
 
         Toast.makeText(getApplicationContext(), "Route saved successfully", Toast.LENGTH_LONG).show();
     }
@@ -301,7 +348,7 @@ public class MainActivity extends AppCompatActivity {
                     JSONArray jsonArr = new JSONArray(body);
                     for (int i = 0; i < jsonArr.length(); i++) {
                         JSONObject jsonObj = jsonArr.getJSONObject(i);
-                        ListItem itemToAdd = new ListItem(jsonObj.getString("m_routeName"), jsonObj.getString("m_routeDescription"));
+                        ListItem itemToAdd = new ListItem(jsonObj.getString("m_routeName"));
                         m_routesListSource.add(itemToAdd);
                     }
                 }
@@ -316,7 +363,8 @@ public class MainActivity extends AppCompatActivity {
 
         protected void onPostExecute(String result)
         {
-            initializeRouteList();
+            //initializeRouteList();
+            m_adapter.notifyDataSetChanged(); //TODO: Sivan check if this shit works, if it doesn't use the function in the comment
         }
     }
 

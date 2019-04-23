@@ -9,7 +9,7 @@ public class Route implements Serializable{
     private long m_ID;
     private int m_userID;
     private String m_routeName;
-    private String m_routeDescription;
+    //private String m_routeDescription;
     private List<Coordinate> m_routeCoordinates= new ArrayList<>();
 
     public Route(int i_userID)
@@ -32,11 +32,6 @@ public class Route implements Serializable{
         return m_routeName;
     }
 
-    public String getRouteDescription()
-    {
-        return m_routeDescription;
-    }
-
     public List<Coordinate> getRouteCoordinates()
     {
         return m_routeCoordinates;
@@ -52,9 +47,5 @@ public class Route implements Serializable{
         m_routeName = new String(i_routeName);
     }
 
-    public void setRouteDescription(String i_routeDescription)
-    {
-        m_routeDescription = new String(i_routeDescription);
-    }
 }
 

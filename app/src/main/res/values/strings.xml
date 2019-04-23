@@ -3,4 +3,13 @@
     <string name="favorite_icon">Favorite</string>
     <string name="action_settings">Settings </string>
     <string name="nameyourroute">Name your route </string>
+
+    <string-array name="sample_items">
+        <item>Sivan likes humus</item>
+        <item>Sivan likes thina</item>
+        <item>Sivan likes Ori</item>
+        <item>Sivan likes salad</item>
+        <item>Sivan likes boobki</item>
+        <item>Sivan likes Ilan</item>
+    </string-array>
 </resources>
