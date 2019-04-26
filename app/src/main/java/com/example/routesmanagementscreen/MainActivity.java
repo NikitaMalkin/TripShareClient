@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String getCurrentDateAndTime()
     {
-        Calendar currentDate = Calendar.getInstance();
+        Calendar currentDate = Calendar.getInstance(); //12
         //String result = currentDate.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH) + currentDate.getDisplayName(Calendar.DAY_OF_MONTH, Calendar.LONG, Locale.ENGLISH) + currentDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
         String result = currentDate.getTime().toString();
 
