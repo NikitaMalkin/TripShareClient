@@ -215,8 +215,7 @@ public class MainActivity extends AppCompatActivity {
         EditText routeName = (EditText) findViewById(R.id.textViewRouteName);
 
 
-        //routeName.setText(getCurrentDateAndTime());
-        routeName.setHint(getCurrentDateAndTime());
+
         m_handler.removeCallbacksAndMessages(null);
         recordingView.setVisibility(View.GONE);
         savingView.setVisibility(View.VISIBLE);
@@ -249,7 +248,14 @@ public class MainActivity extends AppCompatActivity {
         savingView.setVisibility(View.GONE);
         recButton.setVisibility(View.VISIBLE);
 
-        m_routeToAdd.setRouteName(routeName.getText().toString());
+        if (routeName.getText() == null)
+        {
+            m_routeToAdd.setRouteName(getCurrentDateAndTime());
+        }
+        else
+        {
+            m_routeToAdd.setRouteName(routeName.getText().toString());
+        }
 
         ListItem itemToAdd = new ListItem(routeName.getText().toString());
         m_routesListSource.add(itemToAdd);
