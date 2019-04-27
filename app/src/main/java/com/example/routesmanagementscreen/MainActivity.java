@@ -1,6 +1,8 @@
 package com.example.routesmanagementscreen;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -17,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -82,22 +85,17 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void initializeExistingRoutes()
-    {
+    private void initializeExistingRoutes() {
         initializeRouteList();
 
-        if (m_serverIsOnline)
-        {
+        if (m_serverIsOnline) {
             new GetRoutesFromDB().execute();
-        }
-        else
-        {
+        } else {
             Toast.makeText(getApplicationContext(), "Could not connect to server, unable to fetch existing routes.", Toast.LENGTH_LONG).show();
         }
     }
 
-    private boolean checkServerStatus()
-    {
+    private boolean checkServerStatus() {
         //TODO: Need to actually ping the server and see if it is online, currently this function simply disables server interaction and sets the application in offline mode. Maybe instead of saving server status to a variable, call this function everytime we want to see if the server has become online.
         return false;
     }
@@ -127,8 +125,6 @@ public class MainActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
                     EditText edittext = (EditText) v;
-                    if (edittext.getText().length() == 0)
-                        ((EditText) v).setText(getCurrentDateAndTime());
                 }
             }
         });
@@ -215,7 +211,6 @@ public class MainActivity extends AppCompatActivity {
         EditText routeName = (EditText) findViewById(R.id.textViewRouteName);
 
 
-
         m_handler.removeCallbacksAndMessages(null);
         recordingView.setVisibility(View.GONE);
         savingView.setVisibility(View.VISIBLE);
@@ -223,8 +218,7 @@ public class MainActivity extends AppCompatActivity {
         m_chronometer.stop();
     }
 
-    private String getCurrentDateAndTime()
-    {
+    private String getCurrentDateAndTime() {
         Calendar currentDate = Calendar.getInstance();
         //String result = currentDate.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH) + currentDate.getDisplayName(Calendar.DAY_OF_MONTH, Calendar.LONG, Locale.ENGLISH) + currentDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
         String result = currentDate.getTime().toString();
@@ -248,29 +242,26 @@ public class MainActivity extends AppCompatActivity {
         savingView.setVisibility(View.GONE);
         recButton.setVisibility(View.VISIBLE);
 
-        if (routeName.getText() == null)
+        if (routeName.getText().length() == 0) //if route name was left empty, save default route name
         {
             m_routeToAdd.setRouteName(getCurrentDateAndTime());
-        }
-        else
-        {
+        } else {
             m_routeToAdd.setRouteName(routeName.getText().toString());
+            routeName.setText(null); //emptying the name for further use
         }
 
-        ListItem itemToAdd = new ListItem(routeName.getText().toString());
+        ListItem itemToAdd = new ListItem(m_routeToAdd.getRouteName());
         m_routesListSource.add(itemToAdd);
         m_adapter.notifyDataSetChanged();
 
-        if (m_serverIsOnline)
-        {
+        if (m_serverIsOnline) {
             // Send the route to the server to save in the DB
             new SendRequestToServlet().execute();
-        }
-        else
-        {
+        } else {
             //TODO: Save the route locally (file?) and once connection to the server is restored, send the route to server.
         }
 
+        hideKeyboardFrom(getApplicationContext(), findViewById(R.id.layout_main));
         Toast.makeText(getApplicationContext(), "Route saved successfully", Toast.LENGTH_LONG).show();
     }
 
@@ -326,15 +317,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class GetRoutesFromDB extends AsyncTask<String, Integer, String>
-    {
+    private class GetRoutesFromDB extends AsyncTask<String, Integer, String> {
         @Override
-        protected String doInBackground(String... Args)
-        {
+        protected String doInBackground(String... Args) {
             String output = null;
 
-            try
-            {
+            try {
                 HttpClient httpClient = HttpClientBuilder.create().build();
 
                 // Build URI
@@ -351,8 +339,7 @@ public class MainActivity extends AppCompatActivity {
                 int code = response.getStatusLine().getStatusCode();
 
                 // retrieve the list of routes from response
-                if(code == 200)
-                {
+                if (code == 200) {
                     JSONArray jsonArr = new JSONArray(body);
                     for (int i = 0; i < jsonArr.length(); i++) {
                         JSONObject jsonObj = jsonArr.getJSONObject(i);
@@ -360,40 +347,33 @@ public class MainActivity extends AppCompatActivity {
                         m_routesListSource.add(itemToAdd);
                     }
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Log.e("log_tag", "Error in http connection " + e.toString());
                 output = "Error in http connection " + e.toString();
             }
             return output;
         }
 
-        protected void onPostExecute(String result)
-        {
+        protected void onPostExecute(String result) {
             //initializeRouteList();
             m_adapter.notifyDataSetChanged(); //TODO: Sivan check if this shit works, if it doesn't use the function in the comment
         }
     }
 
-    private class DeleteRouteRequestFromServlet extends AsyncTask<String, Integer, String>
-    {
+    private class DeleteRouteRequestFromServlet extends AsyncTask<String, Integer, String> {
         String m_routeToDeleteID;// TODO !!! change “1” to be the actual route ID
 
-        public DeleteRouteRequestFromServlet(String i_routeToDeleteID)
-        {
+        public DeleteRouteRequestFromServlet(String i_routeToDeleteID) {
             m_routeToDeleteID = i_routeToDeleteID;
         }
 
-        protected String doInBackground(String... Args)
-        {
+        protected String doInBackground(String... Args) {
             String output = null;
 
-            try
-            {
+            try {
 
                 URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/SaveRouteToDB/RouteServlet");
-                        builder.setParameter("m_postID", m_routeToDeleteID);
+                builder.setParameter("m_postID", m_routeToDeleteID);
                 HttpDelete http_delete = new HttpDelete(builder.build());
                 http_delete.setHeader("Accept", "application/json");
                 http_delete.setHeader("Content-type", "application/json; charset-UTF-8");
@@ -404,21 +384,13 @@ public class MainActivity extends AppCompatActivity {
                 HttpEntity httpEntity = httpResponse.getEntity();
                 output = EntityUtils.toString(httpEntity);
 
-            }
-            catch (UnsupportedEncodingException e)
-            {
+            } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
-            }
-            catch (ClientProtocolException e)
-            {
+            } catch (ClientProtocolException e) {
                 e.printStackTrace();
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
-            }
-            catch (URISyntaxException e)
-            {
+            } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
             return output;
@@ -429,7 +401,10 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         return gson.toJson(m_routeToAdd);
     }
+
+
+    public static void hideKeyboardFrom(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 }
-
-
-
