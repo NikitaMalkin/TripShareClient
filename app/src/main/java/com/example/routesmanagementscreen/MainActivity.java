@@ -20,8 +20,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.view.animation.BounceInterpolator;
-import android.widget.ArrayAdapter;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Chronometer;
 import android.widget.EditText;
@@ -42,10 +40,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Calendar;
-import java.util.Locale;
+
 
 import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.HttpResponse;
@@ -61,8 +57,10 @@ import cz.msebera.android.httpclient.impl.client.BasicResponseHandler;
 import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 import cz.msebera.android.httpclient.util.EntityUtils;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity
+{
+    // This value will be set to a route when the server isn't in reach
+    private static final long m_defaultID = -1;
     private Route m_routeToAdd;
     private Chronometer m_chronometer;
     private TextView m_longDisplay;
@@ -108,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean checkServerStatus()
     {
         //TODO: Need to actually ping the server and see if it is online, currently this function simply disables server interaction and sets the application in offline mode. Maybe instead of saving server status to a variable, call this function everytime we want to see if the server has become online.
-        return true;
+        return false;
     }
 
 
@@ -130,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 // set item background
                 deleteItem.setBackground(new ColorDrawable(Color.rgb(217,83,79)));
                 // set item width
-                deleteItem.setWidth(200);
+                deleteItem.setWidth(175);
                 // set a icon
                 deleteItem.setIcon(R.drawable.delete_ic);
                 // add to menu
@@ -151,7 +149,10 @@ public class MainActivity extends AppCompatActivity {
                     case 0:
                         // delete
                         long routeIDToDelete = m_adapter.getItem(position).getItemID();
-                        new DeleteRouteRequestFromServlet(String.valueOf(routeIDToDelete), position).execute();
+                        if(m_serverIsOnline)
+                            new DeleteRouteRequestFromServlet(String.valueOf(routeIDToDelete), position).execute();
+                        else
+                            removeItemFromListView(position);
                         break;
                 }
                 // false : close the menu; true : not close the menu
@@ -296,15 +297,20 @@ public class MainActivity extends AppCompatActivity {
         {
             m_routeToAdd.setRouteName(getCurrentDateAndTime());
         }
-        else {
+        else
+        {
             m_routeToAdd.setRouteName(routeName.getText().toString());
             routeName.setText(null); //emptying the name for further use
         }
 
-        if (m_serverIsOnline) {
+        if (m_serverIsOnline)
+        {
             // Send the route to the server to save in the DB
             new SendRequestToServlet().execute();
-        } else {
+        }
+        else
+        {
+            addItemToListView(String.valueOf(m_defaultID));
             //TODO: Save the route locally (file?) and once connection to the server is restored, send the route to server.
         }
 
@@ -475,9 +481,14 @@ public class MainActivity extends AppCompatActivity {
 
         protected void onPostExecute(String result)
         {
-            m_routesListSource.remove(m_indexOfListItemToRemove);
-            m_adapter.notifyDataSetChanged();
+            removeItemFromListView(m_indexOfListItemToRemove);
         }
+    }
+
+    public void removeItemFromListView(int i_indexOfListItemToRemove)
+    {
+        m_routesListSource.remove(i_indexOfListItemToRemove);
+        m_adapter.notifyDataSetChanged();
     }
 
     public void addItemToListView(String i_routeID)
