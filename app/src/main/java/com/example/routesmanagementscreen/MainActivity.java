@@ -38,7 +38,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
+import java.sql.Date;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -80,6 +82,11 @@ public class MainActivity extends AppCompatActivity
         initializeViews();
         initializeLocationModules();
         initializeExistingRoutes();
+
+        if(m_routesListSource.size() == 0)
+        {
+            Toast.makeText(getApplicationContext(), "You do not have any routes yet.", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
@@ -119,18 +126,29 @@ public class MainActivity extends AppCompatActivity
 
         SwipeMenuCreator creator = new SwipeMenuCreator()
         {
-
             @Override
-            public void create(SwipeMenu menu) {
+            public void create(SwipeMenu menu)
+            {
+                //create "Edit" item
+                SwipeMenuItem editItem = new SwipeMenuItem(
+                        getApplicationContext());
+                // set item background
+                editItem.setBackground(new ColorDrawable(Color.rgb(221,221,221)));
+                // set item width
+                editItem.setWidth(150);
                 // create "delete" item
+                // set a icon
+                editItem.setIcon(R.drawable.ic_edit);
+                // add to menu
+                menu.addMenuItem(editItem);
                 SwipeMenuItem deleteItem = new SwipeMenuItem(
                         getApplicationContext());
                 // set item background
                 deleteItem.setBackground(new ColorDrawable(Color.rgb(217,83,79)));
                 // set item width
-                deleteItem.setWidth(175);
+                deleteItem.setWidth(150);
                 // set a icon
-                deleteItem.setIcon(R.drawable.delete_ic);
+                deleteItem.setIcon(R.drawable.ic_delete);
                 // add to menu
                 menu.addMenuItem(deleteItem);
             }
@@ -147,6 +165,9 @@ public class MainActivity extends AppCompatActivity
                 switch (index)
                 {
                     case 0:
+                        //edit
+                        // TODO
+                    case 1:
                         // delete
                         long routeIDToDelete = m_adapter.getItem(position).getItemID();
                         if(m_serverIsOnline)
@@ -187,7 +208,8 @@ public class MainActivity extends AppCompatActivity
         LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
         LocationListener locationListener = new LocationListener() {
             @Override
-            public void onLocationChanged(Location location) {
+            public void onLocationChanged(Location location)
+            {
 
                 DecimalFormat numberFormat = new DecimalFormat("#.000");
 
@@ -197,26 +219,20 @@ public class MainActivity extends AppCompatActivity
                 m_longDisplay.setText(longitude);
                 m_latDisplay.setText(latitude);
             }
-
             @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
+            public void onStatusChanged(String provider, int status, Bundle extras) { }
             @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
+            public void onProviderEnabled(String provider) { }
             @Override
-            public void onProviderDisabled(String provider) {
-            }
+            public void onProviderDisabled(String provider) { }
         };
 
-
-        try {
+        try
+        {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-        } catch (SecurityException e) {
+        }
+        catch (SecurityException e)
+        {
             Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
@@ -270,11 +286,11 @@ public class MainActivity extends AppCompatActivity
 
     private String getCurrentDateAndTime()
     {
-        Calendar currentDate = Calendar.getInstance();
-        //String result = currentDate.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.ENGLISH) + currentDate.getDisplayName(Calendar.DAY_OF_MONTH, Calendar.LONG, Locale.ENGLISH) + currentDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ENGLISH);
-        String result = currentDate.getTime().toString();
+        java.util.Date currentDate = Calendar.getInstance().getTime();
+        SimpleDateFormat dateFormat =  new SimpleDateFormat("dd/MM/yy EEE HH:mm:ss");
+        String currentDateString = dateFormat.format(currentDate);
 
-        return result;
+        return currentDateString;
     }
 
     public void buttonCancelSavingClicked(View view) {
@@ -300,6 +316,7 @@ public class MainActivity extends AppCompatActivity
         else
         {
             m_routeToAdd.setRouteName(routeName.getText().toString());
+            m_routeToAdd.setCreatedDate(Calendar.getInstance().getTime());
             routeName.setText(null); //emptying the name for further use
         }
 
@@ -410,7 +427,7 @@ public class MainActivity extends AppCompatActivity
                     JSONArray jsonArr = new JSONArray(body);
                     for (int i = 0; i < jsonArr.length(); i++) {
                         JSONObject jsonObj = jsonArr.getJSONObject(i);
-                        ListItem itemToAddName = new ListItem(jsonObj.getString("m_routeName"), Long.parseLong(jsonObj.getString("m_ID")));
+                        ListItem itemToAddName = new ListItem(jsonObj.getString("m_routeName"), Long.parseLong(jsonObj.getString("m_ID")), Date.valueOf(jsonObj.getString("m_createdDate")));
                         m_routesListSource.add(itemToAddName);
                     }
                 }
@@ -494,7 +511,7 @@ public class MainActivity extends AppCompatActivity
     public void addItemToListView(String i_routeID)
     {
         // set the new route in the list
-        ListItem itemToAdd = new ListItem(m_routeToAdd.getRouteName(),Long.parseLong(i_routeID));
+        ListItem itemToAdd = new ListItem(m_routeToAdd.getRouteName(),Long.parseLong(i_routeID), Calendar.getInstance().getTime());
         m_routesListSource.add(itemToAdd);
         m_adapter.notifyDataSetChanged();
     }

@@ -3,12 +3,14 @@ package com.example.routesmanagementscreen;
 import java.io.Serializable;
 import java.util.*;
 
-public class Route implements Serializable{
+public class Route implements Serializable
+{
     private static final long serialVersionUID = 1L;
 
     private long m_ID;
     private int m_userID;
     private String m_routeName;
+    private Date m_createdDate;
     private List<Coordinate> m_routeCoordinates= new ArrayList<>();
 
     public Route(int i_userID)
@@ -46,5 +48,8 @@ public class Route implements Serializable{
         m_routeName = new String(i_routeName);
     }
 
+    public Date getCreatedDate() { return m_createdDate; }
+
+    public void setCreatedDate(Date i_createdDate) { m_createdDate = i_createdDate; }
 }
 

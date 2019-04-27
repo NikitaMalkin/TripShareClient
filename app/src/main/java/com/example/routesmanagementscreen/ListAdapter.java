@@ -8,7 +8,11 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ListAdapter extends ArrayAdapter<ListItem> {
     private Context context; //context
@@ -50,16 +54,22 @@ public class ListAdapter extends ArrayAdapter<ListItem> {
         }
 
         ListItem currentItem = (ListItem) getItem(position);
+        String dateToPutInTextView = new SimpleDateFormat("dd/MM/yy").format(currentItem.getCreatedDate());
         viewHolder.itemName.setText(currentItem.getItemName());
+        viewHolder.itemDate.setText(dateToPutInTextView);
 
         return convertView;
     }
 
-    private class ViewHolder {
+    private class ViewHolder
+    {
         TextView itemName;
+        TextView itemDate;
 
-        public ViewHolder(View view) {
+        public ViewHolder(View view)
+        {
             itemName = (TextView)view.findViewById(R.id.text_view_item_name);
+            itemDate = (TextView)view.findViewById(R.id.Item_Created_Date);
         }
     }
 }
