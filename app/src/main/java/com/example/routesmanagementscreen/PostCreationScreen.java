@@ -1,5 +1,6 @@
 package com.example.routesmanagementscreen;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -57,6 +58,13 @@ public class PostCreationScreen extends AppCompatActivity {
         myToolbar.setTitle("Create new post");
         setSupportActionBar(myToolbar);
     }
+
+    public void OnAddRouteButtonClick(View view)
+    {
+        Intent routeCreationScreen = new Intent(PostCreationScreen.this, MainActivity.class);
+        startActivity(routeCreationScreen);
+    }
+
 
     public void OnPostButtonClick(View view)
     {

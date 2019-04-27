@@ -4,19 +4,22 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class ListAdapter extends BaseAdapter {
+public class ListAdapter extends ArrayAdapter<ListItem> {
     private Context context; //context
     private ArrayList<ListItem> items; //data source of the list adapter
 
     //public constructor
-    public ListAdapter(Context context, ArrayList<ListItem> items) {
-        this.context = context;
-        this.items = items;
+    public ListAdapter(Context i_context, ArrayList<ListItem> i_routes)
+    {
+        super(i_context, 0, i_routes);
+        context = i_context;
+        items = i_routes;
     }
 
     @Override
@@ -25,7 +28,7 @@ public class ListAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public ListItem getItem(int position) {
         return items.get(position); //returns list item at the specified position
     }
 

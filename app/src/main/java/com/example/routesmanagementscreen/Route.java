@@ -9,7 +9,6 @@ public class Route implements Serializable{
     private long m_ID;
     private int m_userID;
     private String m_routeName;
-    //private String m_routeDescription;
     private List<Coordinate> m_routeCoordinates= new ArrayList<>();
 
     public Route(int i_userID)
