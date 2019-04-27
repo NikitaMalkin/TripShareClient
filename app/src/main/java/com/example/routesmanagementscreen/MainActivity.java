@@ -326,8 +326,11 @@ public class MainActivity extends AppCompatActivity {
 
     // Communication with the server and DB
 
-    private class SendRequestToServlet extends AsyncTask<String, Integer, String> {
-        protected String doInBackground(String... Args) {
+    private class SendRequestToServlet extends AsyncTask<String, Integer, String>
+    {
+        private String routeIDFromServer;
+        protected String doInBackground(String... Args)
+        {
             String output = null;
 
             try {
@@ -351,7 +354,7 @@ public class MainActivity extends AppCompatActivity {
                 HttpResponse httpResponse = httpClient.execute(http_Post);
                 HttpEntity httpEntity = httpResponse.getEntity();
                 output = EntityUtils.toString(httpEntity);
-                addItemToListView(output);
+                routeIDFromServer = output;
 
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -363,6 +366,12 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             return output;
+        }
+
+        @Override
+        protected void onPostExecute(String result)
+        {
+            addItemToListView(String.valueOf(routeIDFromServer));
         }
     }
 
@@ -471,7 +480,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     public void addItemToListView(String i_routeID)
     {
         // set the new route in the list
@@ -483,9 +491,6 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         return gson.toJson(m_routeToAdd);
     }
-}
-
-
 
     public static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
