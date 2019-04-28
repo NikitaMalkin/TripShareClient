@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@color/colorBackground"
+    android:visibility="visible"
     tools:context=".MainActivity">
 
 
@@ -36,17 +37,17 @@
         app:titleTextColor="@android:color/background_light" />
 
     <!--<TextView-->
-        <!--android:id="@+id/textView"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginStart="24dp"-->
-        <!--android:layout_marginTop="20dp"-->
-        <!--android:text="My recorded routes"-->
-        <!--android:textAllCaps="false"-->
-        <!--android:textSize="18sp"-->
-        <!--android:textStyle="bold"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/my_toolbar" />-->
+    <!--android:id="@+id/textView"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginStart="24dp"-->
+    <!--android:layout_marginTop="20dp"-->
+    <!--android:text="My recorded routes"-->
+    <!--android:textAllCaps="false"-->
+    <!--android:textSize="18sp"-->
+    <!--android:textStyle="bold"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/my_toolbar" />-->
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/buttonStartRecordingRoute"
@@ -56,12 +57,13 @@
         android:clickable="true"
         android:onClick="buttonRecordRouteClicked"
         android:tint="@android:color/background_light"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:maxImageSize="55dp"
-        app:srcCompat="@drawable/baseline_add_black_48dp" />
+        app:srcCompat="@drawable/ic_add_black_24dp" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/view_recording"
@@ -107,7 +109,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:maxImageSize="55dp"
-            app:srcCompat="@drawable/baseline_stop_black_48dp" />
+            app:srcCompat="@drawable/ic_stop_black_24dp" />
 
         <TextView
             android:id="@+id/textView2"
@@ -196,7 +198,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:maxImageSize="40dp"
-            app:srcCompat="@drawable/baseline_clear_black_48dp" />
+            app:srcCompat="@drawable/ic_clear_black_24dp" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/buttonSave"
@@ -213,7 +215,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:maxImageSize="40dp"
-            app:srcCompat="@drawable/baseline_done_black_48dp" />
+            app:srcCompat="@drawable/ic_done_black_24dp" />
 
         <EditText
             android:id="@+id/textViewRouteName"

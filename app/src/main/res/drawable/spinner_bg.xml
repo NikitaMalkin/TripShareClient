@@ -22,7 +22,8 @@
                 </shape>
             </item>
             <item>
-                <bitmap android:gravity="right"
+                <bitmap
+                android:gravity="right"
                     android:src="@drawable/baseline_expand_more_black_18dp" />
                 // you can use any other image here, instead of default_holo_dark_am
             </item>

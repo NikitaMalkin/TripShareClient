@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
     private boolean checkServerStatus()
     {
         //TODO: Need to actually ping the server and see if it is online, currently this function simply disables server interaction and sets the application in offline mode. Maybe instead of saving server status to a variable, call this function everytime we want to see if the server has become online.
-        return true;
+        return false;
     }
 
 
@@ -135,12 +135,12 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
                 SwipeMenuItem editItem = new SwipeMenuItem(
                         getApplicationContext());
                 // set item background
-                editItem.setBackground(new ColorDrawable(Color.rgb(221,221,221)));
+                editItem.setBackground(new ColorDrawable(Color.rgb(180,180,180)));
                 // set item width
                 editItem.setWidth(150);
                 // create "delete" item
                 // set a icon
-                editItem.setIcon(R.drawable.ic_edit);
+                editItem.setIcon(R.drawable.ic_edit_black_24dp);
                 // add to menu
                 menu.addMenuItem(editItem);
                 SwipeMenuItem deleteItem = new SwipeMenuItem(
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
                 // set item width
                 deleteItem.setWidth(150);
                 // set a icon
-                deleteItem.setIcon(R.drawable.ic_delete);
+                deleteItem.setIcon(R.drawable.ic_delete_black_24dp);
                 // add to menu
                 menu.addMenuItem(deleteItem);
             }
@@ -322,8 +322,12 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
         View savingView = findViewById(R.id.view_saving);
         View recButton = findViewById(R.id.buttonStartRecordingRoute);
 
+        hideKeyboardFrom(getApplicationContext(), findViewById(R.id.layout_main));
+
         savingView.setVisibility(View.GONE);
         recButton.setVisibility(View.VISIBLE);
+
+
     }
 
     public void buttonSaveClicked(View view) {
