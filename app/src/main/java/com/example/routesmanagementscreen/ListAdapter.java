@@ -14,7 +14,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ListAdapter extends ArrayAdapter<ListItem> {
+public class ListAdapter extends ArrayAdapter<ListItem>
+{
     private Context context; //context
     private ArrayList<ListItem> items; //data source of the list adapter
 
@@ -32,8 +33,15 @@ public class ListAdapter extends ArrayAdapter<ListItem> {
     }
 
     @Override
-    public ListItem getItem(int position) {
+    public ListItem getItem(int position)
+    {
         return items.get(position); //returns list item at the specified position
+    }
+
+    public void updateItemInDataSource(String i_newRouteName, int i_indexOfItemToUpdate)
+    {
+        items.get(i_indexOfItemToUpdate).setItemName(i_newRouteName);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -42,7 +50,8 @@ public class ListAdapter extends ArrayAdapter<ListItem> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
         ViewHolder viewHolder;
 
         if (convertView == null) {
@@ -54,9 +63,8 @@ public class ListAdapter extends ArrayAdapter<ListItem> {
         }
 
         ListItem currentItem = (ListItem) getItem(position);
-        String dateToPutInTextView = new SimpleDateFormat("dd/MM/yy").format(currentItem.getCreatedDate());
         viewHolder.itemName.setText(currentItem.getItemName());
-        viewHolder.itemDate.setText(dateToPutInTextView);
+        viewHolder.itemDate.setText(currentItem.getCreatedDate());
 
         return convertView;
     }

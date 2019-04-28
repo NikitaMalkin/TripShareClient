@@ -32,6 +32,7 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.gson.Gson;
 
+import cz.msebera.android.httpclient.client.methods.HttpPut;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -59,7 +60,7 @@ import cz.msebera.android.httpclient.impl.client.BasicResponseHandler;
 import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 import cz.msebera.android.httpclient.util.EntityUtils;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity implements EditRouteDialog.EditDialogListener
 {
     // This value will be set to a route when the server isn't in reach
     private static final long m_defaultID = -1;
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity
     private ArrayList<ListItem> m_routesListSource = new ArrayList<>();
     private ListAdapter m_adapter;
     private boolean m_serverIsOnline = false;
+    private int m_currentlyClickedListItem;
     SwipeMenuListView m_swipeListView;
 
     @Override
@@ -113,7 +115,7 @@ public class MainActivity extends AppCompatActivity
     private boolean checkServerStatus()
     {
         //TODO: Need to actually ping the server and see if it is online, currently this function simply disables server interaction and sets the application in offline mode. Maybe instead of saving server status to a variable, call this function everytime we want to see if the server has become online.
-        return false;
+        return true;
     }
 
 
@@ -162,24 +164,48 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index)
             {
+                m_currentlyClickedListItem = position;
                 switch (index)
                 {
                     case 0:
                         //edit
-                        // TODO
+                        editRoute();
+                        break;
                     case 1:
                         // delete
-                        long routeIDToDelete = m_adapter.getItem(position).getItemID();
-                        if(m_serverIsOnline)
-                            new DeleteRouteRequestFromServlet(String.valueOf(routeIDToDelete), position).execute();
-                        else
-                            removeItemFromListView(position);
+                        deleteRoute();
                         break;
                 }
                 // false : close the menu; true : not close the menu
                 return false;
             }
         });
+    }
+
+    private void deleteRoute()
+    {
+        long routeIDToDelete = m_adapter.getItem(m_currentlyClickedListItem).getItemID();
+        if(m_serverIsOnline)
+            new DeleteRouteRequestFromServlet(String.valueOf(routeIDToDelete), m_currentlyClickedListItem).execute();
+        else
+            removeItemFromListView(m_currentlyClickedListItem);
+    }
+
+    private void editRoute()
+    {
+        String currentRouteName = m_routesListSource.get(m_currentlyClickedListItem).getItemName();
+        openEditRouteDialog(currentRouteName);
+    }
+
+    public void openEditRouteDialog(String i_currentRouteName)
+    {
+        Bundle bundle = new Bundle();
+        EditRouteDialog editDialog = new EditRouteDialog();
+
+        bundle.putString("currentRouteName", i_currentRouteName);
+        editDialog.setArguments(bundle);
+
+        editDialog.show(getSupportFragmentManager(), "Edit Dialog");
     }
 
     private void initializeViews() {
@@ -284,11 +310,10 @@ public class MainActivity extends AppCompatActivity
         m_chronometer.stop();
     }
 
-    private String getCurrentDateAndTime()
+    private String getCurrentDateAndTime(SimpleDateFormat i_dateFormat)
     {
         java.util.Date currentDate = Calendar.getInstance().getTime();
-        SimpleDateFormat dateFormat =  new SimpleDateFormat("dd/MM/yy EEE HH:mm:ss");
-        String currentDateString = dateFormat.format(currentDate);
+        String currentDateString = i_dateFormat.format(currentDate);
 
         return currentDateString;
     }
@@ -309,21 +334,23 @@ public class MainActivity extends AppCompatActivity
         savingView.setVisibility(View.GONE);
         recButton.setVisibility(View.VISIBLE);
 
+        // Set created date of route.
+        m_routeToAdd.setCreatedDate(getCurrentDateAndTime(new SimpleDateFormat("dd/MM/yy")));
+
         if (routeName.getText().length() == 0) //if route name was left empty, save default route name
         {
-            m_routeToAdd.setRouteName(getCurrentDateAndTime());
+            m_routeToAdd.setRouteName(getCurrentDateAndTime(new SimpleDateFormat("dd/MM/yy EEE HH:mm:ss")));
         }
         else
         {
             m_routeToAdd.setRouteName(routeName.getText().toString());
-            m_routeToAdd.setCreatedDate(Calendar.getInstance().getTime());
             routeName.setText(null); //emptying the name for further use
         }
 
         if (m_serverIsOnline)
         {
             // Send the route to the server to save in the DB
-            new SendRequestToServlet().execute();
+            new SendRouteToServlet().execute();
         }
         else
         {
@@ -347,13 +374,22 @@ public class MainActivity extends AppCompatActivity
         ((EditText) v).setText(null);
     }
 
+    @Override
+    public void updateListItemName(String i_newRouteName)
+    {
+        ListItem selectedItem =  m_routesListSource.get(m_currentlyClickedListItem);
+        selectedItem.setItemName(i_newRouteName);
+        m_adapter.updateItemInDataSource(i_newRouteName, m_currentlyClickedListItem);
+        if(m_serverIsOnline)
+            new SendRouteUpdateToServlet(String.valueOf(selectedItem.getItemID()), i_newRouteName).execute();
+    }
+
     // Communication with the server and DB
 
-    private class SendRequestToServlet extends AsyncTask<String, Integer, String>
+    private class SendRouteToServlet extends AsyncTask<String, Integer, String>
     {
         private String routeIDFromServer;
-        protected String doInBackground(String... Args)
-        {
+        protected String doInBackground(String... Args) {
             String output = null;
 
             try {
@@ -378,14 +414,9 @@ public class MainActivity extends AppCompatActivity
                 HttpEntity httpEntity = httpResponse.getEntity();
                 output = EntityUtils.toString(httpEntity);
                 routeIDFromServer = output;
-
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            } catch (ClientProtocolException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (URISyntaxException e) {
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
             }
             return output;
@@ -398,7 +429,47 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private class GetRoutesFromDB extends AsyncTask<String, Integer, String> {
+    private class SendRouteUpdateToServlet extends AsyncTask<String, Integer, String>
+    {
+        private String m_routeIDToUpdate;
+        private String m_routeNewName;
+
+        public SendRouteUpdateToServlet(String i_routeID, String i_newRouteName)
+        {
+            m_routeIDToUpdate = i_routeID;
+            m_routeNewName = i_newRouteName;
+        }
+
+        protected String doInBackground(String... Args) {
+            String output = null;
+
+            try {
+                // build the post request to send to the server
+                URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/SaveRouteToDB/RouteUpdateServlet");
+                builder.setParameter("m_routeID", m_routeIDToUpdate);
+                builder.setParameter("m_newRouteName", m_routeNewName);
+                HttpClient httpClient = HttpClientBuilder.create().build();
+                HttpPut http_Put = new HttpPut(builder.build());
+
+                // set request headers
+                http_Put.setHeader("Accept", "application/json");
+                http_Put.setHeader("Content-type", "application/json; charset-UTF-8");
+
+                // get the response of the server
+                HttpResponse httpResponse = httpClient.execute(http_Put);
+                HttpEntity httpEntity = httpResponse.getEntity();
+                output = EntityUtils.toString(httpEntity);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            return output;
+        }
+    }
+
+    private class GetRoutesFromDB extends AsyncTask<String, Integer, String>
+    {
         @Override
         protected String doInBackground(String... Args)
         {
@@ -425,9 +496,10 @@ public class MainActivity extends AppCompatActivity
                 if(code == 200)
                 {
                     JSONArray jsonArr = new JSONArray(body);
-                    for (int i = 0; i < jsonArr.length(); i++) {
+                    for (int i = 0; i < jsonArr.length(); i++)
+                    {
                         JSONObject jsonObj = jsonArr.getJSONObject(i);
-                        ListItem itemToAddName = new ListItem(jsonObj.getString("m_routeName"), Long.parseLong(jsonObj.getString("m_ID")), Date.valueOf(jsonObj.getString("m_createdDate")));
+                        ListItem itemToAddName = new ListItem(jsonObj.getString("m_routeName"), Long.parseLong(jsonObj.getString("m_ID")), jsonObj.getString("m_createdDate"));
                         m_routesListSource.add(itemToAddName);
                     }
                 }
@@ -477,19 +549,7 @@ public class MainActivity extends AppCompatActivity
                 output = EntityUtils.toString(httpEntity);
 
             }
-            catch (UnsupportedEncodingException e)
-            {
-                e.printStackTrace();
-            }
-            catch (ClientProtocolException e)
-            {
-                e.printStackTrace();
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-            }
-            catch (URISyntaxException e)
+            catch (Exception e)
             {
                 e.printStackTrace();
             }
@@ -511,7 +571,8 @@ public class MainActivity extends AppCompatActivity
     public void addItemToListView(String i_routeID)
     {
         // set the new route in the list
-        ListItem itemToAdd = new ListItem(m_routeToAdd.getRouteName(),Long.parseLong(i_routeID), Calendar.getInstance().getTime());
+        String dateToPutInListItem = new SimpleDateFormat("dd/MM/yy").format(Calendar.getInstance().getTime());
+        ListItem itemToAdd = new ListItem(m_routeToAdd.getRouteName(),Long.parseLong(i_routeID), dateToPutInListItem);
         m_routesListSource.add(itemToAdd);
         m_adapter.notifyDataSetChanged();
     }
