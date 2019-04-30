@@ -11,6 +11,11 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -34,7 +39,8 @@ import cz.msebera.android.httpclient.impl.client.BasicResponseHandler;
 import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 import cz.msebera.android.httpclient.util.EntityUtils;
 
-public class PostCreationScreen extends AppCompatActivity {
+public class PostCreationScreen extends AppCompatActivity
+    implements OnMapReadyCallback {
 
     private Post m_postToAdd;
 
@@ -44,6 +50,13 @@ public class PostCreationScreen extends AppCompatActivity {
         setContentView(R.layout.activity_post_creation_screen);
 
         initializeViews();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        map.addMarker(new MarkerOptions()
+                .position(new LatLng(31.970, 34.801))
+                .title("Marker"));
     }
 
     @Override
@@ -57,6 +70,10 @@ public class PostCreationScreen extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         myToolbar.setTitle("Create new post");
         setSupportActionBar(myToolbar);
+
+        MapFragment mapFragment = (MapFragment) getFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
     public void OnAddRouteButtonClick(View view)
