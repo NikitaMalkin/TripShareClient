@@ -1,7 +1,15 @@
 package com.example.routesmanagementscreen;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -14,8 +22,14 @@ import android.widget.TextView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Dot;
+import com.google.android.gms.maps.model.Gap;
+import com.google.android.gms.maps.model.JointType;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PatternItem;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -24,6 +38,8 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
+import java.util.List;
+import java.util.regex.Pattern;
 
 import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.HttpResponse;
@@ -54,9 +70,15 @@ public class PostCreationScreen extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap map) {
-        map.addMarker(new MarkerOptions()
-                .position(new LatLng(31.970, 34.801))
-                .title("Marker"));
+        Bitmap image = getBitmapFromVectorDrawable(getApplicationContext(), R.drawable.ic_adjust_black_24dp);
+        map.addMarker(new MarkerOptions().position(new LatLng(31.970, 34.801)).icon(BitmapDescriptorFactory.fromBitmap(image))).setAnchor(0.5f, 0.5f);
+        map.addMarker(new MarkerOptions().position(new LatLng(32, 35)).icon(BitmapDescriptorFactory.fromBitmap(image))).setAnchor(0.5f, 0.5f);
+        map.addMarker(new MarkerOptions().position(new LatLng(31.8, 35.1)).icon(BitmapDescriptorFactory.fromBitmap(image))).setAnchor(0.5f, 0.5f);
+
+        map.addPolyline(new PolylineOptions()
+                .add(new LatLng(31.970, 34.801), new LatLng(32, 35), new LatLng(31.8, 35.1), new LatLng(31.970, 34.801))
+                .width(5)
+                .color(Color.CYAN));
     }
 
     @Override
@@ -76,15 +98,13 @@ public class PostCreationScreen extends AppCompatActivity
         mapFragment.getMapAsync(this);
     }
 
-    public void OnAddRouteButtonClick(View view)
-    {
+    public void OnAddRouteButtonClick(View view) {
         Intent routeCreationScreen = new Intent(PostCreationScreen.this, MainActivity.class);
         startActivity(routeCreationScreen);
     }
 
 
-    public void OnPostButtonClick(View view)
-    {
+    public void OnPostButtonClick(View view) {
         // TODO: change names of Edit Text to something meaningful.
         TextView postTitle = findViewById(R.id.editText);
         TextView postDescription = findViewById(R.id.editText3);
@@ -95,16 +115,14 @@ public class PostCreationScreen extends AppCompatActivity
 
     // Communication with the server and DB
 
-    private class GetPostsFromDB extends AsyncTask<String, Integer, String>
-    {
+    private class GetPostsFromDB extends AsyncTask<String, Integer, String> {
         String m_userID = new String("1"); // TODO !!! change “1” to be the actual user ID
+
         @Override
-        protected String doInBackground(String... Args)
-        {
+        protected String doInBackground(String... Args) {
             String output = null;
 
-            try
-            {
+            try {
                 HttpClient httpClient = HttpClientBuilder.create().build();
 
                 // Build URI
@@ -118,91 +136,73 @@ public class PostCreationScreen extends AppCompatActivity
                 // Handle response
                 ResponseHandler<String> handler = new BasicResponseHandler();
                 String body = handler.handleResponse(response);
-                if(response.getStatusLine().getStatusCode() == 200)
-                {
+                if (response.getStatusLine().getStatusCode() == 200) {
                     JSONArray jsonArr = new JSONArray(body);
-                    for (int i = 0; i < jsonArr.length(); i++)
-                    {
+                    for (int i = 0; i < jsonArr.length(); i++) {
                         JSONObject jsonObj = jsonArr.getJSONObject(i);
                         System.out.print(jsonObj.toString());
                     }
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Log.e("log_tag", "Error in http connection " + e.toString());
                 output = "Error in http connection " + e.toString();
             }
             return output;
         }
 
-        protected void onPostExecute(String result)
-        {
+        protected void onPostExecute(String result) {
             // TODO anythings we want to do after the posts are in the app.
         }
     }
 
     private class SendPostToAddToDB extends AsyncTask<String, Integer, String> {
-                protected String doInBackground(String... Args) {
-                String output = null;
+        protected String doInBackground(String... Args) {
+            String output = null;
 
-                try
-                {
-                    // convert the object we want to send to the server
-                    //  to a json format and create an entity from it
-                    String postInJsonFormat = convertPostToJson();
-                    StringEntity postRouteEntity = new StringEntity(postInJsonFormat);
+            try {
+                // convert the object we want to send to the server
+                //  to a json format and create an entity from it
+                String postInJsonFormat = convertPostToJson();
+                StringEntity postRouteEntity = new StringEntity(postInJsonFormat);
 
-                    URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/SaveRouteToDB/PostServlet");
-                    builder.setParameter("m_PostToAddToDB", postInJsonFormat);
-                    HttpClient httpClient = HttpClientBuilder.create().build();
-                    HttpPost http_Post = new HttpPost(builder.build());
-                    http_Post.setEntity(postRouteEntity);
+                URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/SaveRouteToDB/PostServlet");
+                builder.setParameter("m_PostToAddToDB", postInJsonFormat);
+                HttpClient httpClient = HttpClientBuilder.create().build();
+                HttpPost http_Post = new HttpPost(builder.build());
+                http_Post.setEntity(postRouteEntity);
 
-                    // set request headers
-                    http_Post.setHeader("Accept", "application/json");
-                    http_Post.setHeader("Content-type", "application/json; charset-UTF-8");
+                // set request headers
+                http_Post.setHeader("Accept", "application/json");
+                http_Post.setHeader("Content-type", "application/json; charset-UTF-8");
 
-                    // get the response of the server
-                    HttpResponse httpResponse = httpClient.execute(http_Post);
-                    HttpEntity httpEntity = httpResponse.getEntity();
-                    output = EntityUtils.toString(httpEntity);
-                }
-                catch (UnsupportedEncodingException e)
-                {
-                    e.printStackTrace();
-                }
-                catch (ClientProtocolException e)
-                {
-                    e.printStackTrace();
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-                catch (URISyntaxException e)
-                {
-                    e.printStackTrace();
-                }
-                return output;
+                // get the response of the server
+                HttpResponse httpResponse = httpClient.execute(http_Post);
+                HttpEntity httpEntity = httpResponse.getEntity();
+                output = EntityUtils.toString(httpEntity);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
             }
+            return output;
+        }
     }
 
-    private class DeletePostRequestFromServlet extends AsyncTask<String, Integer, String>
-    {
+    private class DeletePostRequestFromServlet extends AsyncTask<String, Integer, String> {
         String m_postToDeleteID; // TODO !!! change “1” to be the actual post ID
 
-        public DeletePostRequestFromServlet(String i_postToDeleteID)
-        {
+        public DeletePostRequestFromServlet(String i_postToDeleteID) {
             m_postToDeleteID = i_postToDeleteID;
         }
 
-        protected String doInBackground(String... Args)
-        {
+        protected String doInBackground(String... Args) {
             String output = null;
 
-            try
-            {
+            try {
 
                 URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/SaveRouteToDB/PostServlet");
                 builder.setParameter("m_postID", m_postToDeleteID);
@@ -216,21 +216,13 @@ public class PostCreationScreen extends AppCompatActivity
                 HttpEntity httpEntity = httpResponse.getEntity();
                 output = EntityUtils.toString(httpEntity);
 
-            }
-            catch (UnsupportedEncodingException e)
-            {
+            } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
-            }
-            catch (ClientProtocolException e)
-            {
+            } catch (ClientProtocolException e) {
                 e.printStackTrace();
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
-            }
-            catch (URISyntaxException e)
-            {
+            } catch (URISyntaxException e) {
                 e.printStackTrace();
             }
             return output;
@@ -240,5 +232,21 @@ public class PostCreationScreen extends AppCompatActivity
     public String convertPostToJson() {
         Gson gson = new Gson();
         return gson.toJson(m_postToAdd);
+    }
+
+
+    public static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
+        Drawable drawable = ContextCompat.getDrawable(context, drawableId);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            drawable = (DrawableCompat.wrap(drawable)).mutate();
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(),
+                drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 }
