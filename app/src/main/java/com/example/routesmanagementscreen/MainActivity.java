@@ -36,19 +36,16 @@ import cz.msebera.android.httpclient.client.methods.HttpPut;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
-import java.sql.Date;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-
 import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.HttpResponse;
-import cz.msebera.android.httpclient.client.ClientProtocolException;
 import cz.msebera.android.httpclient.client.HttpClient;
 import cz.msebera.android.httpclient.client.ResponseHandler;
 import cz.msebera.android.httpclient.client.methods.HttpPost;
@@ -64,30 +61,66 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
 {
     // This value will be set to a route when the server isn't in reach
     private static final long m_defaultID = -1;
+    private static final String m_localRoutesFileName = "localRoutes.json";
+    private File m_localRoutesFile;
     private Route m_routeToAdd;
     private Chronometer m_chronometer;
     private TextView m_longDisplay;
     private TextView m_latDisplay;
     private Handler m_handler;
-    private ArrayList<ListItem> m_routesListSource = new ArrayList<>();
     private ListAdapter m_adapter;
     private boolean m_serverIsOnline = false;
     private int m_currentlyClickedListItem;
     SwipeMenuListView m_swipeListView;
+    Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        m_serverIsOnline = checkServerStatus();
+        new checkServerStatus("http://10.0.0.36:8080/SaveRouteToDB").execute();
         initializeViews();
         initializeLocationModules();
         initializeExistingRoutes();
 
-        if(m_routesListSource.size() == 0)
+        if(m_adapter.getItems().size() == 0)
         {
             Toast.makeText(getApplicationContext(), "You do not have any routes yet.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+        ArrayList<ListItem> routes_list = m_adapter.getItems();
+
+        FileOutputStream fileOutputStream = null;
+        try
+        {
+            m_localRoutesFile.createNewFile();
+            JSONArray routesArray = new JSONArray(new Gson().toJson(routes_list));
+            fileOutputStream = openFileOutput(m_localRoutesFileName, MODE_PRIVATE);
+            fileOutputStream.write(routesArray.toString().getBytes());
+        }
+        catch ( Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            try
+            {
+                if(fileOutputStream != null)
+                {
+                    fileOutputStream.close();
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -101,29 +134,127 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
     private void initializeExistingRoutes()
     {
         initializeRouteList();
+        m_serverIsOnline = true;
+        m_localRoutesFile = new File(getFilesDir(), m_localRoutesFileName);
 
         if (m_serverIsOnline)
         {
+            sendLocallySavedRoutesToServer();
             new GetRoutesFromDB().execute();
         }
         else
         {
             Toast.makeText(getApplicationContext(), "Could not connect to server, unable to fetch existing routes.", Toast.LENGTH_LONG).show();
+            loadLocalRoutesIfExist();
         }
     }
 
-    private boolean checkServerStatus()
+    private void loadLocalRoutesIfExist()
     {
-        //TODO: Need to actually ping the server and see if it is online, currently this function simply disables server interaction and sets the application in offline mode. Maybe instead of saving server status to a variable, call this function everytime we want to see if the server has become online.
-        return false;
+        if(m_localRoutesFile.exists())
+        {
+            try
+            {
+                FileInputStream fileInputStream = openFileInput(m_localRoutesFileName);
+                InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+                BufferedReader reader = new BufferedReader(inputStreamReader);
+                StringBuilder stringBuilder = new StringBuilder();
+                String fileContentLineByLine;
+
+                while((fileContentLineByLine = reader.readLine()) != null)
+                {
+                    stringBuilder.append(fileContentLineByLine);
+                }
+
+
+                JSONArray routesFromFile = new JSONArray(stringBuilder.toString());
+                for (int i = 0; i < routesFromFile.length(); i++)
+                {
+                    JSONObject currentRouteString = routesFromFile.getJSONObject(i);
+                    Route currentRoute = gson.fromJson(currentRouteString.get("m_route").toString(), Route.class);
+                    m_adapter.add(new ListItem(currentRoute));
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
+    private void sendLocallySavedRoutesToServer()
+    {
+        if(m_localRoutesFile.exists())
+        {
+            try
+            {
+                FileInputStream fileInputStream = openFileInput(m_localRoutesFileName);
+                InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+                BufferedReader reader = new BufferedReader(inputStreamReader);
+                StringBuilder stringBuilder = new StringBuilder();
+                String fileContentLineByLine;
+
+                while((fileContentLineByLine = reader.readLine()) != null)
+                {
+                    stringBuilder.append(fileContentLineByLine);
+                }
+
+                JSONArray routesFromFile = new JSONArray(stringBuilder.toString());
+                for (int i = 0; i < routesFromFile.length(); i++)
+                {
+                    JSONObject currentRouteString = routesFromFile.getJSONObject(i);
+                    Route currentRoute = gson.fromJson(currentRouteString.get("m_route").toString(), Route.class);
+                    new SendRouteToServlet(currentRoute).execute().get();
+                }
+                m_localRoutesFile.delete();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class checkServerStatus extends AsyncTask<String, Integer, String>
+    {
+        String url;
+
+        public checkServerStatus(String i_URL)
+        {
+            url = i_URL;
+        }
+        int code;
+
+        @Override
+        protected String doInBackground(String... strings)
+        {
+            String output;
+            try
+            {
+                URL siteURL = new URL(url);
+                HttpURLConnection connection = (HttpURLConnection) siteURL.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setConnectTimeout(3000);
+                connection.connect();
+
+                code = connection.getResponseCode();
+                if (code == 200)
+                    m_serverIsOnline = true;
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            output = url + "\t\tStatus:" + m_serverIsOnline;
+            return output;
+        }
+    }
 
     private void initializeRouteList()
     {
         m_swipeListView = findViewById(R.id.listView);
 
-        m_adapter = new ListAdapter(MainActivity.this, m_routesListSource);
+        m_adapter = new ListAdapter(MainActivity.this);
         m_swipeListView.setAdapter(m_adapter);
 
         SwipeMenuCreator creator = new SwipeMenuCreator()
@@ -184,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
 
     private void deleteRoute()
     {
-        long routeIDToDelete = m_adapter.getItem(m_currentlyClickedListItem).getItemID();
+        long routeIDToDelete = m_adapter.getItem(m_currentlyClickedListItem).getRoute().getRouteID();
         if(m_serverIsOnline)
             new DeleteRouteRequestFromServlet(String.valueOf(routeIDToDelete), m_currentlyClickedListItem).execute();
         else
@@ -193,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
 
     private void editRoute()
     {
-        String currentRouteName = m_routesListSource.get(m_currentlyClickedListItem).getItemName();
+        String currentRouteName = m_adapter.getItems().get(m_currentlyClickedListItem).getRoute().getRouteName();
         openEditRouteDialog(currentRouteName);
     }
 
@@ -228,7 +359,8 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
         });
     }
 
-    private void initializeLocationModules() {
+    private void initializeLocationModules()
+    {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
 
         LocationManager locationManager = (LocationManager) getApplicationContext().getSystemService(LOCATION_SERVICE);
@@ -299,9 +431,6 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
     public void buttonStopRecordingRouteClicked(View view) {
         View recordingView = findViewById(R.id.view_recording);
         View savingView = findViewById(R.id.view_saving);
-        View buttonCancel = findViewById(R.id.buttonCancel);
-        View buttonSave = findViewById(R.id.buttonSave);
-        EditText routeName = (EditText) findViewById(R.id.textViewRouteName);
 
         m_handler.removeCallbacksAndMessages(null);
         recordingView.setVisibility(View.GONE);
@@ -318,7 +447,8 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
         return currentDateString;
     }
 
-    public void buttonCancelSavingClicked(View view) {
+    public void buttonCancelSavingClicked(View view)
+    {
         View savingView = findViewById(R.id.view_saving);
         View recButton = findViewById(R.id.buttonStartRecordingRoute);
 
@@ -326,11 +456,10 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
 
         savingView.setVisibility(View.GONE);
         recButton.setVisibility(View.VISIBLE);
-
-
     }
 
-    public void buttonSaveClicked(View view) {
+    public void buttonSaveClicked(View view)
+    {
         View savingView = findViewById(R.id.view_saving);
         View recButton = findViewById(R.id.buttonStartRecordingRoute);
         EditText routeName = (EditText) findViewById(R.id.textViewRouteName);
@@ -342,9 +471,7 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
         m_routeToAdd.setCreatedDate(getCurrentDateAndTime(new SimpleDateFormat("dd/MM/yy")));
 
         if (routeName.getText().length() == 0) //if route name was left empty, save default route name
-        {
             m_routeToAdd.setRouteName(getCurrentDateAndTime(new SimpleDateFormat("dd/MM/yy EEE HH:mm:ss")));
-        }
         else
         {
             m_routeToAdd.setRouteName(routeName.getText().toString());
@@ -352,14 +479,12 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
         }
 
         if (m_serverIsOnline)
-        {
-            // Send the route to the server to save in the DB
-            new SendRouteToServlet().execute();
-        }
+            new SendRouteToServlet(m_routeToAdd).execute(); // Send the route to the server to save in the DB
         else
         {
-            addItemToListView(String.valueOf(m_defaultID));
-            //TODO: Save the route locally (file?) and once connection to the server is restored, send the route to server.
+            m_routeToAdd.setRouteID(m_defaultID);
+            addItemToListView(m_routeToAdd);
+
         }
 
         hideKeyboardFrom(getApplicationContext(), findViewById(R.id.layout_main));
@@ -381,11 +506,11 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
     @Override
     public void updateListItemName(String i_newRouteName)
     {
-        ListItem selectedItem =  m_routesListSource.get(m_currentlyClickedListItem);
-        selectedItem.setItemName(i_newRouteName);
+        ListItem selectedItem =  m_adapter.getItems().get(m_currentlyClickedListItem);
+        selectedItem.getRoute().setRouteName(i_newRouteName);
         m_adapter.updateItemInDataSource(i_newRouteName, m_currentlyClickedListItem);
         if(m_serverIsOnline)
-            new SendRouteUpdateToServlet(String.valueOf(selectedItem.getItemID()), i_newRouteName).execute();
+            new SendRouteUpdateToServlet(String.valueOf(selectedItem.getRoute().getRouteID()), i_newRouteName).execute();
     }
 
     // Communication with the server and DB
@@ -393,13 +518,20 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
     private class SendRouteToServlet extends AsyncTask<String, Integer, String>
     {
         private String routeIDFromServer;
+        Route m_routeToSend;
+
+        public SendRouteToServlet(Route i_routeToAdd)
+        {
+            m_routeToSend = i_routeToAdd;
+        }
+
         protected String doInBackground(String... Args) {
             String output = null;
 
             try {
                 // convert the object we want to send to the server
                 //  to a json format and create an entity from it
-                String userRouteInJsonFormat = convertToJson();
+                String userRouteInJsonFormat = convertToJson(m_routeToSend);
                 StringEntity userRouteEntity = new StringEntity(userRouteInJsonFormat);
 
                 // build the post request to send to the server
@@ -429,7 +561,7 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
         @Override
         protected void onPostExecute(String result)
         {
-            addItemToListView(String.valueOf(routeIDFromServer));
+            addItemToListView(m_routeToSend);
         }
     }
 
@@ -474,6 +606,8 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
 
     private class GetRoutesFromDB extends AsyncTask<String, Integer, String>
     {
+        String body;
+
         @Override
         protected String doInBackground(String... Args)
         {
@@ -493,19 +627,33 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
 
                 // Handle response
                 ResponseHandler<String> handler = new BasicResponseHandler();
-                String body = handler.handleResponse(response);
+                body = handler.handleResponse(response);
                 int code = response.getStatusLine().getStatusCode();
 
-                // retrieve the list of routes from response
+                // retrieve the list of routes from response need to update the list view in the main thread.
                 if(code == 200)
                 {
-                    JSONArray jsonArr = new JSONArray(body);
-                    for (int i = 0; i < jsonArr.length(); i++)
-                    {
-                        JSONObject jsonObj = jsonArr.getJSONObject(i);
-                        ListItem itemToAddName = new ListItem(jsonObj.getString("m_routeName"), Long.parseLong(jsonObj.getString("m_ID")), jsonObj.getString("m_createdDate"));
-                        m_routesListSource.add(itemToAddName);
-                    }
+                    runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run()
+                        {
+                            try
+                            {
+                                JSONArray jsonArr = new JSONArray(body);
+                                for (int i = 0; i < jsonArr.length(); i++) {
+                                    JSONObject jsonObj = jsonArr.getJSONObject(i);
+                                    Route route = new Gson().fromJson(jsonObj.toString(), Route.class);
+                                    addItemToListView(route);
+                                }
+                            }
+                            catch(Exception e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
                 }
             }
             catch (Exception e)
@@ -539,7 +687,6 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
 
             try
             {
-
                 URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/SaveRouteToDB/RouteServlet");
                         builder.setParameter("m_routeID", m_routeToDeleteID);
                 HttpDelete http_delete = new HttpDelete(builder.build());
@@ -566,23 +713,26 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
         }
     }
 
+    // Managing list view
+
     public void removeItemFromListView(int i_indexOfListItemToRemove)
     {
-        m_routesListSource.remove(i_indexOfListItemToRemove);
-        m_adapter.notifyDataSetChanged();
+        m_adapter.remove(i_indexOfListItemToRemove);
     }
 
-    public void addItemToListView(String i_routeID)
+    public void addItemToListView(Route i_routeToAdd)
     {
         // set the new route in the list
-        String dateToPutInListItem = new SimpleDateFormat("dd/MM/yy").format(Calendar.getInstance().getTime());
-        ListItem itemToAdd = new ListItem(m_routeToAdd.getRouteName(),Long.parseLong(i_routeID), dateToPutInListItem);
-        m_routesListSource.add(itemToAdd);
-        m_adapter.notifyDataSetChanged();
+        ListItem itemToAdd = new ListItem(i_routeToAdd);
+        m_adapter.add(itemToAdd);
     }
-    public String convertToJson() {
+
+    // Other functions
+
+    public String convertToJson(Route i_routeToConvert)
+    {
         Gson gson = new Gson();
-        return gson.toJson(m_routeToAdd);
+        return gson.toJson(i_routeToConvert);
     }
 
     public static void hideKeyboardFrom(Context context, View view) {

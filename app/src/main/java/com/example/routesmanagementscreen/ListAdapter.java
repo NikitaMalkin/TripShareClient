@@ -20,12 +20,14 @@ public class ListAdapter extends ArrayAdapter<ListItem>
     private ArrayList<ListItem> items; //data source of the list adapter
 
     //public constructor
-    public ListAdapter(Context i_context, ArrayList<ListItem> i_routes)
+    public ListAdapter(Context i_context)
     {
-        super(i_context, 0, i_routes);
+        super(i_context, 0);
         context = i_context;
-        items = i_routes;
+        items = new ArrayList<>();
     }
+
+   public ArrayList<ListItem> getItems() { return items; }
 
     @Override
     public int getCount() {
@@ -40,7 +42,21 @@ public class ListAdapter extends ArrayAdapter<ListItem>
 
     public void updateItemInDataSource(String i_newRouteName, int i_indexOfItemToUpdate)
     {
-        items.get(i_indexOfItemToUpdate).setItemName(i_newRouteName);
+        items.get(i_indexOfItemToUpdate).getRoute().setRouteName(i_newRouteName);
+        addAll(getItems());
+        notifyDataSetChanged();
+    }
+
+    public void add(ListItem i_itemToAdd)
+    {
+        items.add(i_itemToAdd);
+        addAll(getItems());
+        notifyDataSetChanged();
+    }
+
+    public void remove(int i_indexOfItemToRemove)
+    {
+        items.remove(i_indexOfItemToRemove);
         notifyDataSetChanged();
     }
 
@@ -63,8 +79,8 @@ public class ListAdapter extends ArrayAdapter<ListItem>
         }
 
         ListItem currentItem = (ListItem) getItem(position);
-        viewHolder.itemName.setText(currentItem.getItemName());
-        viewHolder.itemDate.setText(currentItem.getCreatedDate());
+        viewHolder.itemName.setText(currentItem.getRoute().getRouteName());
+        viewHolder.itemDate.setText(currentItem.getRoute().getCreatedDate());
 
         return convertView;
     }

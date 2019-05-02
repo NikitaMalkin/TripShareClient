@@ -1,27 +1,15 @@
 package com.example.routesmanagementscreen;
 
-import java.util.Date;
-
 public class ListItem
 {
-    private long m_routeID;
-    private String m_routeName;
-    private String m_createdDate;
+    private Route m_route;
 
-    public ListItem(String i_routeName, long i_routeID, String i_createdDate)
+    public ListItem(Route i_route)
     {
-        this.m_routeName = i_routeName;
-        this.m_routeID = i_routeID;
-        this.m_createdDate = i_createdDate;
+        this.m_route = i_route;
     }
 
-    public String getItemName() { return this.m_routeName; }
+    public Route getRoute() { return m_route; }
 
-    public long getItemID() { return this.m_routeID; }
-
-    public void setItemName(String i_routeName) { m_routeName = i_routeName; }
-
-    public void setCreatedDate(String i_createdDate) { m_createdDate = i_createdDate; }
-
-    public String getCreatedDate() { return m_createdDate; }
+    public void setRoute(Route i_route) { m_route = i_route;}
 }

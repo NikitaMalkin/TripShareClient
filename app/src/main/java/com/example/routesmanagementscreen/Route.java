@@ -51,5 +51,7 @@ public class Route implements Serializable
     public String getCreatedDate() { return m_createdDate; }
 
     public void setCreatedDate(String i_createdDate) { m_createdDate = i_createdDate; }
+
+    public void setRouteID(long i_ID) { m_ID = i_ID; }
 }
 
