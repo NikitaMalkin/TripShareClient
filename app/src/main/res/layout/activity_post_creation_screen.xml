@@ -33,6 +33,7 @@
             map:mapType="satellite"
             map:uiZoomGestures="true"
             map:uiScrollGestures="true"
+            map:uiRotateGestures="false"
             />
 
     </android.support.constraint.ConstraintLayout>
