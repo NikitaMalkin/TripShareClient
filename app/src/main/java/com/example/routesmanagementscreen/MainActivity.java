@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        new checkServerStatus("http://10.0.0.36:8080/SaveRouteToDB").execute();
+        //new checkServerStatus("http://10.0.0.36:8080/SaveRouteToDB").execute();
         initializeViews();
         initializeLocationModules();
         initializeExistingRoutes();
@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
     private void initializeExistingRoutes()
     {
         initializeRouteList();
-        m_serverIsOnline = true;
+        //m_serverIsOnline = true;
         m_localRoutesFile = new File(getFilesDir(), m_localRoutesFileName);
 
         if (m_serverIsOnline)
@@ -246,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
                 e.printStackTrace();
             }
             output = url + "\t\tStatus:" + m_serverIsOnline;
+
             return output;
         }
     }
