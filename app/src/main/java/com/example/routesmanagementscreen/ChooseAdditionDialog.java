@@ -18,6 +18,10 @@ public class ChooseAdditionDialog extends AppCompatDialogFragment
                         {
                             openAddNoteDialog();
                         }
+                        else if (which == 1)
+                        {
+                            openAddPhotoDialog();
+                        }
                     }
                 });
         AlertDialog dialog = builder.create();
@@ -29,5 +33,12 @@ public class ChooseAdditionDialog extends AppCompatDialogFragment
         AddNoteDialog dialog = new AddNoteDialog();
 
         dialog.show(getFragmentManager(), "Add Note Dialog");
+    }
+
+    public void openAddPhotoDialog()
+    {
+        AddPhotoDialog dialog = new AddPhotoDialog();
+
+        dialog.show(getFragmentManager(), "Add Photo Dialog");
     }
 }
