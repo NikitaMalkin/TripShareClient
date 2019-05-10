@@ -1,6 +1,9 @@
 package com.example.routesmanagementscreen;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -8,22 +11,26 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
@@ -50,7 +57,7 @@ import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 import cz.msebera.android.httpclient.util.EntityUtils;
 
 public class PostCreationScreen extends AppCompatActivity
-    implements OnMapReadyCallback {
+    implements OnMapReadyCallback , GoogleMap.OnMarkerClickListener {
 
     private Post m_postToAdd;
 
@@ -64,11 +71,13 @@ public class PostCreationScreen extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap map) {
-        Bitmap image = getBitmapFromVectorDrawable(getApplicationContext(), R.drawable.ic_adjust_black_24dp);
-        map.addMarker(new MarkerOptions().position(new LatLng(31.970, 34.801)).icon(BitmapDescriptorFactory.fromBitmap(image))).setAnchor(0.5f, 0.5f);
+        map.setOnMarkerClickListener(this);
+
+        Bitmap image = getBitmapFromVectorDrawable(getApplicationContext(), R.drawable.ic_adjust_black_24dp); //converting image from vector to bitmap
+
+        map.addMarker(new MarkerOptions().position(new LatLng(31.970, 34.801)).icon(BitmapDescriptorFactory.fromBitmap(image))).setAnchor(0.5f, 0.5f); //every new marker needs a position, an image, an anchor and an associated tag
         map.addMarker(new MarkerOptions().position(new LatLng(32, 35)).icon(BitmapDescriptorFactory.fromBitmap(image))).setAnchor(0.5f, 0.5f);
         map.addMarker(new MarkerOptions().position(new LatLng(31.8, 35.1)).icon(BitmapDescriptorFactory.fromBitmap(image))).setAnchor(0.5f, 0.5f);
-
         map.addPolyline(new PolylineOptions()
                 .add(new LatLng(31.970, 34.801), new LatLng(32, 35), new LatLng(31.8, 35.1), new LatLng(31.970, 34.801))
                 .width(5)
@@ -83,7 +92,7 @@ public class PostCreationScreen extends AppCompatActivity
     }
 
     private void initializeViews() {
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
         myToolbar.setTitle("Create new post");
         setSupportActionBar(myToolbar);
 
@@ -110,7 +119,7 @@ public class PostCreationScreen extends AppCompatActivity
     // Communication with the server and DB
 
     private class GetPostsFromDB extends AsyncTask<String, Integer, String> {
-        String m_userID = new String("1"); // TODO !!! change “1” to be the actual user ID
+        String m_userID = "1"; // TODO !!! change “1” to be the actual user ID
 
         @Override
         protected String doInBackground(String... Args) {
@@ -242,5 +251,16 @@ public class PostCreationScreen extends AppCompatActivity
         drawable.draw(canvas);
 
         return bitmap;
+    }
+
+
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+
+
+
+        DialogFragment dialog = new ChooseAdditionDialog();
+        dialog.show(getSupportFragmentManager(), "Choose Addition");
+        return true;
     }
 }
