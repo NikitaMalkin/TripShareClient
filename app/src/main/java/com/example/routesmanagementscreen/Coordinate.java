@@ -2,17 +2,15 @@ package com.example.routesmanagementscreen;
 
 import java.io.Serializable;
 
-public class Coordinate implements Serializable {
+public class Coordinate implements Serializable{
     private static final long serialVersionUID = 1L;
 
     private long m_ID;
     private String m_latitude;
     private String m_longitude;
 
-    public Coordinate() {
-    }
-
-    Coordinate(String i_Latitude, String i_Longitude) {
+    Coordinate(String i_Latitude, String i_Longitude)
+    {
         this.m_latitude = new String(i_Latitude);
         this.m_longitude = new String(i_Longitude);
     }

@@ -340,7 +340,8 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
         editDialog.show(getSupportFragmentManager(), "Edit Dialog");
     }
 
-    private void initializeViews() {
+    private void initializeViews()
+    {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         myToolbar.setTitle("Route Management");
         m_longDisplay = findViewById(R.id.textviewCurrentLong);
@@ -396,7 +397,8 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
         }
     }
 
-    public void buttonRecordRouteClicked(View view) {
+    public void buttonRecordRouteClicked(View view)
+    {
         m_routeToAdd = new Route(0);  ///each time a new recording is started, m_routeToAdd is initialized, 0 is a placeholder for UserID
 
         view.setVisibility(view.GONE);

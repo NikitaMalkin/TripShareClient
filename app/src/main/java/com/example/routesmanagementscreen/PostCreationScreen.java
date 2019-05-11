@@ -1,9 +1,6 @@
 package com.example.routesmanagementscreen;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -16,14 +13,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatDialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -35,12 +32,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 
+import org.angmarch.views.NiceSpinner;
+import org.angmarch.views.NiceSpinnerAdapter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.HttpResponse;
@@ -57,12 +60,15 @@ import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 import cz.msebera.android.httpclient.util.EntityUtils;
 
 public class PostCreationScreen extends AppCompatActivity
-    implements OnMapReadyCallback , GoogleMap.OnMarkerClickListener {
-
+    implements OnMapReadyCallback , GoogleMap.OnMarkerClickListener
+{
     private Post m_postToAdd;
+    NiceSpinner m_spinner;
+    SpinnerAdapter m_adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_creation_screen);
 
@@ -70,7 +76,8 @@ public class PostCreationScreen extends AppCompatActivity
     }
 
     @Override
-    public void onMapReady(GoogleMap map) {
+    public void onMapReady(GoogleMap map)
+    {
         map.setOnMarkerClickListener(this);
 
         Bitmap image = getBitmapFromVectorDrawable(getApplicationContext(), R.drawable.ic_adjust_black_24dp); //converting image from vector to bitmap
@@ -85,29 +92,74 @@ public class PostCreationScreen extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.appbar, menu);
         return true;
     }
 
-    private void initializeViews() {
+    private void initializeViews()
+    {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         myToolbar.setTitle("Create new post");
         setSupportActionBar(myToolbar);
+        initializeSpinnerWithRoutes();
 
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
 
-    public void OnAddRouteButtonClick(View view) {
+    private void initializeSpinnerWithRoutes()
+    {
+        m_spinner = (NiceSpinner)findViewById(R.id.spinner);
+        m_adapter = new SpinnerAdapter(PostCreationScreen.this);
+
+        settingTheDefaultValueForTheSpinner();
+        settingTheHeightOfThePopUp();
+
+        m_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                if(position != 0)
+                {
+                    SpinnerItem clickedItem =(SpinnerItem)m_adapter.getItems().get(position);
+                    // TODO: present the route on the map
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+        new GetRoutesFromDB().execute();
+    }
+
+    public void settingTheDefaultValueForTheSpinner()
+    {
+        Route defaultValue = new Route(0);
+        defaultValue.setRouteName("Choose Route...");
+        m_adapter.getItems().add(0, new SpinnerItem(defaultValue));
+        m_spinner.setAdapter(m_adapter);
+        m_spinner.setSelectedIndex(0);
+    }
+
+    public void settingTheHeightOfThePopUp()
+    {
+        m_spinner.setDropDownListPaddingBottom(160);
+    }
+
+    public void OnAddRouteButtonClick(View view)
+    {
         Intent routeCreationScreen = new Intent(PostCreationScreen.this, MainActivity.class);
         startActivity(routeCreationScreen);
     }
 
 
-    public void OnPostButtonClick(View view) {
+    public void OnPostButtonClick(View view)
+    {
         // TODO: change names of Edit Text to something meaningful.
         TextView postTitle = findViewById(R.id.editText);
         TextView postDescription = findViewById(R.id.editText3);
@@ -118,19 +170,20 @@ public class PostCreationScreen extends AppCompatActivity
 
     // Communication with the server and DB
 
-    private class GetPostsFromDB extends AsyncTask<String, Integer, String> {
-        String m_userID = "1"; // TODO !!! change “1” to be the actual user ID
+    private class GetRoutesFromDB extends AsyncTask<String, Integer, String> {
+        String body;
 
         @Override
         protected String doInBackground(String... Args) {
             String output = null;
 
-            try {
+            try
+            {
                 HttpClient httpClient = HttpClientBuilder.create().build();
 
                 // Build URI
-                URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/SaveRouteToDB/PostServlet");
-                builder.setParameter("m_userID", m_userID); // The value is 0 right now but will change in the future to user ID // TODO
+                URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/SaveRouteToDB/RouteServlet");
+                builder.setParameter("m_userID", "0"); // The value is 0 right now but will change in the future to user ID // TODO
 
                 // Send request to server
                 HttpGet http_get = new HttpGet(builder.build());
@@ -138,23 +191,41 @@ public class PostCreationScreen extends AppCompatActivity
 
                 // Handle response
                 ResponseHandler<String> handler = new BasicResponseHandler();
-                String body = handler.handleResponse(response);
-                if (response.getStatusLine().getStatusCode() == 200) {
-                    JSONArray jsonArr = new JSONArray(body);
-                    for (int i = 0; i < jsonArr.length(); i++) {
-                        JSONObject jsonObj = jsonArr.getJSONObject(i);
-                        System.out.print(jsonObj.toString());
-                    }
+                body = handler.handleResponse(response);
+                int code = response.getStatusLine().getStatusCode();
+
+                // retrieve the list of routes from response need to update the list view in the main thread.
+                if (code == 200) {
+                    runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            try {
+                                JSONArray jsonArr = new JSONArray(body);
+                                for (int i = 0; i < jsonArr.length(); i++) {
+                                    JSONObject jsonObj = jsonArr.getJSONObject(i);
+                                    Route route = new Gson().fromJson(jsonObj.toString(), Route.class);
+                                    addItemToSpinner(route);
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
                 }
-            } catch (Exception e) {
+            }
+             catch (Exception e)
+             {
                 Log.e("log_tag", "Error in http connection " + e.toString());
                 output = "Error in http connection " + e.toString();
             }
             return output;
         }
 
-        protected void onPostExecute(String result) {
-            // TODO anythings we want to do after the posts are in the app.
+        protected void onPostExecute(String result)
+        {
+            m_adapter.notifyDataSetChanged();
         }
     }
 
@@ -232,13 +303,14 @@ public class PostCreationScreen extends AppCompatActivity
         }
     }
 
-    public String convertPostToJson() {
+    public String convertPostToJson()
+    {
         Gson gson = new Gson();
         return gson.toJson(m_postToAdd);
     }
 
-
-    public static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
+    public static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId)
+    {
         Drawable drawable = ContextCompat.getDrawable(context, drawableId);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             drawable = (DrawableCompat.wrap(drawable)).mutate();
@@ -253,12 +325,14 @@ public class PostCreationScreen extends AppCompatActivity
         return bitmap;
     }
 
+    private void addItemToSpinner(Route i_route)
+    {
+        m_adapter.add(new SpinnerItem(i_route));
+    }
 
     @Override
-    public boolean onMarkerClick(final Marker marker) {
-
-
-
+    public boolean onMarkerClick(final Marker marker)
+    {
         DialogFragment dialog = new ChooseAdditionDialog();
         dialog.show(getSupportFragmentManager(), "Choose Addition");
         return true;
