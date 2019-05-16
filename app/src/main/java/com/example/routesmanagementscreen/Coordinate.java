@@ -8,11 +8,13 @@ public class Coordinate implements Serializable{
     private long m_ID;
     private String m_latitude;
     private String m_longitude;
+    private Addition m_addition;
 
     Coordinate(String i_Latitude, String i_Longitude)
     {
         this.m_latitude = new String(i_Latitude);
         this.m_longitude = new String(i_Longitude);
+        this.m_addition = new Addition();
     }
 
     public String getLatitude()
@@ -23,6 +25,38 @@ public class Coordinate implements Serializable{
     public String getLongitude()
     {
         return m_longitude;
+    }
+
+    public void setNote(String i_noteString)
+    {
+        if(m_addition == null)
+            m_addition = new Addition();
+
+        m_addition.setNote(i_noteString);
+    }
+
+    public String getNote()
+    {
+        if(m_addition == null)
+            return null;
+
+        return m_addition.getNote();
+    }
+
+    public void setImageString(String i_imageString)
+    {
+        if(m_addition == null)
+            m_addition = new Addition();
+
+        m_addition.setImageString(i_imageString);
+    }
+
+    public String getImageString()
+    {
+        if(m_addition == null)
+            return null;
+
+        return m_addition.getImageString();
     }
 
     @Override

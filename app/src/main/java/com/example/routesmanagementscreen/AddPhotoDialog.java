@@ -2,15 +2,14 @@ package com.example.routesmanagementscreen;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
@@ -30,9 +29,12 @@ public class AddPhotoDialog extends AppCompatDialogFragment {
     private Button m_browseButton;
     private ImageView m_image;
     private float m_currentImageRotation = 0.0f;
+    static final int PICK_IMAGE_REQUEST = 1;  // The request code
+    private AttachImageToCoordinateListener m_listener;
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState)
+    {
 
         android.support.v7.app.AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -48,7 +50,8 @@ public class AddPhotoDialog extends AppCompatDialogFragment {
             }
         });
 
-        m_image.setOnClickListener(new View.OnClickListener(){
+        m_image.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View view)
             {   // currently, only the View is rotating, because rotating the image takes much more time.
@@ -79,8 +82,11 @@ public class AddPhotoDialog extends AppCompatDialogFragment {
             }
         }).setPositiveButton("Upload", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getActivity(), "Photo uploaded.", Toast.LENGTH_LONG).show();
+            public void onClick(DialogInterface dialog, int which)
+            {
+                m_listener.attachImageToRelevantCoordinate(((BitmapDrawable)m_image.getDrawable()).getBitmap());
+                dismiss();
+               // Toast.makeText(getActivity(), "Photo uploaded.", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -98,10 +104,9 @@ public class AddPhotoDialog extends AppCompatDialogFragment {
 
     }
 
-
     private void getPhotoFromUser()
     {
-        startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), 1);
+        startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), PICK_IMAGE_REQUEST);
     }
 
     private void rotateImage90Degrees() //currently unused method to actually rotate the stored Bitmap, this will be used when uploading the image
@@ -117,26 +122,47 @@ public class AddPhotoDialog extends AppCompatDialogFragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
-
-
         //Detects request codes
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
             Uri selectedImage = data.getData();
             Bitmap bitmap = null;
-            try {
-
+            try
+            {
                 bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), selectedImage); //here we take the image selected
                 m_image.setImageBitmap(bitmap);  //and pass the image to the ImageView
-
-            } catch (FileNotFoundException e) {
+            }
+            catch (FileNotFoundException e)
+            {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+        try
+        {
+            m_listener = (AttachImageToCoordinateListener)context;
+        }
+        catch (ClassCastException  e)
+        {
+            throw new ClassCastException("Could not cast to AttachImageToCoordinateListener");
+        }
+    }
+
+    public interface AttachImageToCoordinateListener
+    {
+        void attachImageToRelevantCoordinate(Bitmap i_imageToAttach);
     }
 }

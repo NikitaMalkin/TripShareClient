@@ -2,9 +2,7 @@ package com.example.routesmanagementscreen;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
+import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -19,30 +17,23 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Spinner;
 import android.widget.TextView;
+import android.util.Base64;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.model.*;
 import com.google.gson.Gson;
 
 import org.angmarch.views.NiceSpinner;
-import org.angmarch.views.NiceSpinnerAdapter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Field;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import cz.msebera.android.httpclient.HttpEntity;
@@ -60,35 +51,35 @@ import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 import cz.msebera.android.httpclient.util.EntityUtils;
 
 public class PostCreationScreen extends AppCompatActivity
-    implements OnMapReadyCallback , GoogleMap.OnMarkerClickListener
+    implements OnMapReadyCallback , GoogleMap.OnMarkerClickListener, AddPhotoDialog.AttachImageToCoordinateListener , AddNoteDialog.AttachNoteToCoordinateListener
 {
+    private static final PatternItem DOT = new Dot();
+    private static final PatternItem GAP = new Gap(20);
+
     private Post m_postToAdd;
-    NiceSpinner m_spinner;
-    SpinnerAdapter m_adapter;
+    private NiceSpinner m_spinner;
+    private SpinnerAdapter m_adapter;
+    private GoogleMap m_map;
+    private PolylineOptions m_polyline;
+    private List<PatternItem> m_pattern = Arrays.asList(DOT, GAP);
+    private List<Marker> m_markers;
+    private Bitmap m_markerIcon;
+    private int m_currentCoordinateIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_creation_screen);
-
         initializeViews();
     }
 
     @Override
     public void onMapReady(GoogleMap map)
     {
-        map.setOnMarkerClickListener(this);
-
-        Bitmap image = getBitmapFromVectorDrawable(getApplicationContext(), R.drawable.ic_adjust_black_24dp); //converting image from vector to bitmap
-
-        map.addMarker(new MarkerOptions().position(new LatLng(31.970, 34.801)).icon(BitmapDescriptorFactory.fromBitmap(image))).setAnchor(0.5f, 0.5f); //every new marker needs a position, an image, an anchor and an associated tag
-        map.addMarker(new MarkerOptions().position(new LatLng(32, 35)).icon(BitmapDescriptorFactory.fromBitmap(image))).setAnchor(0.5f, 0.5f);
-        map.addMarker(new MarkerOptions().position(new LatLng(31.8, 35.1)).icon(BitmapDescriptorFactory.fromBitmap(image))).setAnchor(0.5f, 0.5f);
-        map.addPolyline(new PolylineOptions()
-                .add(new LatLng(31.970, 34.801), new LatLng(32, 35), new LatLng(31.8, 35.1), new LatLng(31.970, 34.801))
-                .width(5)
-                .color(Color.CYAN));
+        m_map = map;
+        m_map.setOnMarkerClickListener(this);
+        initializeMap();
     }
 
     @Override
@@ -105,6 +96,7 @@ public class PostCreationScreen extends AppCompatActivity
         myToolbar.setTitle("Create new post");
         setSupportActionBar(myToolbar);
         initializeSpinnerWithRoutes();
+        m_markerIcon = getBitmapFromVectorDrawable(getApplicationContext(), R.drawable.ic_marker_on_map); //converting image from vector to bitmap
 
         MapFragment mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
@@ -113,22 +105,21 @@ public class PostCreationScreen extends AppCompatActivity
 
     private void initializeSpinnerWithRoutes()
     {
-        m_spinner = (NiceSpinner)findViewById(R.id.spinner);
         m_adapter = new SpinnerAdapter(PostCreationScreen.this);
-
-        settingTheDefaultValueForTheSpinner();
-        settingTheHeightOfThePopUp();
+        m_spinner = (NiceSpinner)findViewById(R.id.spinner);
+        m_spinner.setDropDownListPaddingBottom(10);
 
         m_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
-                if(position != 0)
-                {
-                    SpinnerItem clickedItem =(SpinnerItem)m_adapter.getItems().get(position);
-                    // TODO: present the route on the map
-                }
+                m_map.clear();
+                initializeMap();
+
+                String spinnerItemString = ((TextView)view).getText().toString();
+                if (!((spinnerItemString.equals("Choose Route..."))))
+                    showRouteOnMap(spinnerItemString);
             }
 
             @Override
@@ -137,18 +128,60 @@ public class PostCreationScreen extends AppCompatActivity
         new GetRoutesFromDB().execute();
     }
 
-    public void settingTheDefaultValueForTheSpinner()
+    private void initializeMap()
     {
-        Route defaultValue = new Route(0);
-        defaultValue.setRouteName("Choose Route...");
-        m_adapter.getItems().add(0, new SpinnerItem(defaultValue));
-        m_spinner.setAdapter(m_adapter);
-        m_spinner.setSelectedIndex(0);
+        m_polyline = new PolylineOptions();
+        m_polyline.pattern(m_pattern);
+        m_markers = new ArrayList<>();
     }
 
-    public void settingTheHeightOfThePopUp()
+    private void showRouteOnMap(String i_spinnerItemString)
     {
-        m_spinner.setDropDownListPaddingBottom(160);
+        SpinnerItem clickedItem = (SpinnerItem) m_adapter.getItemByName(i_spinnerItemString);
+
+        List<Coordinate> routeCoordinates = clickedItem.getRoute().getRouteCoordinates();
+        LatLng currLatLng;
+
+        for (Coordinate coord : routeCoordinates)
+        {
+            currLatLng = new LatLng(Double.valueOf(coord.getLatitude()), Double.valueOf(coord.getLongitude()));
+            Marker marker;
+
+            marker = m_map.addMarker(new MarkerOptions()
+                    .position(currLatLng)
+                    .icon(BitmapDescriptorFactory.fromBitmap(m_markerIcon)));
+            marker.setAnchor(0.5f, 0.5f);
+            m_map.addPolyline(m_polyline
+                    .add(currLatLng)
+                    .width(24)
+                    .color(Color.rgb(100, 186, 105)));
+            m_markers.add(marker);
+
+            String coordinateString = coord.getImageString();
+            if(coordinateString != null)
+            {
+                addImageMarkerAndConvertStringToBitmap(coordinateString, marker.getPosition());
+            }
+
+            if(coord.getNote() != null)
+            {
+                marker.setTitle(coord.getNote());
+            }
+        }
+
+        CameraUpdate center = CameraUpdateFactory.newLatLng(clickedItem.getCenterCoordinate());
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(13);
+
+        m_map.moveCamera(center);
+        m_map.animateCamera(zoom);
+    }
+
+    public void addImageMarkerAndConvertStringToBitmap(String i_imageString, LatLng i_coordinateToAttachTo)
+    {
+        byte[] decodedString = Base64.decode(i_imageString, Base64.DEFAULT);
+        Bitmap imageToShow = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        Bitmap smallerMarker = Bitmap.createScaledBitmap(imageToShow, 100, 100, false);
+        m_map.addMarker(new MarkerOptions().position(i_coordinateToAttachTo).icon(BitmapDescriptorFactory.fromBitmap(smallerMarker))).setAnchor(1f, 1f);
     }
 
     public void OnAddRouteButtonClick(View view)
@@ -157,15 +190,51 @@ public class PostCreationScreen extends AppCompatActivity
         startActivity(routeCreationScreen);
     }
 
-
     public void OnPostButtonClick(View view)
     {
-        // TODO: change names of Edit Text to something meaningful.
-        TextView postTitle = findViewById(R.id.editText);
-        TextView postDescription = findViewById(R.id.editText3);
+        TextView postTitle = findViewById(R.id.post_title_editText);
+        TextView postDescription = findViewById(R.id.post_description_editText);
+        long routeID = m_adapter.getItems().get(m_spinner.getSelectedIndex()).getRoute().getRouteID();
 
         m_postToAdd = new Post(0, postTitle.toString(), postDescription.toString());
+        m_postToAdd.setRouteID(routeID);
+
+        // Send Post to Server and save in DB.
         new SendPostToAddToDB().execute();
+        // TODO: update the route and coordinates as well
+    }
+
+    @Override
+    public void attachImageToRelevantCoordinate(Bitmap i_imageToAttach)
+    {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        i_imageToAttach.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        String imageString = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+        // Attaching the image to the coordinate.
+        SpinnerItem itemSelected = m_adapter.getItems().get(m_spinner.getSelectedIndex());
+        itemSelected.getRoute().getRouteCoordinates().get(m_currentCoordinateIndex).setImageString(imageString);
+
+        showImageNearCoordinate(i_imageToAttach);
+    }
+
+    public void showImageNearCoordinate(Bitmap i_imageToAttach)
+    {
+        LatLng coordinateToAttachTo = m_markers.get(m_currentCoordinateIndex).getPosition();
+        Bitmap smallerMarker = Bitmap.createScaledBitmap(i_imageToAttach, 100, 100, false);
+        m_map.addMarker(new MarkerOptions().position(coordinateToAttachTo).icon(BitmapDescriptorFactory.fromBitmap(smallerMarker))).setAnchor(1f, 1f);
+    }
+
+    @Override
+    public void attachNoteToRelevantCoordinate(String i_noteToAttach)
+    {
+        // Attaching the image to the coordinate.
+        SpinnerItem itemSelected = m_adapter.getItems().get(m_spinner.getSelectedIndex());
+        itemSelected.getRoute().getRouteCoordinates().get(m_currentCoordinateIndex).setNote(i_noteToAttach);
+        Marker relevantMarker =  m_markers.get(m_currentCoordinateIndex);
+        relevantMarker.setTitle(i_noteToAttach);
+        //relevantMarker.showInfoWindow();
     }
 
     // Communication with the server and DB
@@ -225,8 +294,19 @@ public class PostCreationScreen extends AppCompatActivity
 
         protected void onPostExecute(String result)
         {
+            m_spinner.setAdapter(m_adapter);
+            settingTheDefaultValueForTheSpinner();
             m_adapter.notifyDataSetChanged();
         }
+    }
+
+    public void settingTheDefaultValueForTheSpinner()
+    {
+        Route defaultValue = new Route(0);
+        defaultValue.setRouteName("Choose Route...");
+        m_adapter.getItems().add(0, new SpinnerItem(defaultValue));
+        m_spinner.setAdapter(m_adapter);
+        m_spinner.setSelectedIndex(0);
     }
 
     private class SendPostToAddToDB extends AsyncTask<String, Integer, String> {
@@ -333,6 +413,8 @@ public class PostCreationScreen extends AppCompatActivity
     @Override
     public boolean onMarkerClick(final Marker marker)
     {
+        // Getting the pressed coordinate index
+        m_currentCoordinateIndex = m_markers.indexOf(marker);
         DialogFragment dialog = new ChooseAdditionDialog();
         dialog.show(getSupportFragmentManager(), "Choose Addition");
         return true;

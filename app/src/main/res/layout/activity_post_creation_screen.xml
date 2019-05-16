@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText3">
+        app:layout_constraintTop_toBottomOf="@+id/post_description_editText">
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -86,10 +86,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ChooseRouteTextView"
-            app:layout_constraintHorizontal_bias="0.053" android:isScrollContainer="true"/>
+            app:layout_constraintHorizontal_bias="0.053" android:isScrollContainer="true"
+            android:hint="Choose Route..."/>
 
     <EditText
-            android:id="@+id/editText"
+            android:id="@+id/post_title_editText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -104,7 +105,7 @@
             app:layout_constraintTop_toBottomOf="@+id/PostTitleTextView" android:fontFamily="sans-serif-medium"/>
 
     <EditText
-            android:id="@+id/editText3"
+            android:id="@+id/post_description_editText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -114,7 +115,7 @@
             android:inputType="textMultiLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText" android:fontFamily="sans-serif-medium"/>
+            app:layout_constraintTop_toBottomOf="@+id/post_title_editText" android:fontFamily="sans-serif-medium"/>
 
     <Button
             android:id="@+id/buttonAdd"

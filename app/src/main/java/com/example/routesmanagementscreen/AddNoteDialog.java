@@ -3,6 +3,7 @@ package com.example.routesmanagementscreen;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
@@ -11,12 +12,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class AddNoteDialog extends AppCompatDialogFragment {
-
+public class AddNoteDialog extends AppCompatDialogFragment
+{
     private EditText m_note;
+    private AttachNoteToCoordinateListener m_listener;
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState)
+    {
 
         android.support.v7.app.AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -29,15 +32,37 @@ public class AddNoteDialog extends AppCompatDialogFragment {
             public void onClick(DialogInterface dialog, int which) {
 
             }
-        }).setPositiveButton("Save", new DialogInterface.OnClickListener() {
+        }).setPositiveButton("Save", new DialogInterface.OnClickListener()
+        {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, int which)
+            {
                 String note = m_note.getText().toString();
+                m_listener.attachNoteToRelevantCoordinate(note);
                 Toast.makeText(getActivity(), note + " saved as note.", Toast.LENGTH_LONG).show();
             }
         });
 
         return builder.create();
 
+    }
+
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+        try
+        {
+            m_listener = (AttachNoteToCoordinateListener)context;
+        }
+        catch (ClassCastException  e)
+        {
+            throw new ClassCastException("Could not cast to AttachNoteToCoordinateListener");
+        }
+    }
+
+    public interface AttachNoteToCoordinateListener
+    {
+        void attachNoteToRelevantCoordinate(String i_noteToAttach);
     }
 }

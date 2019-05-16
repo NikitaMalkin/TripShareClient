@@ -1,13 +1,8 @@
 package com.example.routesmanagementscreen;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -26,72 +21,42 @@ public class SpinnerAdapter extends ArrayAdapter
 
     public ArrayList<SpinnerItem> getItems() { return items; }
 
-    public void add(SpinnerItem i_itemToAdd)
+    @Override
+    public void add(Object object)
     {
-        items.add(i_itemToAdd);
-        addAll(getItems());
+        super.add(object);
+        items.add((SpinnerItem)object);
         notifyDataSetChanged();
     }
 
     @Override
-    public int getCount()
-    {
-        return items.size(); //returns total of items in the list
-    }
-
     public String getItem(int position)
     {
-        SpinnerItem currentItem = new SpinnerItem(null);
-        String returnedValue = "";
-        if (items.size() != 0)
-        {
-            currentItem = items.get(position); //returns list item at the specified position
-            returnedValue = currentItem.getRouteName();
-        }
-
-        return returnedValue;
+        return items.get(position).getRouteName();
     }
 
-//    @Override
-//    public long getItemId(int position) {  return position; }
-//
-//    @Override
-//    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
-//    {
-//        return initView(position, convertView, parent);
-//    }
-//
-//    @Override
-//    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent)
-//    {
-//        return initView(position, convertView, parent);
-//    }
-//
-//    private View initView(int position, View convertView, ViewGroup parent)
-//    {
-//        ViewHolder viewHolder;
-//
-//        if (convertView == null) {
-//            convertView = LayoutInflater.from(context).inflate(R.layout.layout_spinner_row_item, parent, false);
-//            viewHolder = new ViewHolder(convertView);
-//            convertView.setTag(viewHolder);
-//        } else {
-//            viewHolder = (ViewHolder) convertView.getTag();
-//        }
-//
-//        SpinnerItem currentItem = (SpinnerItem) getItem(position);
-//        viewHolder.itemName.setText(currentItem.getRouteName());
-//
-//        return convertView;
-//    }
-//
-//    private class ViewHolder
-//    {
-//        TextView itemName;
-//
-//        public ViewHolder(View view)
-//        {
-//            itemName = (TextView)view.findViewById(R.id.routeName);
-//        }
-//    }
+    @Override
+    public boolean isEnabled(int position)
+    {
+        if(position == 0)
+        {
+            // Disable the first item from Spinner
+            // First item will be use for hint
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public SpinnerItem getItemByName(String i_itemName)
+    {
+        for (SpinnerItem item: items)
+        {
+            if(item.getRouteName().equals(i_itemName))
+                return item;
+        }
+        return null;
+    }
 }

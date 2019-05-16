@@ -29,4 +29,9 @@ public class Post implements Serializable{
     public void setDescription(String i_description) { m_description = new String(i_description); }
 
     public long getPostRoute() { return m_routeID; }
+
+    public void setRouteID(long i_routeID)
+    {
+        m_routeID = i_routeID;
+    }
 }

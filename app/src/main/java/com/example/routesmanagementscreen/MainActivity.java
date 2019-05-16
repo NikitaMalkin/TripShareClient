@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
     private TextView m_latDisplay;
     private Handler m_handler;
     private ListAdapter m_adapter;
-    private boolean m_serverIsOnline = false;
+    private boolean m_serverIsOnline = true;
     private int m_currentlyClickedListItem;
     SwipeMenuListView m_swipeListView;
     Gson gson = new Gson();
@@ -83,11 +83,6 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
         initializeViews();
         initializeLocationModules();
         initializeExistingRoutes();
-
-        if(m_adapter.getItems().size() == 0)
-        {
-            Toast.makeText(getApplicationContext(), "You do not have any routes yet.", Toast.LENGTH_LONG).show();
-        }
     }
 
     @Override
