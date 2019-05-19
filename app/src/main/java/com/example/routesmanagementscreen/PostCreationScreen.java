@@ -28,10 +28,10 @@ import org.angmarch.views.NiceSpinner;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -158,7 +158,7 @@ public class PostCreationScreen extends AppCompatActivity
             m_markers.add(marker);
 
             String coordinateString = coord.getImageString();
-            if(coordinateString != null)
+            if(coordinateString != null && !coordinateString.isEmpty())
             {
                 addImageMarkerAndConvertStringToBitmap(coordinateString, marker.getPosition());
             }
@@ -196,11 +196,12 @@ public class PostCreationScreen extends AppCompatActivity
         TextView postDescription = findViewById(R.id.post_description_editText);
         long routeID = m_adapter.getItems().get(m_spinner.getSelectedIndex()).getRoute().getRouteID();
 
-        m_postToAdd = new Post(0, postTitle.toString(), postDescription.toString());
+        m_postToAdd = new Post(0, postTitle.getText().toString(), postDescription.getText().toString());
         m_postToAdd.setRouteID(routeID);
 
         // Send Post to Server and save in DB.
         new SendPostToAddToDB().execute();
+        new UpdateRouteInDB().execute();
         // TODO: update the route and coordinates as well
     }
 
@@ -316,7 +317,7 @@ public class PostCreationScreen extends AppCompatActivity
             try {
                 // convert the object we want to send to the server
                 //  to a json format and create an entity from it
-                String postInJsonFormat = convertPostToJson();
+                String postInJsonFormat = convertToJson(m_postToAdd);
                 StringEntity postRouteEntity = new StringEntity(postInJsonFormat);
 
                 URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/SaveRouteToDB/PostServlet");
@@ -383,10 +384,85 @@ public class PostCreationScreen extends AppCompatActivity
         }
     }
 
-    public String convertPostToJson()
+    private class UpdateRouteInDB extends AsyncTask<String, Integer, String>
+    {
+        protected String doInBackground(String... Args)
+        {
+            String output = null;
+            String coordinateInJsonFormat;
+
+            try
+            {
+                //Getting the Updated Route to send its coordinates to the server.
+                SpinnerItem itemSelected = m_adapter.getItems().get(m_spinner.getSelectedIndex());
+                Route updatedRoute = itemSelected.getRoute();
+                List<Coordinate> routeCoordinates = updatedRoute.getRouteCoordinates();
+
+                // Send the post body
+                for (Coordinate coord: routeCoordinates)
+                {
+                    if (coord.getAddition() != null)
+                    {
+                        // This is getting the url from the string we passed in
+                        URL url = new URL("http://10.0.2.2:8080/SaveRouteToDB/CoordinateUpdateServlet");
+
+                        // Create the urlConnection
+                        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+                        urlConnection.setDoInput(true);
+                        urlConnection.setDoOutput(true);
+                        urlConnection.setRequestProperty("Content-Type", "application/json");
+                        urlConnection.setRequestMethod("POST");
+
+                        // convert the object we want to send to the server
+                        //  to a json format and create an entity from it
+                        coordinateInJsonFormat = convertToJson(coord);
+                        OutputStreamWriter writer = new OutputStreamWriter(urlConnection.getOutputStream());
+                        writer.write(coordinateInJsonFormat);
+                        writer.flush();
+
+                        int statusCode = urlConnection.getResponseCode();
+
+                        if (statusCode == 200)
+                        {
+                            InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                            String response = convertInputStreamToString(inputStream);
+                        }
+                        else
+                        {
+                            // Status code is not 200
+                            // Do something to handle the error
+                        }
+                        urlConnection.disconnect();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            return output;
+        }
+    }
+
+    private String convertInputStreamToString(InputStream inputStream) {
+        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        StringBuilder sb = new StringBuilder();
+        String line;
+        try {
+            while((line = bufferedReader.readLine()) != null) {
+                sb.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
+    }
+
+    public String convertToJson(Object i_objectToTranslate)
     {
         Gson gson = new Gson();
-        return gson.toJson(m_postToAdd);
+        return gson.toJson(i_objectToTranslate);
     }
 
     public static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId)

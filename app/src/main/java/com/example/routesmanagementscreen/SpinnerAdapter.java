@@ -2,7 +2,6 @@ package com.example.routesmanagementscreen;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
-import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
@@ -30,9 +29,23 @@ public class SpinnerAdapter extends ArrayAdapter
     }
 
     @Override
+    public int getCount()
+    {
+       return items.size();
+    }
+
+    @Override
     public String getItem(int position)
     {
-        return items.get(position).getRouteName();
+        SpinnerItem currentItem = new SpinnerItem(null);
+        String returnedValue = "";
+        if (items.size() != 0)
+        {
+            currentItem = items.get(position); //returns list item at the specified position
+            returnedValue = currentItem.getRouteName();
+        }
+
+        return returnedValue;
     }
 
     @Override

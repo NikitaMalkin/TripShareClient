@@ -43,6 +43,11 @@ public class Coordinate implements Serializable{
         return m_addition.getNote();
     }
 
+    public Addition getAddition()
+    {
+        return m_addition;
+    }
+
     public void setImageString(String i_imageString)
     {
         if(m_addition == null)

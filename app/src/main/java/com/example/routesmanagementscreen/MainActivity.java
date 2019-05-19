@@ -579,7 +579,7 @@ public class MainActivity extends AppCompatActivity implements EditRouteDialog.E
 
             try {
                 // build the post request to send to the server
-                URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/SaveRouteToDB/RouteUpdateServlet");
+                URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/SaveRouteToDB/RouteNameUpdateServlet");
                 builder.setParameter("m_routeID", m_routeIDToUpdate);
                 builder.setParameter("m_newRouteName", m_routeNewName);
                 HttpClient httpClient = HttpClientBuilder.create().build();

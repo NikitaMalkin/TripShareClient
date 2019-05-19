@@ -102,7 +102,8 @@
             android:singleLine="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/PostTitleTextView" android:fontFamily="sans-serif-medium"/>
+            app:layout_constraintTop_toBottomOf="@+id/PostTitleTextView" android:fontFamily="sans-serif"
+    />
 
     <EditText
             android:id="@+id/post_description_editText"
@@ -115,7 +116,7 @@
             android:inputType="textMultiLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/post_title_editText" android:fontFamily="sans-serif-medium"/>
+            app:layout_constraintTop_toBottomOf="@+id/post_title_editText" android:fontFamily="sans-serif"/>
 
     <Button
             android:id="@+id/buttonAdd"
