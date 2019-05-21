@@ -1,4 +1,4 @@
-package com.example.routesmanagementscreen;
+package com.TripShare.Client.TripShareObjects;
 
 import java.io.Serializable;
 
@@ -10,7 +10,7 @@ public class Coordinate implements Serializable{
     private String m_longitude;
     private Addition m_addition;
 
-    Coordinate(String i_Latitude, String i_Longitude)
+    public Coordinate(String i_Latitude, String i_Longitude)
     {
         this.m_latitude = new String(i_Latitude);
         this.m_longitude = new String(i_Longitude);

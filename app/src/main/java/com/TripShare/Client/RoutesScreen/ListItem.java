@@ -1,4 +1,6 @@
-package com.example.routesmanagementscreen;
+package com.TripShare.Client.RoutesScreen;
+
+import com.TripShare.Client.TripShareObjects.Route;
 
 public class ListItem
 {

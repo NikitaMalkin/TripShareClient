@@ -1,10 +1,11 @@
-package com.example.routesmanagementscreen;
+package com.TripShare.Client.PostCreationScreen;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDialogFragment;
+import com.TripShare.Client.R;
 
 public class ChooseAdditionDialog extends AppCompatDialogFragment
 {

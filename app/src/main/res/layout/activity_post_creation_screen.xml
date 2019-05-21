@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@color/colorBackground"
-    tools:context=".PostCreationScreen">
+    tools:context=".PostCreationScreen.PostCreationScreen">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/layout_map"

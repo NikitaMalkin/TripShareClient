@@ -1,9 +1,8 @@
-package com.example.routesmanagementscreen;
+package com.TripShare.Client.PostCreationScreen;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
@@ -11,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.TripShare.Client.R;
 
 public class AddNoteDialog extends AppCompatDialogFragment
 {

@@ -1,4 +1,4 @@
-package com.example.routesmanagementscreen;
+package com.TripShare.Client;
 
 import org.junit.Test;
 

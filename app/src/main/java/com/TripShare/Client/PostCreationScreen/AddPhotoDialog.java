@@ -1,4 +1,4 @@
-package com.example.routesmanagementscreen;
+package com.TripShare.Client.PostCreationScreen;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -19,7 +19,7 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
+import com.TripShare.Client.R;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

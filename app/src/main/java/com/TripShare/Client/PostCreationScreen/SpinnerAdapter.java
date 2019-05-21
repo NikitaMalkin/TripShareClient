@@ -1,4 +1,4 @@
-package com.example.routesmanagementscreen;
+package com.TripShare.Client.PostCreationScreen;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;

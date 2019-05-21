@@ -1,4 +1,4 @@
-package com.example.routesmanagementscreen;
+package com.TripShare.Client;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

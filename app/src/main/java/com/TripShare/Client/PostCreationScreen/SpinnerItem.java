@@ -1,5 +1,7 @@
-package com.example.routesmanagementscreen;
+package com.TripShare.Client.PostCreationScreen;
 
+import com.TripShare.Client.TripShareObjects.Coordinate;
+import com.TripShare.Client.TripShareObjects.Route;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;
