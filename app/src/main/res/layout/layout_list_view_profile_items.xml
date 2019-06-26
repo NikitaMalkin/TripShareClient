@@ -4,27 +4,30 @@
                                              xmlns:tools="http://schemas.android.com/tools"
                                              android:layout_width="match_parent"
                                              android:layout_height="wrap_content" android:id="@+id/ListItem"
-                                             android:backgroundTint="#19000000" android:background="#000000">
+                                             android:backgroundTint="#190A0707" android:background="#000000"
+                                             android:paddingVertical="0dp">
 
     <TextView
             android:text="Post description"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" android:id="@+id/textView6"
+            android:layout_height="wrap_content" android:id="@+id/profileItem_textViewPostDescription"
             android:textSize="12sp"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileItem_imageView"
+            app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
             android:textStyle="italic" android:background="#00000000"/>
     <ImageView
             android:layout_width="394dp"
-            android:layout_height="140dp" tools:srcCompat="@tools:sample/backgrounds/scenic"
-            android:id="@+id/imageView2" app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="140dp"
+            android:id="@+id/profileItem_imageView" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.4" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="6dp" android:layout_marginEnd="6dp"
-            android:scaleType="centerCrop" app:layout_constraintTop_toBottomOf="@+id/textView"/>
+            android:scaleType="centerCrop" app:layout_constraintTop_toBottomOf="@+id/profileItem_TextViewPostName"
+            tools:srcCompat="@tools:sample/backgrounds/scenic"/>
     <TextView
             android:text="Post name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/textView"
+            android:layout_height="wrap_content" android:id="@+id/profileItem_TextViewPostName"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="334dp" android:layout_marginTop="4dp"
             app:layout_constraintTop_toTopOf="parent" android:textSize="16sp"
@@ -32,22 +35,23 @@
     <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" app:srcCompat="@drawable/ic_map_black_24dp"
-            android:id="@+id/imageButtonMap"
+            android:id="@+id/profileItem_imageButtonMap"
             style="@style/Widget.AppCompat.ImageButton" android:backgroundTint="@color/colorAccent"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/textView6"/>
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="5dp"
+            app:layout_constraintTop_toBottomOf="@+id/profileItem_textViewPostDescription"/>
     <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" app:srcCompat="@drawable/ic_chat_bubble_black_24dp"
-            android:id="@+id/imageButtonComment"
+            android:id="@+id/profileItem_imageButtonComment"
             style="@style/Widget.AppCompat.ImageButton" android:backgroundTint="@color/colorAccent"
-            app:layout_constraintStart_toEndOf="@+id/imageButtonLike"
-            android:layout_marginStart="8dp" app:layout_constraintTop_toBottomOf="@+id/textView6"/>
+            app:layout_constraintStart_toEndOf="@+id/profileItem_imageButtonLike"
+            app:layout_constraintTop_toBottomOf="@+id/profileItem_textViewPostDescription"/>
     <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" app:srcCompat="@drawable/ic_favorite_black_24dp"
-            android:id="@+id/imageButtonLike"
+            android:id="@+id/profileItem_imageButtonLike"
             style="@style/Widget.AppCompat.ImageButton" android:backgroundTint="@color/colorAccent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" app:layout_constraintTop_toBottomOf="@+id/textView6"/>
+            android:layout_marginStart="5dp"
+            app:layout_constraintTop_toBottomOf="@+id/profileItem_textViewPostDescription"/>
 </android.support.constraint.ConstraintLayout>
