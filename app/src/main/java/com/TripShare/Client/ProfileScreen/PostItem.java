@@ -1,13 +1,19 @@
 package com.TripShare.Client.ProfileScreen;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
+
+
 import java.util.ArrayList;
 
 public class PostItem {
     private String m_postName;
     private String m_postDescription;
-    private String m_image;
+    private Drawable m_image;
 
-    PostItem(String i_postName, String i_postDescription, String i_image)
+    PostItem(String i_postName, String i_postDescription, Drawable i_image)
     {
         this.m_postName = i_postName;
         this.m_postDescription = i_postDescription;
@@ -24,14 +30,16 @@ public class PostItem {
         return m_postDescription;
     }
 
-    public static ArrayList<PostItem> createSampleData()
+    public Drawable getImage()
     {
-        ArrayList<PostItem> list = new ArrayList<PostItem>();
-
-        list.add(new PostItem("First Post", "some random description", "some image?"));
-        list.add(new PostItem("Second Post", "some random description", "some image?"));
-        list.add(new PostItem("Third Post", "some random description", "some image?"));
-
-        return list;
+        return m_image;
     }
+
+    public static ArrayList<PostItem> getPosts()
+    {
+        ArrayList<PostItem> result = new ArrayList<PostItem>();
+
+        return result;
+    }
+
 }

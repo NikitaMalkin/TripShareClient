@@ -3,30 +3,58 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
-              android:layout_height="match_parent" android:id="@+id/layout_main" android:orientation="vertical">
-    <android.support.constraint.ConstraintLayout
+              android:layout_height="match_parent" android:id="@+id/layout_main" android:orientation="vertical"
+              android:overScrollMode="always" android:nestedScrollingEnabled="true" android:isScrollContainer="true">
+    <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent" tools:visibility="visible" android:id="@+id/profilescreen_layout">
-        <TextView
-                android:text="Name Lastname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:id="@+id/textView4"
-                app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="9dp"
-                app:layout_constraintTop_toBottomOf="@+id/imageView4" android:textSize="20sp"/>
-        <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView4" app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="16dp" tools:visibility="visible"
-                app:srcCompat="@drawable/ic_person_black_24dp"/>
-        <android.support.v7.widget.RecyclerView
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" app:layout_constraintBottom_toBottomOf="parent"
-                android:id="@+id/profileScreen_recyclerView"/>
-    </android.support.constraint.ConstraintLayout>
+            android:layout_height="match_parent">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:orientation="vertical">
+            <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" tools:visibility="visible"
+                    android:id="@+id/profilescreen_layout"
+                    android:verticalScrollbarPosition="defaultPosition">
+                <TextView
+                        android:text="Name Lastname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/textView4"
+                        app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView4" android:textSize="20sp"
+                        app:layout_constraintBottom_toTopOf="@+id/profileScreen_recyclerView"
+                        android:layout_marginTop="8dp"/>
+                <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageView4" app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="16dp"
+                        tools:visibility="visible"
+                        app:srcCompat="@drawable/ic_iconfinder_icon"
+                        android:backgroundTintMode="multiply" android:outlineProvider="none"
+                />
+                <android.support.v7.widget.RecyclerView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="32dp"
+                        app:layout_constraintTop_toBottomOf="@+id/textView4"
+                        android:id="@+id/profileScreen_recyclerView"
+                        android:nestedScrollingEnabled="true"/>
+                <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" app:srcCompat="@drawable/ic_refresh_black_24dp"
+                        android:id="@+id/imageButton_RefreshPosts"
+                        style="@style/Widget.AppCompat.ImageButton"
+                        android:backgroundTint="@android:color/transparent"
+                        app:layout_constraintStart_toStartOf="parent" app:layout_constraintHorizontal_bias="0.498"
+                        app:layout_constraintEnd_toEndOf="parent" android:onClick="imageButton_refreshPostsOnClick"
+                        android:foregroundTintMode="add"
+                        android:tint="@android:color/darker_gray"
+                        app:layout_constraintTop_toBottomOf="@+id/profileScreen_recyclerView"/>
+            </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

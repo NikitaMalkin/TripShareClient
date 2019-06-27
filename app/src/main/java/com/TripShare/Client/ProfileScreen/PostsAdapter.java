@@ -49,6 +49,9 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
         TextView postDescription = viewHolder.getTextViewPostDescription();
         postDescription.setText(post.getPostDescription());
 
+        ImageView imageThumbnail = viewHolder.getImageViewImage();
+        imageThumbnail.setImageDrawable(post.getImage());
+
     }
 
     // Returns the total count of items in the list
