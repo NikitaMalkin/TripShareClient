@@ -57,7 +57,7 @@ public class UpdateRouteInDB extends AsyncTask<String, Integer, String>
                     if (statusCode == 200)
                     {
                         InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
-                        String response = convertInputStreamToString(inputStream);
+                        String response = m_utils.convertInputStreamToString(inputStream);
                     }
                     else
                     {
@@ -74,23 +74,4 @@ public class UpdateRouteInDB extends AsyncTask<String, Integer, String>
         }
         return output;
     }
-
-    private String convertInputStreamToString(InputStream inputStream)
-    {
-        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
-        StringBuilder sb = new StringBuilder();
-        String line;
-        try {
-            while((line = bufferedReader.readLine()) != null)
-            {
-                sb.append(line);
-            }
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-        return sb.toString();
-    }
-
 }

@@ -20,7 +20,7 @@ public class ProfileScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_profle_screen);
+        setContentView(R.layout.layout_profile_screen);
 
         RecyclerView Posts = findViewById(R.id.profileScreen_recyclerView);
 
