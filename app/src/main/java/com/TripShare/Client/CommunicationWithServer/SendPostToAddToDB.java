@@ -1,7 +1,7 @@
 package com.TripShare.Client.CommunicationWithServer;
 
 import android.os.AsyncTask;
-import com.TripShare.Client.TripShareObjects.Post;
+import com.TripShare.Client.Common.Post;
 import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.HttpResponse;
 import cz.msebera.android.httpclient.client.ClientProtocolException;

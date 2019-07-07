@@ -1,8 +1,8 @@
 package com.TripShare.Client.CommunicationWithServer;
 
 import android.os.AsyncTask;
-import com.TripShare.Client.TripShareObjects.Coordinate;
-import com.TripShare.Client.TripShareObjects.Route;
+import com.TripShare.Client.Common.Coordinate;
+import com.TripShare.Client.Common.Route;
 
 import java.io.*;
 import java.net.HttpURLConnection;

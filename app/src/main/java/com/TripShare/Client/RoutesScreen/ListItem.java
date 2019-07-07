@@ -1,6 +1,6 @@
 package com.TripShare.Client.RoutesScreen;
 
-import com.TripShare.Client.TripShareObjects.Route;
+import com.TripShare.Client.Common.Route;
 
 public class ListItem
 {

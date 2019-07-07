@@ -1,9 +1,6 @@
 package com.TripShare.Client.ProfileScreen;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 
 
 import java.util.ArrayList;

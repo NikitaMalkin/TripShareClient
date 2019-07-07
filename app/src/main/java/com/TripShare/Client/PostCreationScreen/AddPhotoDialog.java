@@ -36,7 +36,7 @@ public class AddPhotoDialog extends AppCompatDialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
 
-        android.support.v7.app.AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.layout_add_photo_dialog, null);

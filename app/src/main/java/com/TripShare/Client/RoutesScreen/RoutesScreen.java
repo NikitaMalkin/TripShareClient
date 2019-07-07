@@ -11,13 +11,9 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.app.ActivityCompat;
 import android.text.format.DateFormat;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Chronometer;
@@ -25,17 +21,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.TripShare.Client.Common.ApplicationManager;
 import com.TripShare.Client.CommunicationWithServer.DeleteRouteRequestFromServlet;
 import com.TripShare.Client.CommunicationWithServer.GetRoutesFromDB;
 import com.TripShare.Client.CommunicationWithServer.SendRouteToServlet;
 import com.TripShare.Client.CommunicationWithServer.SendRouteUpdateToServlet;
+import com.TripShare.Client.Common.ActivityWithNavigationDrawer;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.TripShare.Client.R;
-import com.TripShare.Client.TripShareObjects.Coordinate;
-import com.TripShare.Client.TripShareObjects.Route;
+import com.TripShare.Client.Common.Coordinate;
+import com.TripShare.Client.Common.Route;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -49,7 +47,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class RoutesScreen extends AppCompatActivity implements EditRouteDialog.EditDialogListener, SendRouteToServlet.AddItemToListViewListener, GetRoutesFromDB.AddAllItemsToListViewListener, DeleteRouteRequestFromServlet.RemoveItemFromListViewListener
+public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRouteDialog.EditDialogListener, SendRouteToServlet.AddItemToListViewListener, GetRoutesFromDB.AddAllItemsToListViewListener, DeleteRouteRequestFromServlet.RemoveItemFromListViewListener
 {
     // This value will be set to a route when the server isn't in reach
     private static final long m_defaultID = -1;
@@ -61,10 +59,23 @@ public class RoutesScreen extends AppCompatActivity implements EditRouteDialog.E
     private TextView m_latDisplay;
     private Handler m_handler;
     private ListAdapter m_adapter;
-    private boolean m_serverIsOnline = true;
+    private boolean m_serverIsOnline = false;
     private int m_currentlyClickedListItem;
     SwipeMenuListView m_swipeListView;
     Gson gson = new Gson();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_routes_screen);
+        setActivityTitle("Manage your routes");
+        //new checkServerStatus("http://10.0.0.36:8080/SaveRouteToDB").execute();
+        initializeDrawerLayout();
+        initializeViews();
+        initializeLocationModules();
+        initializeExistingRoutes();
+    }
 
     public void addAllItemsToView(final String i_body)
     {
@@ -103,7 +114,7 @@ public class RoutesScreen extends AppCompatActivity implements EditRouteDialog.E
         View savingView = findViewById(R.id.view_saving);
         View recButton = findViewById(R.id.buttonStartRecordingRoute);
 
-        hideKeyboardFrom(getApplicationContext(), findViewById(R.id.layout_main));
+        ApplicationManager.hideKeyboardFrom(getApplicationContext(), findViewById(R.id.layout_main));
 
         savingView.setVisibility(View.GONE);
         recButton.setVisibility(View.VISIBLE);
@@ -138,7 +149,7 @@ public class RoutesScreen extends AppCompatActivity implements EditRouteDialog.E
 
         }
 
-        hideKeyboardFrom(getApplicationContext(), findViewById(R.id.layout_main));
+        ApplicationManager.hideKeyboardFrom(getApplicationContext(), findViewById(R.id.layout_main));
         Toast.makeText(getApplicationContext(), "Route saved successfully", Toast.LENGTH_LONG).show();
     }
 
@@ -246,11 +257,6 @@ public class RoutesScreen extends AppCompatActivity implements EditRouteDialog.E
         return currentDateString;
     }
 
-    public static void hideKeyboardFrom(Context context, View view) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
     private void initializeExistingRoutes()
     {
         initializeRouteList();
@@ -334,12 +340,9 @@ public class RoutesScreen extends AppCompatActivity implements EditRouteDialog.E
 
     private void initializeViews()
     {
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        myToolbar.setTitle("Route Management");
         m_longDisplay = findViewById(R.id.textviewCurrentLong);
         m_latDisplay = findViewById(R.id.textviewCurrentLat);
         m_chronometer = findViewById(R.id.chronometer);
-        setSupportActionBar(myToolbar);
 
         EditText txtEdit = (EditText) findViewById(R.id.textViewRouteName);
 
@@ -423,17 +426,6 @@ public class RoutesScreen extends AppCompatActivity implements EditRouteDialog.E
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        //new checkServerStatus("http://10.0.0.36:8080/SaveRouteToDB").execute();
-        initializeViews();
-        initializeLocationModules();
-        initializeExistingRoutes();
-    }
-
-    @Override
     protected void onStop()
     {
         super.onStop();
@@ -478,12 +470,6 @@ public class RoutesScreen extends AppCompatActivity implements EditRouteDialog.E
         editDialog.show(getSupportFragmentManager(), "Edit Dialog");
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.appbar, menu);
-        return true;
-    }
 
     public void removeItemFromListView(int i_indexOfListItemToRemove)
     {

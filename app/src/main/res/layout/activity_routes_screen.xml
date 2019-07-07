@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    android:background="@color/colorBackground"
-    android:visibility="visible"
-    tools:context=".RoutesScreen.RoutesScreen">
+<android.support.v4.widget.DrawerLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+                                           xmlns:app="http://schemas.android.com/apk/res-auto"
+                                           xmlns:tools="http://schemas.android.com/tools"
+                                           android:layout_width="match_parent"
+                                           android:layout_height="match_parent" android:id="@+id/drawer_layout"
+                                           android:layout_gravity="start">
 
-    <android.support.v7.widget.Toolbar
-            android:id="@+id/my_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorToolbar"
-            android:elevation="4dp"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:titleTextColor="@android:color/background_light" />
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:id="@+id/layout_main"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   android:animateLayoutChanges="true"
+                                                   android:background="@color/colorBackground"
+                                                   android:visibility="visible"
+                                                   tools:context=".RoutesScreen.RoutesScreen">
 
     <com.baoyz.swipemenulistview.SwipeMenuListView
             android:id="@+id/listView"
@@ -29,11 +27,9 @@
             android:dividerHeight="2dp"
             android:scrollbars="vertical"
             android:layout_marginBottom="45dp"
-            android:layout_marginTop="55dp"
             app:layout_constraintDimensionRatio="w,1:1"
-            app:layout_constraintTop_toBottomOf="@+id/my_toolbar"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="1.0"/>
+    />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/buttonStartRecordingRoute"
@@ -48,11 +44,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:maxImageSize="55dp"
         app:srcCompat="@drawable/ic_add_black_24dp" />
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/view_recording"
+            android:id="@+id/view_recording"
         android:layout_width="match_parent"
         android:layout_height="78dp"
         android:background="@color/colorHighlightedBackground"
@@ -94,7 +89,6 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:maxImageSize="55dp"
             app:srcCompat="@drawable/ic_stop_black_24dp" />
 
         <TextView
@@ -183,7 +177,6 @@
             app:layout_constraintHorizontal_bias="0.045"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:maxImageSize="40dp"
             app:srcCompat="@drawable/ic_clear_black_24dp" />
 
         <android.support.design.widget.FloatingActionButton
@@ -200,7 +193,6 @@
             app:layout_constraintHorizontal_bias="0.954"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:maxImageSize="40dp"
             app:srcCompat="@drawable/ic_done_black_24dp" />
 
         <EditText
@@ -224,3 +216,8 @@
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
+
+    <include layout="@layout/layout_navigation_drawer"/>
+
+</android.support.v4.widget.DrawerLayout
+>
