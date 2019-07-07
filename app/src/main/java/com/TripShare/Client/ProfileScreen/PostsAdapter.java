@@ -16,10 +16,14 @@ import java.util.List;
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
 {
     private List<PostItem> m_list = Collections.emptyList();
+    private shareButtonClickedListener m_listenerShare;
+    private mapButtonClickedListener m_listenerMap;
 
-    PostsAdapter(List<PostItem> i_list)
+    PostsAdapter(List<PostItem> i_list, shareButtonClickedListener i_listenerShare, mapButtonClickedListener i_listenerMap)
     {
         this.m_list = i_list;
+        m_listenerShare = i_listenerShare;
+        m_listenerMap = i_listenerMap;
     }
 
     @Override
@@ -61,7 +65,6 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
         return m_list.size();
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         private TextView m_postName;
@@ -69,6 +72,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
         private ImageButton m_likeButton;
         private ImageButton m_commentButton;
         private ImageButton m_mapButton;
+        private ImageButton m_shareButton;
         private ImageView m_image;
 
         public ViewHolder(View itemView)
@@ -80,7 +84,24 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
             m_likeButton = itemView.findViewById(R.id.profileItem_imageButtonLike);
             m_commentButton = itemView.findViewById(R.id.profileItem_imageButtonComment);
             m_mapButton = itemView.findViewById(R.id.profileItem_imageButtonMap);
+            m_shareButton = itemView.findViewById(R.id.profileItem_imageButtonShare);
             m_image = itemView.findViewById(R.id.profileItem_imageView);
+
+            m_shareButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v)
+                {
+                    m_listenerShare.onShareButtonClick(getAdapterPosition(), v);
+                }
+            });
+
+            m_mapButton.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v)
+                {
+                    m_listenerMap.onMapButtonClick(getAdapterPosition(), v);
+                }
+            });
         }
 
         public TextView getTextViewPostName()
@@ -103,6 +124,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
             return m_commentButton;
         }
 
+        public ImageButton getImageButtonShareButton()
+        {
+            return m_shareButton;
+        }
+
         public ImageButton getImageButtonMapButton()
         {
             return m_mapButton;
@@ -114,4 +140,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
         }
     }
 
+    public interface shareButtonClickedListener
+    {
+        void onShareButtonClick(int i_position, View i_view);
+    }
+
+    public interface mapButtonClickedListener
+    {
+        void onMapButtonClick(int i_position, View i_view);
+    }
 }
