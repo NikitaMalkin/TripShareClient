@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent" android:id="@+id/layout_main" android:orientation="vertical"
-              android:overScrollMode="always" android:nestedScrollingEnabled="true" android:isScrollContainer="true">
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                           xmlns:app="http://schemas.android.com/apk/res-auto"
+                                           xmlns:tools="http://schemas.android.com/tools"
+                                           android:layout_width="match_parent"
+                                           android:layout_height="match_parent" android:id="@+id/drawer_layout"
+                                           android:layout_gravity="start"
+
+>
     <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:overScrollMode="always" android:nestedScrollingEnabled="true"
+            android:isScrollContainer="true" android:fitsSystemWindows="true">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:orientation="vertical">
             <android.support.constraint.ConstraintLayout
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" tools:visibility="visible"
                     android:id="@+id/profilescreen_layout"
@@ -54,7 +60,11 @@
                         android:foregroundTintMode="add"
                         android:tint="@android:color/darker_gray"
                         app:layout_constraintTop_toBottomOf="@+id/profileScreen_recyclerView"/>
+
             </android.support.constraint.ConstraintLayout>
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+
+    <include layout="@layout/layout_navigation_drawer"/>
+
+</android.support.v4.widget.DrawerLayout>

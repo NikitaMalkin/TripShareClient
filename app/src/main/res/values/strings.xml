@@ -3,6 +3,8 @@
     <string name="favorite_icon">Favorite</string>
     <string name="action_settings">Settings </string>
     <string name="nameyourroute">Name your route </string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 
     <string-array name="sample_items">
         <item>Choose...</item>

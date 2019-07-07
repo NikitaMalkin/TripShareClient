@@ -31,6 +31,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".LoginScreen.LoginScreen">
+
+        </activity>
+
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />

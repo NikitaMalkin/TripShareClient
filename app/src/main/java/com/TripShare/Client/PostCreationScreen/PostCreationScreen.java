@@ -2,44 +2,40 @@ package com.TripShare.Client.PostCreationScreen;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.*;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.util.Base64;
-
+import com.TripShare.Client.Common.*;
 import com.TripShare.Client.CommunicationWithServer.GetRoutesFromDB;
 import com.TripShare.Client.CommunicationWithServer.SendPostToAddToDB;
 import com.TripShare.Client.CommunicationWithServer.UpdateRouteInDB;
 import com.TripShare.Client.R;
 import com.TripShare.Client.RoutesScreen.RoutesScreen;
-import com.TripShare.Client.TripShareObjects.Coordinate;
-import com.TripShare.Client.TripShareObjects.Post;
-import com.TripShare.Client.TripShareObjects.Route;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 import com.google.gson.Gson;
-
 import org.angmarch.views.NiceSpinner;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class PostCreationScreen extends AppCompatActivity
+public class PostCreationScreen extends ActivityWithNavigationDrawer
     implements OnMapReadyCallback , GoogleMap.OnMarkerClickListener, AddPhotoDialog.AttachImageToCoordinateListener, AddNoteDialog.AttachNoteToCoordinateListener, GetRoutesFromDB.AddAllItemsToListViewListener, GetRoutesFromDB.UpdateRelevantView
 {
     private static final PatternItem DOT = new Dot();
@@ -54,6 +50,17 @@ public class PostCreationScreen extends AppCompatActivity
     private List<Marker> m_markers;
     private Bitmap m_markerIcon;
     private int m_currentCoordinateIndex;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_post_creation_screen);
+        setActivityTitle("Create a new post");
+        initializeDrawerLayout();
+        initializeViews();
+        ApplicationManager.hideKeyboardFrom(getApplicationContext(), findViewById(R.id.post_creation_screen_layout_main));
+    }
 
     private void addItemToSpinner(Route i_route)
     {
@@ -130,23 +137,22 @@ public class PostCreationScreen extends AppCompatActivity
         return bitmap;
     }
 
-    private void initializeViews()
+    private void initializeViews() //!!!!!!!!!!!!!!!!!!!!  TODO TODO TODO
     {
-        Toolbar myToolbar = findViewById(R.id.my_toolbar);
-        myToolbar.setTitle("Create new post");
-        setSupportActionBar(myToolbar);
         initializeSpinnerWithRoutes();
         m_markerIcon = getBitmapFromVectorDrawable(getApplicationContext(), R.drawable.ic_marker_on_map); //converting image from vector to bitmap
 
-        MapFragment mapFragment = (MapFragment) getFragmentManager()
-                .findFragmentById(R.id.map);
+        //MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        //mapFragment.getMapAsync(this);
+
+        MapFragment mapFragment = MapFragment.newInstance();
         mapFragment.getMapAsync(this);
     }
 
     private void initializeSpinnerWithRoutes()
     {
         m_adapter = new SpinnerAdapter(PostCreationScreen.this);
-        m_spinner = (NiceSpinner)findViewById(R.id.spinner);
+        m_spinner = (NiceSpinner) findViewById(R.id.spinner);
         m_spinner.setDropDownListPaddingBottom(10);
 
         m_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
@@ -176,14 +182,6 @@ public class PostCreationScreen extends AppCompatActivity
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_creation_screen);
-        initializeViews();
-    }
-
-    @Override
     public void onMapReady(GoogleMap map)
     {
         m_map = map;
@@ -191,13 +189,6 @@ public class PostCreationScreen extends AppCompatActivity
         initializeMap();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.appbar, menu);
-        return true;
-    }
 
     public void OnAddRouteButtonClick(View view)
     {

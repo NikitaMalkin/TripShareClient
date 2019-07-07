@@ -1,4 +1,4 @@
-package com.TripShare.Client.TripShareObjects;
+package com.TripShare.Client.Common;
 import java.io.Serializable;
 
 public class Post implements Serializable{

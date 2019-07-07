@@ -1,7 +1,7 @@
 package com.TripShare.Client.PostCreationScreen;
 
-import com.TripShare.Client.TripShareObjects.Coordinate;
-import com.TripShare.Client.TripShareObjects.Route;
+import com.TripShare.Client.Common.Coordinate;
+import com.TripShare.Client.Common.Route;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.List;

@@ -21,7 +21,7 @@ public class AddNoteDialog extends AppCompatDialogFragment
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
 
-        android.support.v7.app.AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.layout_add_note_dialog, null);

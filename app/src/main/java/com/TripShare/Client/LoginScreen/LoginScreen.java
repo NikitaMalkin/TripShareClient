@@ -1,11 +1,9 @@
 package com.TripShare.Client.LoginScreen;
 
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +12,7 @@ import android.widget.Toast;
 import com.TripShare.Client.CommunicationWithServer.SendUserToAddToDB;
 import com.TripShare.Client.CommunicationWithServer.ValidateUserInfo;
 import com.TripShare.Client.R;
-import com.TripShare.Client.TripShareObjects.User;
+import com.TripShare.Client.Common.User;
 import com.google.common.hash.Hashing;
 
 import java.nio.charset.StandardCharsets;
@@ -31,7 +29,8 @@ public class LoginScreen extends AppCompatActivity implements ValidateUserInfo.N
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_login_screen);
+        setContentView(R.layout.activity_login_screen);
+        getSupportActionBar().setTitle("Login");
 
         m_userName = (EditText) findViewById(R.id.Email_Text_Box);
         m_password = (EditText) findViewById(R.id.Password_Text_Box);
