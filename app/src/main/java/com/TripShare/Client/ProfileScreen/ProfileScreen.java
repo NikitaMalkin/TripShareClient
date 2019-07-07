@@ -31,7 +31,7 @@ public class ProfileScreen extends AppCompatActivity implements GetPostsFromDB.A
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_profile_screen);
+        setContentView(R.layout.activity_profile_screen);
 
         RecyclerView Posts = findViewById(R.id.profileScreen_recyclerView);
 

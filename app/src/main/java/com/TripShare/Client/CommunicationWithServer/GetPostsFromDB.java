@@ -14,12 +14,14 @@ public class GetPostsFromDB extends AsyncTask<String, Integer, String>
 {
     String body;
     AddAllItemsToListViewListener m_listenerAddItems;
-    UpdateRelevantView m_listenerUpdateView;
+    long m_userID;
+    int m_firstPositionToRetrieve;
 
-    public GetPostsFromDB(AddAllItemsToListViewListener i_listener, UpdateRelevantView i_listenerUpdateView)
+    public GetPostsFromDB(AddAllItemsToListViewListener i_listener, long i_userID, int i_firstPositionToRetrieve)
     {
         m_listenerAddItems = i_listener;
-        m_listenerUpdateView = i_listenerUpdateView;
+        m_userID = i_userID;
+        m_firstPositionToRetrieve = i_firstPositionToRetrieve;
     }
     @Override
     protected String doInBackground(String... Args)
@@ -32,7 +34,9 @@ public class GetPostsFromDB extends AsyncTask<String, Integer, String>
 
             // Build URI
             URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/SaveRouteToDB/PostServlet");
+            // TODO: change "0" to m_userID
             builder.setParameter("m_userID", "0"); // The value is 0 right now but will change in the future to user ID // TODO
+            builder.setParameter("m_firstPositionToRetrieve", String.valueOf(m_firstPositionToRetrieve));
 
             // Send request to server
             HttpGet http_get = new HttpGet(builder.build());
@@ -57,19 +61,8 @@ public class GetPostsFromDB extends AsyncTask<String, Integer, String>
         return output;
     }
 
-    protected void onPostExecute(String result)
-    {
-        if(m_listenerUpdateView != null)
-            m_listenerUpdateView.updateRelevantViewWithSource();
-    }
-
     public interface AddAllItemsToListViewListener
     {
         void addAllItemsToView(String i_body);
-    }
-
-    public interface UpdateRelevantView
-    {
-        void updateRelevantViewWithSource();
     }
 }
