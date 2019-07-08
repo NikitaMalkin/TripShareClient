@@ -45,6 +45,7 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
     private NiceSpinner m_spinner;
     private SpinnerAdapter m_adapter;
     private GoogleMap m_map;
+    private MapFragment m_mapFragment;
     private PolylineOptions m_polyline;
     private List<PatternItem> m_pattern = Arrays.asList(DOT, GAP);
     private List<Marker> m_markers;
@@ -142,11 +143,15 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
         initializeSpinnerWithRoutes();
         m_markerIcon = getBitmapFromVectorDrawable(getApplicationContext(), R.drawable.ic_marker_on_map); //converting image from vector to bitmap
 
-        //MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        //mapFragment.getMapAsync(this);
+//        MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
 
-        MapFragment mapFragment = MapFragment.newInstance();
-        mapFragment.getMapAsync(this);
+        m_mapFragment = (MapFragment) getFragmentManager()
+                .findFragmentById(R.id.map);
+        m_mapFragment.getMapAsync(this);
+
+//        MapFragment mapFragment = MapFragment.newInstance();
+//        mapFragment.getMapAsync(this);
     }
 
     private void initializeSpinnerWithRoutes()
@@ -177,6 +182,7 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
     private void initializeMap()
     {
         m_polyline = new PolylineOptions();
+        m_map.getUiSettings().setZoomControlsEnabled(true);
         m_polyline.pattern(m_pattern);
         m_markers = new ArrayList<>();
     }
