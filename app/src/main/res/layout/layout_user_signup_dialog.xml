@@ -3,7 +3,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content">
     <ImageView
-            app:srcCompat="@drawable/logo"
+            app:srcCompat="@drawable/tripsharelogo"
             android:layout_width="wrap_content"
             android:layout_height="160dp"
             android:scaleType="fitCenter"

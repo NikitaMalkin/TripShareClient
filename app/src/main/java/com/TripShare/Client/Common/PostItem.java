@@ -1,4 +1,4 @@
-package com.TripShare.Client.ProfileScreen;
+package com.TripShare.Client.Common;
 
 import android.graphics.drawable.Drawable;
 import com.TripShare.Client.Common.Post;
@@ -8,7 +8,7 @@ public class PostItem
     private Post m_post;
     private Drawable m_image;
 
-    PostItem(Post i_post, Drawable i_image)
+    public PostItem(Post i_post, Drawable i_image)
     {
         this.m_post = i_post;
         this.m_image = i_image;

@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import com.TripShare.Client.HomeScreen.HomeScreen;
 import com.TripShare.Client.LoginScreen.LoginScreen;
 import com.TripShare.Client.PostCreationScreen.PostCreationScreen;
 import com.TripShare.Client.ProfileScreen.ProfileScreen;
@@ -118,6 +119,13 @@ public class ActivityWithNavigationDrawer extends AppCompatActivity {
         if (textview.getText() == "Logout")
         {
             Intent intent = new Intent(this, LoginScreen.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); //this line clears the application activity stack, so that user can't logout and then press 'back' and be logged in again
+            startActivity(intent);
+        }
+
+        else if (textview.getText() == "Home")
+        {
+            Intent intent = new Intent(this, HomeScreen.class);
             startActivity(intent);
         }
 

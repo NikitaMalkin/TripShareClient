@@ -30,7 +30,7 @@ public class LoginScreen extends AppCompatActivity implements ValidateUserInfo.N
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
-        getSupportActionBar().setTitle("Login");
+        getSupportActionBar().hide();
 
         m_userName = (EditText) findViewById(R.id.Email_Text_Box);
         m_password = (EditText) findViewById(R.id.Password_Text_Box);

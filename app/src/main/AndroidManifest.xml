@@ -20,14 +20,16 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name="com.TripShare.Client.PostCreationScreen.PostCreationScreen">
 
+        <activity android:name="com.TripShare.Client.PostCreationScreen.PostCreationScreen">
         </activity>
         <activity android:name="com.TripShare.Client.PostFullScreen.PostFullScreen">
-
         </activity>
-        <activity android:name="com.TripShare.Client.RoutesScreen.RoutesScreen">
 
+        <activity android:name="com.TripShare.Client.RoutesScreen.RoutesScreen">
+        </activity>
+
+        <activity android:name="com.TripShare.Client.HomeScreen.HomeScreen">
         </activity>
 
         <activity android:name=".ProfileScreen.ProfileScreen">
@@ -38,7 +40,6 @@
         </activity>
 
         <activity android:name=".LoginScreen.LoginScreen">
-
         </activity>
 
         <uses-library

@@ -1,4 +1,4 @@
-package com.TripShare.Client.ProfileScreen;
+package com.TripShare.Client.Common;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +19,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
     private shareButtonClickedListener m_listenerShare;
     private mapButtonClickedListener m_listenerMap;
 
-    PostsAdapter(List<PostItem> i_list, shareButtonClickedListener i_listenerShare, mapButtonClickedListener i_listenerMap)
+    public PostsAdapter(List<PostItem> i_list, shareButtonClickedListener i_listenerShare, mapButtonClickedListener i_listenerMap)
     {
         this.m_list = i_list;
         m_listenerShare = i_listenerShare;

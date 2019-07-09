@@ -23,16 +23,19 @@
             android:id="@+id/profileItem_imageView" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_bias="0.4" app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginStart="6dp" android:layout_marginEnd="6dp"
-            android:scaleType="centerCrop" app:layout_constraintTop_toBottomOf="@+id/profileItem_TextViewPostName"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" android:layout_marginTop="20dp"/>
+            android:scaleType="centerCrop"
+            tools:srcCompat="@tools:sample/backgrounds/scenic" android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/profileItem_textViewPostDescription"/>
     <TextView
             android:text="Post name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/profileItem_TextViewPostName"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="334dp" android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" android:textSize="16sp"
-            app:layout_constraintHorizontal_bias="0.0" android:textColor="#000000" android:textStyle="bold"/>
+            app:layout_constraintHorizontal_bias="0.0" android:textColor="#000000" android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/profileItem_imageView" android:layout_marginBottom="8dp"/>
     <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" app:srcCompat="@drawable/ic_map_black_24dp"
@@ -64,7 +67,5 @@
             android:id="@+id/profileItem_imageButtonShare"
             style="@style/Widget.AppCompat.ImageButton" android:backgroundTint="@color/colorAccent"
             app:layout_constraintBottom_toTopOf="@+id/profileItem_imageView" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="8dp" app:layout_constraintStart_toEndOf="@+id/profileItem_TextViewPostName"
-            android:layout_marginStart="8dp" android:layout_marginBottom="8dp"
-            app:layout_constraintHorizontal_bias="0.996"/>
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginEnd="5dp"/>
 </android.support.constraint.ConstraintLayout>
