@@ -39,7 +39,7 @@ public class AddPhotoDialog extends AppCompatDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.layout_add_photo_dialog, null);
+        View view = inflater.inflate(R.layout.layout_dialog_add_photo, null);
 
         m_browseButton = view.findViewById(R.id.buttonBrowse);
         m_image = view.findViewById(R.id.imageView);

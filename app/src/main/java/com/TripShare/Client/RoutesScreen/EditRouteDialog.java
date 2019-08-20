@@ -22,7 +22,7 @@ public class EditRouteDialog extends AppCompatDialogFragment
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater =  getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.layout_edit_route_dialog, null);
+        View view = inflater.inflate(R.layout.layout_dialog_edit_route, null);
         m_routeNameEditText = view.findViewById(R.id.newRouteName);
 
         if (getArguments() != null)

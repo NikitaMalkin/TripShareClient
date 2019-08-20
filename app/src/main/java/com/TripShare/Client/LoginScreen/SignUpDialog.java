@@ -23,7 +23,7 @@ public class SignUpDialog extends AppCompatDialogFragment
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.layout_user_signup_dialog, null);
+        View view = inflater.inflate(R.layout.layout_dialog_user_signup, null);
         m_userName = view.findViewById(R.id.username_text);
         m_password = view.findViewById(R.id.password_text);
 

@@ -2,6 +2,7 @@ package com.TripShare.Client.HomeScreen;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -10,13 +11,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
-import com.TripShare.Client.Common.ActivityWithNavigationDrawer;
-import com.TripShare.Client.Common.DrawerAdapter;
-import com.TripShare.Client.Common.Post;
+import com.TripShare.Client.Common.*;
 import com.TripShare.Client.CommunicationWithServer.GetPostsFromDB;
 import com.TripShare.Client.PostFullScreen.PostFullScreen;
-import com.TripShare.Client.Common.PostItem;
-import com.TripShare.Client.Common.PostsAdapter;
 import com.TripShare.Client.R;
 import com.google.gson.Gson;
 import org.json.JSONArray;
@@ -74,6 +71,13 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
 
         //Application Drawer initialization
         initializeDrawerLayout();
+
+        //FirstLaunchDialog
+        if (ApplicationManager.getHomePageFirstLaunch())
+        {
+            DialogFragment firstTimeDialog = new FirstLaunchDialog();
+            firstTimeDialog.show(getSupportFragmentManager(),"");
+        }
     }
 
     public void imageButton_refreshPostsOnClick(View view)
