@@ -1,5 +1,6 @@
 package com.TripShare.Client.LoginScreen;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.TripShare.Client.CommunicationWithServer.SendUserToAddToDB;
 import com.TripShare.Client.CommunicationWithServer.ValidateUserInfo;
+import com.TripShare.Client.HomeScreen.HomeScreen;
 import com.TripShare.Client.R;
 import com.TripShare.Client.Common.User;
 import com.google.common.hash.Hashing;
@@ -80,7 +82,9 @@ public class LoginScreen extends AppCompatActivity implements ValidateUserInfo.N
                 if (i_isValidUsernameAndPassword)
                 {
                     Toast.makeText(getApplicationContext(), "Logging In!", Toast.LENGTH_SHORT).show();
-                    // TODO: Move to next screen .. For Example HomePage !!!!!!!!!!!!!
+                    Intent intent = new Intent(getApplication(), HomeScreen.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); //this line clears the application activity stack, so that user can't logout and then press 'back' and be logged in again
+                    startActivity(intent);
                 }
                 else
                 {

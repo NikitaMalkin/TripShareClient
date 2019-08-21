@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Routes Management</string>
+    <string name="app_name">TripShare</string>
     <string name="favorite_icon">Favorite</string>
     <string name="action_settings">Settings </string>
     <string name="nameyourroute">Name your route </string>
