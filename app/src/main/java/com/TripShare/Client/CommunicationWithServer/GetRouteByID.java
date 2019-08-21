@@ -31,7 +31,7 @@ public class GetRouteByID extends AsyncTask<String, Integer, String>
             HttpClient httpClient = HttpClientBuilder.create().build();
 
             // Build URI
-            URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/SaveRouteToDB/RouteByIDServlet");
+            URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/TripShareProject/RouteByIDServlet");//("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/RouteByIDServlet");
             // TODO: change "0" to m_userID
             builder.setParameter("m_routeID", String.valueOf(m_routeID));
 

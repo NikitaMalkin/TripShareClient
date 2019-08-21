@@ -100,11 +100,13 @@ public class PostFullScreen extends AppCompatActivity implements OnMapReadyCallb
         m_postName_textView.setText(m_postToPresent.getTitle());
         m_postDescription_textView.setText(m_postToPresent.getDescription());
         m_mapScreenShot.setImageDrawable(null);
-        // Temp
+        // Temp TODO: add the Relevant Info
 
         m_userName_textView.setText("Chandler Bing");
         // Add the user Info
         //m_userName_textView.setText(.get);
+        //m_postLikesCount.setText(m_postToPresent.getLikeCount());
+        //m_postCommentCount.setText(m_postToPresent.getCommentCount());
 
         m_mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);

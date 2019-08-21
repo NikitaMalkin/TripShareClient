@@ -1,5 +1,6 @@
 package com.TripShare.Client.Common;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Post implements Serializable{
     private static final long serialVersionUID = 1L;
@@ -9,12 +10,16 @@ public class Post implements Serializable{
     private String m_title;
     private String m_description;
     private long m_routeID;
+    private ArrayList<Long> m_usersWhichLikedID;
+    private ArrayList<Comment> m_postComments;
 
     public Post(int i_userID, String i_title, String i_description)
     {
         m_userID = i_userID;
         setTitle(i_title);
         setDescription(i_description);
+        m_usersWhichLikedID = new ArrayList<>();
+        m_postComments = new ArrayList<>();
     }
 
     public long getID() { return m_ID; }
@@ -30,8 +35,43 @@ public class Post implements Serializable{
 
     public long getPostRoute() { return m_routeID; }
 
+    public int getLikeCount()
+    {
+        return m_usersWhichLikedID.size();
+    }
+
+    public int getCommentCount()
+    {
+        return m_postComments.size();
+    }
+
     public void setRouteID(long i_routeID)
     {
         m_routeID = i_routeID;
+    }
+
+    public void addLikedID(long i_userIDWhichLiked)
+    {
+        m_usersWhichLikedID.add(i_userIDWhichLiked);
+    }
+
+    public Boolean checkIfLikedByUser(Long i_userID)
+    {
+        Boolean returnValue = false;
+
+        if(m_usersWhichLikedID.contains(i_userID))
+            returnValue = true;
+
+        return returnValue;
+    }
+
+    public void addComment(Comment i_comment)
+    {
+        m_postComments.add(i_comment);
+    }
+
+    public ArrayList<Comment> getCommentsArray()
+    {
+        return m_postComments;
     }
 }
