@@ -18,12 +18,16 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
     private List<PostItem> m_list = Collections.emptyList();
     private shareButtonClickedListener m_listenerShare;
     private mapButtonClickedListener m_listenerMap;
+    private likeButtonClickedListener m_listenerLike;
+    private commentButtonClickedListener m_listenerComment;
 
-    public PostsAdapter(List<PostItem> i_list, shareButtonClickedListener i_listenerShare, mapButtonClickedListener i_listenerMap)
+    public PostsAdapter(List<PostItem> i_list, shareButtonClickedListener i_listenerShare, mapButtonClickedListener i_listenerMap, likeButtonClickedListener i_listenerLike, commentButtonClickedListener i_listenerComment)
     {
         this.m_list = i_list;
         m_listenerShare = i_listenerShare;
         m_listenerMap = i_listenerMap;
+        m_listenerLike = i_listenerLike;
+        m_listenerComment = i_listenerComment;
     }
 
     @Override
@@ -102,6 +106,22 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
                     m_listenerMap.onMapButtonClick(getAdapterPosition(), v);
                 }
             });
+
+            m_likeButton.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v)
+                {
+                    m_listenerLike.onLikeButtonClick(getAdapterPosition(), v);
+                }
+            });
+
+            m_commentButton.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v)
+                {
+                    m_listenerComment.onCommentButtonClick(getAdapterPosition(), v);
+                }
+            });
         }
 
         public TextView getTextViewPostName()
@@ -148,5 +168,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
     public interface mapButtonClickedListener
     {
         void onMapButtonClick(int i_position, View i_view);
+    }
+
+    public interface likeButtonClickedListener
+    {
+        void onLikeButtonClick(int i_position, View i_view);
+    }
+
+    public interface commentButtonClickedListener
+    {
+        void onCommentButtonClick(int i_position, View i_view);
     }
 }

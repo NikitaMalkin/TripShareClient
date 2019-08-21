@@ -80,7 +80,7 @@ public class LoginScreen extends AppCompatActivity implements ValidateUserInfo.N
                 if (i_isValidUsernameAndPassword)
                 {
                     Toast.makeText(getApplicationContext(), "Logging In!", Toast.LENGTH_SHORT).show();
-                    // Move to next screen .. For Example HomePage
+                    // TODO: Move to next screen .. For Example HomePage !!!!!!!!!!!!!
                 }
                 else
                 {

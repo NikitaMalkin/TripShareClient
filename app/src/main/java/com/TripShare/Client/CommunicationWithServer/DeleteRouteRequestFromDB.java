@@ -9,13 +9,13 @@ import cz.msebera.android.httpclient.client.utils.URIBuilder;
 import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 import cz.msebera.android.httpclient.util.EntityUtils;
 
-public class DeleteRouteRequestFromServlet extends AsyncTask<String, Integer, String>
+public class DeleteRouteRequestFromDB extends AsyncTask<String, Integer, String>
 {
     String m_routeToDeleteID;// TODO !!! change “1” to be the actual route ID
     int m_indexOfListItemToRemove;
     RemoveItemFromListViewListener m_listener;
 
-    public DeleteRouteRequestFromServlet(String i_routeToDeleteID, int i_indexOfListItemToRemove, RemoveItemFromListViewListener i_listener)
+    public DeleteRouteRequestFromDB(String i_routeToDeleteID, int i_indexOfListItemToRemove, RemoveItemFromListViewListener i_listener)
     {
         m_routeToDeleteID = i_routeToDeleteID;
         m_indexOfListItemToRemove = i_indexOfListItemToRemove;
@@ -28,7 +28,7 @@ public class DeleteRouteRequestFromServlet extends AsyncTask<String, Integer, St
 
         try
         {
-            URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/SaveRouteToDB/RouteServlet");
+            URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/TripShareProject/RouteServlet");//("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/RouteServlet");
             builder.setParameter("m_routeID", m_routeToDeleteID);
             HttpDelete http_delete = new HttpDelete(builder.build());
             http_delete.setHeader("Accept", "application/json");

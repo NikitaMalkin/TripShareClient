@@ -16,11 +16,11 @@ import java.net.URISyntaxException;
 
 // This class is yet used!!!!
 
-public class DeletePostRequestFromServlet extends AsyncTask<String, Integer, String>
+public class DeletePostRequestFromDB extends AsyncTask<String, Integer, String>
 {
     String m_postToDeleteID; // TODO !!! change “1” to be the actual post ID
 
-    public DeletePostRequestFromServlet(String i_postToDeleteID) {
+    public DeletePostRequestFromDB(String i_postToDeleteID) {
         m_postToDeleteID = i_postToDeleteID;
     }
 
@@ -28,8 +28,7 @@ public class DeletePostRequestFromServlet extends AsyncTask<String, Integer, Str
         String output = null;
 
         try {
-
-            URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/SaveRouteToDB/PostServlet");
+            URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/TripShareProject/PostServlet");//("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/PostServlet");
             builder.setParameter("m_postID", m_postToDeleteID);
             HttpDelete http_delete = new HttpDelete(builder.build());
             http_delete.setHeader("Accept", "application/json");

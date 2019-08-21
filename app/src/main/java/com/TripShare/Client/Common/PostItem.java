@@ -30,12 +30,4 @@ public class PostItem
     {
         return m_image;
     }
-
-//
-//    public static ArrayList<PostItem> getPosts()
-//    {
-//        ArrayList<PostItem> result = new ArrayList<PostItem>();
-//
-//        return result;
-//    }
 }
