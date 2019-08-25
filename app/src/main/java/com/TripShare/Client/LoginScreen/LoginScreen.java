@@ -95,10 +95,13 @@ public class LoginScreen extends AppCompatActivity implements ValidateUserInfo.N
     }
 
     @Override
-    public void sendUserToServer(String i_userName, String i_password)
+    public void sendUserToServer(String i_userName, String i_password, String i_name, String i_lastName)
     {
         m_user.setUserName(i_userName);
         m_user.setPassword(encrypt(i_password));
+        m_user.setLastName(i_lastName);
+        m_user.setuserRealName(i_name);
+
         new SendUserToAddToDB(m_user, this).execute();
     }
 

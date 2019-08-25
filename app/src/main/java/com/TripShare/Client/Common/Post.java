@@ -12,6 +12,7 @@ public class Post implements Serializable{
     private long m_routeID;
     private ArrayList<Long> m_usersWhichLikedID;
     private ArrayList<Comment> m_postComments;
+    private ArrayList<String> m_relatedTags;
 
     public Post(int i_userID, String i_title, String i_description)
     {
@@ -20,6 +21,7 @@ public class Post implements Serializable{
         setDescription(i_description);
         m_usersWhichLikedID = new ArrayList<>();
         m_postComments = new ArrayList<>();
+        m_relatedTags = new ArrayList<>();
     }
 
     public long getID() { return m_ID; }
@@ -34,16 +36,6 @@ public class Post implements Serializable{
     public void setDescription(String i_description) { m_description = new String(i_description); }
 
     public long getPostRoute() { return m_routeID; }
-
-    public int getLikeCount()
-    {
-        return m_usersWhichLikedID.size();
-    }
-
-    public int getCommentCount()
-    {
-        return m_postComments.size();
-    }
 
     public void setRouteID(long i_routeID)
     {
@@ -73,5 +65,18 @@ public class Post implements Serializable{
     public ArrayList<Comment> getCommentsArray()
     {
         return m_postComments;
+    }
+
+    public void addRelatedTag(String i_relatedTag)
+    {
+        if(m_relatedTags == null)
+            m_relatedTags = new ArrayList<>();
+
+        m_relatedTags.add(i_relatedTag);
+    }
+
+    public void intiallizeRelatedTags()
+    {
+        m_relatedTags = new ArrayList<>();
     }
 }

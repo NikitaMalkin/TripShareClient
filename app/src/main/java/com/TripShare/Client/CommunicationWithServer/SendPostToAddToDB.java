@@ -38,7 +38,7 @@ public class SendPostToAddToDB extends AsyncTask<String, Integer, String>
             String postInJsonFormat = m_utils.convertToJson(m_postToAdd);
             StringEntity postRouteEntity = new StringEntity(postInJsonFormat);
 
-            URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/TripShareProject/PostServlet");//("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/PostServlet");
+            URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/TripShareProject/ProfilePostServlet");//("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/ProfilePostServlet");
             builder.setParameter("m_PostToAddToDB", postInJsonFormat);
             HttpClient httpClient = HttpClientBuilder.create().build();
             HttpPost http_Post = new HttpPost(builder.build());
