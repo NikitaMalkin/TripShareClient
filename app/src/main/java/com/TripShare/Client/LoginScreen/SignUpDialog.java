@@ -15,6 +15,9 @@ public class SignUpDialog extends AppCompatDialogFragment
 {
     private EditText m_userName;
     private EditText m_password;
+    private EditText m_name;
+    private EditText m_lastName;
+
     private SendUserSignUpInfoListener m_listener;
 
     @Override
@@ -26,6 +29,8 @@ public class SignUpDialog extends AppCompatDialogFragment
         View view = inflater.inflate(R.layout.layout_dialog_user_signup, null);
         m_userName = view.findViewById(R.id.username_text);
         m_password = view.findViewById(R.id.password_text);
+        m_name = view.findViewById(R.id.firstname_text);
+        m_lastName = view.findViewById(R.id.lastname_text);
 
         builder.setView(view).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -39,8 +44,10 @@ public class SignUpDialog extends AppCompatDialogFragment
             {
                 String userName = m_userName.getText().toString();
                 String password = m_password.getText().toString();
+                String name = m_name.getText().toString();
+                String lastName = m_lastName.getText().toString();
 
-                m_listener.sendUserToServer(userName, password);
+                m_listener.sendUserToServer(userName, password, name, lastName);
                 // TODO: Move to the next screen for example: Home Page.
             }
         });
@@ -64,6 +71,6 @@ public class SignUpDialog extends AppCompatDialogFragment
 
     public interface SendUserSignUpInfoListener
     {
-        void sendUserToServer(String i_userName, String i_password);
+        void sendUserToServer(String i_userName, String i_password, String i_name, String i_lastName);
     }
 }

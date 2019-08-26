@@ -157,4 +157,11 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
         // TODO: something like, open a dialog which there the user can add a comment, and when he/she presses
         //  submit we send the current userName and current comment to the server with postID
     }
+
+    public void onEditTagsButtonClick(View i_view)
+    {
+        //When the edit tags button clicked, open tags dialog
+        DialogFragment editTagsDialog = new TagSelectionDialog();
+        editTagsDialog.show(getSupportFragmentManager(), "");
+    }
 }
