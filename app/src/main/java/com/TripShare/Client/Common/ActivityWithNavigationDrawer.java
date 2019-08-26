@@ -71,6 +71,10 @@ public class ActivityWithNavigationDrawer extends AppCompatActivity {
         m_layoutManager = new LinearLayoutManager(this);
         m_drawerRecyclerView.setLayoutManager(m_layoutManager);
 
+        //initialize user's name and lastname
+        TextView text = findViewById(R.id.drawer_textView);
+        text.setText(ApplicationManager.getLoggedInUser().getuserRealName() + " " + ApplicationManager.getLoggedInUser().getLastName());
+
         // specify an adapter
         ArrayList<DrawerItem> list = new ArrayList<DrawerItem>();
         list.add(new DrawerItem("Home", getDrawable(R.drawable.ic_home_black_24dp)));

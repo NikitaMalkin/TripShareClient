@@ -34,7 +34,7 @@ public class SendRouteToAddToDB extends AsyncTask<String, Integer, String>
             StringEntity userRouteEntity = new StringEntity(userRouteInJsonFormat);
 
             // build the post request to send to the server
-            URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/TripShareProject/RouteServlet");//("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/RouteServlet");
+            URIBuilder builder = new URIBuilder("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/RouteServlet");//("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/RouteServlet");
             builder.setParameter("m_RouteToAddToDB", userRouteInJsonFormat);
             HttpClient httpClient = HttpClientBuilder.create().build();
             HttpPost http_Post = new HttpPost(builder.build());

@@ -15,7 +15,6 @@ import com.TripShare.Client.Common.*;
 import com.TripShare.Client.CommunicationWithServer.GetPostsFromDB;
 import com.TripShare.Client.CommunicationWithServer.SendCommentToAddToPostInDB;
 import com.TripShare.Client.CommunicationWithServer.SendLikeToAddToPostInDB;
-import com.TripShare.Client.CommunicationWithServer.SendUserProfileImageToDB;
 import com.TripShare.Client.PostFullScreen.PostFullScreen;
 import com.TripShare.Client.R;
 import com.google.gson.Gson;
@@ -32,6 +31,7 @@ public class ProfileScreen extends ActivityWithNavigationDrawer implements GetPo
     private int m_firstPositionToRetrieve;
     private PopupWindow m_commentsWindow;
     private ImageView m_profileImageView;
+    private TextView m_name_lastname_textView;
     private CommentAdapter m_commentAdapter;
     Gson gson = new Gson();
 
@@ -51,7 +51,11 @@ public class ProfileScreen extends ActivityWithNavigationDrawer implements GetPo
         // Attach the adapter to the recyclerview to populate items
         Posts.setAdapter(adapter);
         m_PostAdapter = adapter;
-        m_profileImageView = findViewById(R.id.imageView4); // TODO: Change name to normal name!
+
+        m_name_lastname_textView = findViewById(R.id.profile_name_lastname_textView);
+        m_name_lastname_textView.setText(ApplicationManager.getLoggedInUser().getuserRealName() + " " + ApplicationManager.getLoggedInUser().getLastName());
+
+        m_profileImageView = findViewById(R.id.profile_userImage_imageView);
         // TODO: add another line that checks if the user has a profile picture already, then set it to the actual photo.
 
         // Initialize contacts
