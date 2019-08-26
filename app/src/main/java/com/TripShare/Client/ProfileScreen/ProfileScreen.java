@@ -60,7 +60,7 @@ public class ProfileScreen extends ActivityWithNavigationDrawer implements GetPo
 
         m_profileImageView = findViewById(R.id.profile_userImage_imageView);
         // TODO: add another line that checks if the user has a profile picture already, then set it to the actual photo.
-        m_profileImageView = findViewById(R.id.imageView4);
+        m_profileImageView = findViewById(R.id.profile_userImage_imageView);
 
         m_profileImageView.setOnClickListener(new View.OnClickListener()
         {
