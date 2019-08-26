@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,7 @@ import com.TripShare.Client.CommunicationWithServer.GetPostsFromDB;
 import com.TripShare.Client.CommunicationWithServer.SendCommentToAddToPostInDB;
 import com.TripShare.Client.CommunicationWithServer.SendLikeToAddToPostInDB;
 import com.TripShare.Client.CommunicationWithServer.SendUserProfileImageToDB;
+import com.TripShare.Client.PostCreationScreen.ChooseAdditionDialog;
 import com.TripShare.Client.PostFullScreen.PostFullScreen;
 import com.TripShare.Client.R;
 import com.google.gson.Gson;
@@ -25,7 +27,7 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
-public class ProfileScreen extends ActivityWithNavigationDrawer implements GetPostsFromDB.AddAllItemsToListViewListener, PostsAdapter.shareButtonClickedListener, PostsAdapter.mapButtonClickedListener, PostsAdapter.commentButtonClickedListener, PostsAdapter.likeButtonClickedListener, AddProfileImageDialog.SendImageToServerAndUpdateProfileViewListener
+public class ProfileScreen extends ActivityWithNavigationDrawer implements GetPostsFromDB.AddAllItemsToListViewListener, PostsAdapter.shareButtonClickedListener, PostsAdapter.mapButtonClickedListener, PostsAdapter.commentButtonClickedListener, PostsAdapter.likeButtonClickedListener, AddPhotoDialog.SendImageToServerAndUpdateProfileViewListener
 {
     private ArrayList<PostItem> m_posts;
     private PostsAdapter m_PostAdapter;
@@ -52,7 +54,18 @@ public class ProfileScreen extends ActivityWithNavigationDrawer implements GetPo
         Posts.setAdapter(adapter);
         m_PostAdapter = adapter;
         m_profileImageView = findViewById(R.id.imageView4); // TODO: Change name to normal name!
-        // TODO: add another line that checks if the user has a profile picture already, then set it to the actual photo.
+
+        m_profileImageView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                DialogFragment dialog = new AddPhotoDialog();
+                Bundle args = new Bundle();
+                args.putBoolean("isProfile", true);
+                dialog.setArguments(args);
+                dialog.show(getSupportFragmentManager(), "Choose Profile Picture");
+            }});
+                // TODO: add another line that checks if the user has a profile picture already, then set it to the actual photo.
 
         // Initialize contacts
         try
@@ -229,6 +242,6 @@ public class ProfileScreen extends ActivityWithNavigationDrawer implements GetPo
         i_imageToAttach.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream .toByteArray();
         String imageString = Base64.encodeToString(byteArray, Base64.DEFAULT);
-        //new SendUserProfileImageToDB(Long.valueOf(0), imageString).execute(); // TODO: change to Actual userID!
+        new SendUserProfileImageToDB(Long.valueOf(42), imageString).execute(); // TODO: change to Actual userID!
     }
 }

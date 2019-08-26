@@ -73,7 +73,7 @@ public class LoginScreen extends AppCompatActivity implements ValidateUserInfo.N
     }
 
     @Override
-    public void showAppropriateMessage(final boolean i_isValidUsernameAndPassword)
+    public void showAppropriateMessage(final boolean i_isValidUsernameAndPassword, User i_user)
     {
         runOnUiThread(new Runnable()
         {

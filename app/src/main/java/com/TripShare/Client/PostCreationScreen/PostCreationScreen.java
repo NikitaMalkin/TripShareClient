@@ -15,7 +15,6 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import com.TripShare.Client.Common.*;
 import com.TripShare.Client.CommunicationWithServer.GetRoutesFromDB;

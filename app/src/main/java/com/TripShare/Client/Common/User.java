@@ -12,6 +12,7 @@ public class User implements Serializable {
     private String m_lastName;
     private	String m_password;
     private ArrayList<String> m_preferredTags;
+    private String m_profileImageString;
 
     public long getID() { return m_ID; }
 
@@ -68,4 +69,14 @@ public class User implements Serializable {
     }
 
     public ArrayList<String> getPreferredTags(){ return m_preferredTags; }
+
+    public String getImageString() { return m_profileImageString; }
+
+    public void setImageString(String i_imageString)
+    {
+        if(m_profileImageString == null)
+            m_profileImageString = new String();
+
+        m_profileImageString = i_imageString;
+    }
 }

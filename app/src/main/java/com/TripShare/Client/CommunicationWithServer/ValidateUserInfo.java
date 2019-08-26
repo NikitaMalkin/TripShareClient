@@ -1,6 +1,9 @@
 package com.TripShare.Client.CommunicationWithServer;
 
 import android.os.AsyncTask;
+import com.TripShare.Client.Common.Route;
+import com.TripShare.Client.Common.User;
+import com.google.gson.Gson;
 import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.HttpResponse;
 import cz.msebera.android.httpclient.client.HttpClient;
@@ -8,6 +11,8 @@ import cz.msebera.android.httpclient.client.methods.HttpGet;
 import cz.msebera.android.httpclient.client.utils.URIBuilder;
 import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 import cz.msebera.android.httpclient.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class ValidateUserInfo extends AsyncTask<String, Integer, String>
 {
@@ -37,7 +42,7 @@ public class ValidateUserInfo extends AsyncTask<String, Integer, String>
             passwordInJsonFormat = m_utils.convertToJson(m_password);
             HttpClient httpClient = HttpClientBuilder.create().build();
 
-            // Build URI
+            // Build URI "http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/UserInfoValidation"
             URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/TripShareProject/UserInfoValidation"); //("http://10.0.2.2:8080/TripShareProject/UserInfoValidation")
             builder.setParameter("m_userName", userNameInJsonFormat);
             builder.setParameter("m_password", passwordInJsonFormat);
@@ -47,8 +52,10 @@ public class ValidateUserInfo extends AsyncTask<String, Integer, String>
             HttpResponse httpResponse = httpClient.execute(http_get);
             HttpEntity httpEntity = httpResponse.getEntity();
             output = EntityUtils.toString(httpEntity);
-            m_isUserNamePasswordValid = Boolean.valueOf(output);
-            m_listener.showAppropriateMessage(m_isUserNamePasswordValid);
+            JSONArray jsonArr = new JSONArray(output);
+            User userRecieved = new Gson().fromJson(jsonArr.getString(0), User.class);
+            m_isUserNamePasswordValid = jsonArr.getBoolean(1);
+            m_listener.showAppropriateMessage(m_isUserNamePasswordValid, userRecieved);
         }
         catch (Exception e)
         {
@@ -59,6 +66,6 @@ public class ValidateUserInfo extends AsyncTask<String, Integer, String>
 
     public interface NotifyIfValidInfoListener
     {
-        void showAppropriateMessage(boolean i_isValidUsernameAndPassword);
+        void showAppropriateMessage(boolean i_isValidUsernameAndPassword, User i_user);
     }
 }

@@ -61,7 +61,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
         imageThumbnail.setImageDrawable(post.getImage());
 
         TextView likesAndCommentsNumber = viewHolder.getTextViewLikesAndCommentsNumber();
-        likesAndCommentsNumber.setText(post.getPost().getLikeCount() + " Likes, " + post.getPost().getCommentCount() + " Comments");
+        //likesAndCommentsNumber.setText(post.getPost().getLikeCount() + " Likes, " + post.getPost().getCommentCount() + " Comments");
     }
 
     // Returns the total count of items in the list

@@ -1,4 +1,4 @@
-package com.TripShare.Client.ProfileScreen;
+package com.TripShare.Client.Common;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -24,25 +24,24 @@ import com.TripShare.Client.R;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-
-// TODO: Ask Nick if we should merge the two dialogs into one and use the interfaces when needed??????
-
-public class AddProfileImageDialog extends AppCompatDialogFragment {
+public class AddPhotoDialog extends AppCompatDialogFragment {
 
     private Button m_browseButton;
     private ImageView m_image;
     private float m_currentImageRotation = 0.0f;
     static final int PICK_IMAGE_REQUEST = 1;  // The request code
-    private SendImageToServerAndUpdateProfileViewListener m_listener;
+    private AttachImageToCoordinateListener m_listenerPostCreation;
+    private SendImageToServerAndUpdateProfileViewListener m_listenerProfile;
+    private Boolean m_isProfileScreen;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-
+        m_isProfileScreen = getArguments().getBoolean("isProfile");
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.layout_dialog_add_photo, null); // TODO: Ask Nick, should we use the same layout????????
+        View view = inflater.inflate(R.layout.layout_dialog_add_photo, null);
 
         m_browseButton = view.findViewById(R.id.buttonBrowse);
         m_image = view.findViewById(R.id.imageView);
@@ -87,7 +86,10 @@ public class AddProfileImageDialog extends AppCompatDialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                m_listener.sendImageToServerAndUpdateView(((BitmapDrawable)m_image.getDrawable()).getBitmap());
+                if(m_isProfileScreen)
+                    m_listenerProfile.sendImageToServerAndUpdateView(((BitmapDrawable)m_image.getDrawable()).getBitmap());
+                else
+                    m_listenerPostCreation.attachImageToRelevantCoordinate(((BitmapDrawable)m_image.getDrawable()).getBitmap());
                 dismiss();
             }
         });
@@ -155,12 +157,20 @@ public class AddProfileImageDialog extends AppCompatDialogFragment {
         super.onAttach(context);
         try
         {
-            m_listener = (SendImageToServerAndUpdateProfileViewListener)context;
+            if(getArguments().getBoolean("isProfile"))
+                m_listenerProfile = (SendImageToServerAndUpdateProfileViewListener)context;
+            else
+                m_listenerPostCreation = (AttachImageToCoordinateListener)context;
         }
         catch (ClassCastException  e)
         {
             throw new ClassCastException("Could not cast to AttachImageToCoordinateListener");
         }
+    }
+
+    public interface AttachImageToCoordinateListener
+    {
+        void attachImageToRelevantCoordinate(Bitmap i_imageToAttach);
     }
 
     public interface SendImageToServerAndUpdateProfileViewListener
