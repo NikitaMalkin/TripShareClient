@@ -30,6 +30,10 @@
         </activity>
 
         <activity android:name="com.TripShare.Client.HomeScreen.HomeScreen">
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".ProfileScreen.ProfileScreen">
@@ -37,10 +41,7 @@
         </activity>
 
         <activity android:name=".LoginScreen.LoginScreen">
-            <intent-filter >
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
         <uses-library

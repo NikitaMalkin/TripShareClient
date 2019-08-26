@@ -11,10 +11,21 @@ import java.util.ArrayList;
 public final class ApplicationManager {
 
     private static boolean m_firstHomePageLaunch = true;
+    private static User m_loggedInUser;
 
     public static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static void setLoggedInUser(User i_loggedInUser)
+    {
+        m_loggedInUser = i_loggedInUser;
+    }
+
+    public static User getLoggedInUser()
+    {
+        return m_loggedInUser;
     }
 
     public static void setHomePageFirstTimeAccessed()  //this method is called once the homepage is accessed for the first time

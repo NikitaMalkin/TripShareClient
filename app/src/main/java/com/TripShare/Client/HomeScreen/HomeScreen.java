@@ -205,4 +205,11 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
     {
        new SendCommentToAddToPostInDB(new Comment(i_comment, Long.valueOf(0), "Sivan"), Long.valueOf(i_postToUpdate.getID())).execute();
     }
+
+    public void onEditTagsButtonClick(View i_view)
+    {
+        //When the edit tags button clicked, open tags dialog
+        DialogFragment editTagsDialog = new TagSelectionDialog();
+        editTagsDialog.show(getSupportFragmentManager(), "");
+    }
 }

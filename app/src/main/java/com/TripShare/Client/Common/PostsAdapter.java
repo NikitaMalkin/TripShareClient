@@ -60,6 +60,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
         ImageView imageThumbnail = viewHolder.getImageViewImage();
         imageThumbnail.setImageDrawable(post.getImage());
 
+        TextView likesAndCommentsNumber = viewHolder.getTextViewLikesAndCommentsNumber();
+        likesAndCommentsNumber.setText(post.getPost().getLikeCount() + " Likes, " + post.getPost().getCommentCount() + " Comments");
     }
 
     // Returns the total count of items in the list
@@ -78,6 +80,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
         private ImageButton m_mapButton;
         private ImageButton m_shareButton;
         private ImageView m_image;
+        private TextView m_likesAndCommentsNumber;
 
         public ViewHolder(View itemView)
         {
@@ -90,6 +93,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
             m_mapButton = itemView.findViewById(R.id.profileItem_imageButtonMap);
             m_shareButton = itemView.findViewById(R.id.profileItem_imageButtonShare);
             m_image = itemView.findViewById(R.id.profileItem_imageView);
+            m_likesAndCommentsNumber = itemView.findViewById(R.id.profileItem_textView_numberOfLikesAndComments);
 
             m_shareButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -157,6 +161,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
         public ImageView getImageViewImage()
         {
             return m_image;
+        }
+
+        public TextView getTextViewLikesAndCommentsNumber()
+        {
+            return m_likesAndCommentsNumber;
         }
     }
 
