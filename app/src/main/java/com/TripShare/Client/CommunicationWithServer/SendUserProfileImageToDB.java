@@ -1,13 +1,13 @@
 package com.TripShare.Client.CommunicationWithServer;
 
 import android.os.AsyncTask;
-import com.google.gson.JsonArray;
-
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import cz.msebera.android.httpclient.HttpEntity;
+import cz.msebera.android.httpclient.HttpResponse;
+import cz.msebera.android.httpclient.client.HttpClient;
+import cz.msebera.android.httpclient.client.methods.HttpPut;
+import cz.msebera.android.httpclient.client.utils.URIBuilder;
+import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
+import cz.msebera.android.httpclient.util.EntityUtils;
 
 public class SendUserProfileImageToDB extends AsyncTask<String, Integer, String>
 {
@@ -27,11 +27,12 @@ public class SendUserProfileImageToDB extends AsyncTask<String, Integer, String>
         String output = null;
 
         try {
-            // This is getting the url from the string we passed in
-            URL url = new URL("http://10.0.2.2:8080/TripShareProject/UploadProfileImageServlet");//("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/CoordinateUpdateServlet");
-
-            // Create the urlConnection
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            // build the post request to send to the server
+            URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/TripShareProject/UploadProfileImageServlet");//("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/UploadProfileImageServlet");
+            builder.setParameter("m_userID", String.valueOf(m_userIDToUpdate));
+            builder.setParameter("m_imageString", m_imageStringToSend);
+            HttpClient httpClient = HttpClientBuilder.create().build();
+            HttpPut http_Put = new HttpPut(builder.build());
 
             urlConnection.setDoInput(true);
             urlConnection.setDoOutput(true);

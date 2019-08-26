@@ -42,6 +42,16 @@ public class Post implements Serializable{
         m_routeID = i_routeID;
     }
 
+    public int getLikeCount()
+    {
+        return m_usersWhichLikedID.size();
+    }
+
+    public int getCommentCount()
+    {
+        return m_postComments.size();
+    }
+
     public void addLikedID(long i_userIDWhichLiked)
     {
         m_usersWhichLikedID.add(i_userIDWhichLiked);

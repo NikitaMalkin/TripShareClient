@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.TripShare.Client.Common.ApplicationManager;
 import com.TripShare.Client.CommunicationWithServer.SendUserToAddToDB;
 import com.TripShare.Client.CommunicationWithServer.ValidateUserInfo;
 import com.TripShare.Client.HomeScreen.HomeScreen;
@@ -73,7 +74,7 @@ public class LoginScreen extends AppCompatActivity implements ValidateUserInfo.N
     }
 
     @Override
-    public void showAppropriateMessage(final boolean i_isValidUsernameAndPassword, User i_user)
+    public void showAppropriateMessage(final boolean i_isValidUsernameAndPassword, final User i_user)
     {
         runOnUiThread(new Runnable()
         {
@@ -82,6 +83,7 @@ public class LoginScreen extends AppCompatActivity implements ValidateUserInfo.N
                 if (i_isValidUsernameAndPassword)
                 {
                     Toast.makeText(getApplicationContext(), "Logging In!", Toast.LENGTH_SHORT).show();
+                    ApplicationManager.setLoggedInUser(i_user);
                     Intent intent = new Intent(getApplication(), HomeScreen.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); //this line clears the application activity stack, so that user can't logout and then press 'back' and be logged in again
                     startActivity(intent);

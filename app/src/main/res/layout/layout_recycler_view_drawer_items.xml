@@ -20,5 +20,5 @@
             android:layout_height="40dp" app:srcCompat="@drawable/ic_image_black_24dp"
             android:id="@+id/drawerItem_image"
             app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp"/>
+            android:layout_marginStart="32dp"/>
 </android.support.constraint.ConstraintLayout>
