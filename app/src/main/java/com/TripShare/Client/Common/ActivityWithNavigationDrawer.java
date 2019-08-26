@@ -1,14 +1,18 @@
 package com.TripShare.Client.Common;
 
+import android.app.Application;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.TripShare.Client.HomeScreen.HomeScreen;
 import com.TripShare.Client.LoginScreen.LoginScreen;
@@ -74,6 +78,15 @@ public class ActivityWithNavigationDrawer extends AppCompatActivity {
         //initialize user's name and lastname
         TextView text = findViewById(R.id.drawer_textView);
         text.setText(ApplicationManager.getLoggedInUser().getuserRealName() + " " + ApplicationManager.getLoggedInUser().getLastName());
+
+        //initialize profile picture
+        String imageString = ApplicationManager.getLoggedInUser().getImageString();
+        if (imageString != null) //if user actually uploaded a custom picture, load it. otherwise we use the default picture
+        {
+            byte[] decodedImageString = Base64.decode(imageString, Base64.DEFAULT);
+            ImageView image = findViewById(R.id.drawer_userImage);
+            image.setImageBitmap(BitmapFactory.decodeByteArray(decodedImageString, 0, decodedImageString.length));
+        }
 
         // specify an adapter
         ArrayList<DrawerItem> list = new ArrayList<DrawerItem>();

@@ -249,6 +249,6 @@ public class ProfileScreen extends ActivityWithNavigationDrawer implements GetPo
         i_imageToAttach.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream .toByteArray();
         String imageString = Base64.encodeToString(byteArray, Base64.DEFAULT);
-        new SendUserProfileImageToDB(Long.valueOf(42), imageString).execute(); // TODO: change to Actual userID!
+        new SendUserProfileImageToDB(ApplicationManager.getLoggedInUser().getID(), imageString).execute(); //
     }
 }
