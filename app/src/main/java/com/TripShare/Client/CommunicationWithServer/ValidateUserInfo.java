@@ -42,8 +42,8 @@ public class ValidateUserInfo extends AsyncTask<String, Integer, String>
             passwordInJsonFormat = m_utils.convertToJson(m_password);
             HttpClient httpClient = HttpClientBuilder.create().build();
 
-            // Build URI "http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/UserInfoValidation"
-            URIBuilder builder = new URIBuilder("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/UserInfoValidation"); //("http://10.0.2.2:8080/TripShareProject/UserInfoValidation")
+            // Build URI
+            URIBuilder builder = new URIBuilder("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/UserInfoValidation");
             builder.setParameter("m_userName", userNameInJsonFormat);
             builder.setParameter("m_password", passwordInJsonFormat);
 

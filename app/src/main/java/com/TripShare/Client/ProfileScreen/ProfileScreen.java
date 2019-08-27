@@ -3,6 +3,7 @@ package com.TripShare.Client.ProfileScreen;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
@@ -17,7 +18,6 @@ import com.TripShare.Client.CommunicationWithServer.GetPostsFromDB;
 import com.TripShare.Client.CommunicationWithServer.SendCommentToAddToPostInDB;
 import com.TripShare.Client.CommunicationWithServer.SendLikeToAddToPostInDB;
 import com.TripShare.Client.CommunicationWithServer.SendUserProfileImageToDB;
-import com.TripShare.Client.PostCreationScreen.ChooseAdditionDialog;
 import com.TripShare.Client.PostFullScreen.PostFullScreen;
 import com.TripShare.Client.R;
 import com.google.gson.Gson;
@@ -57,10 +57,13 @@ public class ProfileScreen extends ActivityWithNavigationDrawer implements GetPo
 
         m_name_lastname_textView = findViewById(R.id.profile_name_lastname_textView);
         m_name_lastname_textView.setText(ApplicationManager.getLoggedInUser().getuserRealName() + " " + ApplicationManager.getLoggedInUser().getLastName());
+        m_profileImageView = findViewById(R.id.profile_userImage_imageView);
 
-        m_profileImageView = findViewById(R.id.profile_userImage_imageView);
-        // TODO: add another line that checks if the user has a profile picture already, then set it to the actual photo.
-        m_profileImageView = findViewById(R.id.profile_userImage_imageView);
+        if(ApplicationManager.getLoggedInUser().getImageString() != null)
+        {
+            byte[] decodedImageString = Base64.decode(ApplicationManager.getLoggedInUser().getImageString(), Base64.DEFAULT);
+            m_profileImageView.setImageBitmap(BitmapFactory.decodeByteArray(decodedImageString, 0, decodedImageString.length));
+        }
 
         m_profileImageView.setOnClickListener(new View.OnClickListener()
         {
@@ -249,6 +252,8 @@ public class ProfileScreen extends ActivityWithNavigationDrawer implements GetPo
         i_imageToAttach.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream .toByteArray();
         String imageString = Base64.encodeToString(byteArray, Base64.DEFAULT);
-        new SendUserProfileImageToDB(ApplicationManager.getLoggedInUser().getID(), imageString).execute(); //
+        ApplicationManager.getLoggedInUser().setImageString(imageString);
+
+        new SendUserProfileImageToDB(ApplicationManager.getLoggedInUser()).execute(); //
     }
 }

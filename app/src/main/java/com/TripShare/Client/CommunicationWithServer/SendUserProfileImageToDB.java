@@ -1,11 +1,8 @@
 package com.TripShare.Client.CommunicationWithServer;
 
 import android.os.AsyncTask;
+import com.TripShare.Client.Common.User;
 import com.google.gson.JsonArray;
-import cz.msebera.android.httpclient.client.HttpClient;
-import cz.msebera.android.httpclient.client.methods.HttpPut;
-import cz.msebera.android.httpclient.client.utils.URIBuilder;
-import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -13,17 +10,14 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-
 public class SendUserProfileImageToDB extends AsyncTask<String, Integer, String>
 {
-    private Long m_userIDToUpdate;
-    private String m_imageStringToSend;
+    private User m_user;
     private Utils m_utils;
 
-    public SendUserProfileImageToDB(Long i_userIDToUpdate, String i_imageStringToSend)
+    public SendUserProfileImageToDB(User i_user)
     {
-        m_userIDToUpdate = i_userIDToUpdate;
-        m_imageStringToSend = i_imageStringToSend;
+        m_user = i_user;
         m_utils = new Utils();
     }
 
@@ -33,7 +27,7 @@ public class SendUserProfileImageToDB extends AsyncTask<String, Integer, String>
 
         try {
             // This is getting the url from the string we passed in
-            URL url = new URL("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/CoordinateUpdateServlet");//("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/CoordinateUpdateServlet");
+            URL url = new URL("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/UploadProfileImageServlet");//("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/UploadProfileImageServlet");
 
             // Create the urlConnection
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
@@ -45,11 +39,9 @@ public class SendUserProfileImageToDB extends AsyncTask<String, Integer, String>
 
             // convert the object we want to send to the server
             //  to a json format and create an entity from it
-            JsonArray jsonArray = new JsonArray();
-            jsonArray.add(m_userIDToUpdate);
-            jsonArray.add(m_imageStringToSend);
+            String userInJsonFormat = m_utils.convertToJson(m_user);
             OutputStreamWriter writer = new OutputStreamWriter(urlConnection.getOutputStream());
-            writer.write(jsonArray.toString());
+            writer.write(userInJsonFormat);
             writer.flush();
 
             int statusCode = urlConnection.getResponseCode();
