@@ -86,8 +86,10 @@ public class AddPhotoDialog extends AppCompatDialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                if(m_isProfileScreen)
-                    m_listenerProfile.sendImageToServerAndUpdateView(((BitmapDrawable)m_image.getDrawable()).getBitmap());
+                if(m_isProfileScreen) {
+                    rotateImage(m_currentImageRotation);
+                    m_listenerProfile.sendImageToServerAndUpdateView(((BitmapDrawable) m_image.getDrawable()).getBitmap());
+                }
                 else
                     m_listenerPostCreation.attachImageToRelevantCoordinate(((BitmapDrawable)m_image.getDrawable()).getBitmap());
                 dismiss();
@@ -113,13 +115,13 @@ public class AddPhotoDialog extends AppCompatDialogFragment {
         startActivityForResult(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), PICK_IMAGE_REQUEST);
     }
 
-    private void rotateImage90Degrees() //currently unused method to actually rotate the stored Bitmap, this will be used when uploading the image
+    private void rotateImage(float i_degrees) //currently unused method to actually rotate the stored Bitmap, this will be used when uploading the image
     {
         BitmapDrawable drawable = (BitmapDrawable) m_image.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
         Matrix matrix = new Matrix();
 
-        matrix.postRotate(90);
+        matrix.postRotate(i_degrees);
 
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
         m_image.setImageBitmap(bitmap);
