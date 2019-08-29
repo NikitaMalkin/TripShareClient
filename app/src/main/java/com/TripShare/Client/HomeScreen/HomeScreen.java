@@ -1,13 +1,12 @@
 package com.TripShare.Client.HomeScreen;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,8 +16,8 @@ import com.TripShare.Client.Common.*;
 import com.TripShare.Client.CommunicationWithServer.GetPostsFromDB;
 import com.TripShare.Client.CommunicationWithServer.SendCommentToAddToPostInDB;
 import com.TripShare.Client.CommunicationWithServer.SendLikeToAddToPostInDB;
+import com.TripShare.Client.CommunicationWithServer.SendUserTagsToDB;
 import com.TripShare.Client.PostFullScreen.PostFullScreen;
-import com.TripShare.Client.ProfileScreen.ProfileScreen;
 import com.TripShare.Client.R;
 import com.google.gson.Gson;
 import org.json.JSONArray;
@@ -209,7 +208,24 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
     public void onEditTagsButtonClick(View i_view)
     {
         //When the edit tags button clicked, open tags dialog
-        DialogFragment editTagsDialog = new TagSelectionDialog();
+        final DialogFragment editTagsDialog = new TagSelectionDialog();
+
         editTagsDialog.show(getSupportFragmentManager(), "");
+        getSupportFragmentManager().executePendingTransactions();
+        ((TagSelectionDialog) editTagsDialog).selectUserPrefferedTags();
+
+        editTagsDialog.getDialog().setOnDismissListener((new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if (((TagSelectionDialog) editTagsDialog).getDialogResolvedSuccessfully()) {
+                    ApplicationManager.getLoggedInUser().setPreferredTags(((TagSelectionDialog) editTagsDialog).getSelectedTags());
+                    SendUserTagsToDB sendToServer = new SendUserTagsToDB(ApplicationManager.getLoggedInUser().getPreferredTags(), ApplicationManager.getLoggedInUser().getID());
+                    sendToServer.execute();
+                }
+            }
+        }));
+
+
+
     }
 }

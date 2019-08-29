@@ -1,12 +1,14 @@
 package com.TripShare.Client.PostCreationScreen;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -19,7 +21,9 @@ import android.widget.TextView;
 import com.TripShare.Client.Common.*;
 import com.TripShare.Client.CommunicationWithServer.GetRoutesFromDB;
 import com.TripShare.Client.CommunicationWithServer.SendPostToAddToDB;
+import com.TripShare.Client.CommunicationWithServer.SendUserTagsToDB;
 import com.TripShare.Client.CommunicationWithServer.UpdateRouteInDB;
+import com.TripShare.Client.ProfileScreen.ProfileScreen;
 import com.TripShare.Client.R;
 import com.TripShare.Client.RoutesScreen.RoutesScreen;
 import com.google.android.gms.maps.*;
@@ -220,14 +224,41 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
         m_postToAdd = new Post(0, postTitle.getText().toString(), postDescription.getText().toString());
         m_postToAdd.setRouteID(routeID);
 
-        // Send Post to Server and save in DB.
-        new SendPostToAddToDB(m_postToAdd).execute();
+        askUserToCheckRelevantTags(); //NOTE: the upcoming code had to be moved inside OnDismiss of the dialog in order to sync
 
-        // Update Relevant Route.
-        SpinnerItem itemSelected = m_adapter.getItems().get(m_spinner.getSelectedIndex());
-        Route updatedRoute = itemSelected.getRoute();
-        new UpdateRouteInDB(updatedRoute).execute();
-        // TODO: update the route and coordinates as well
+    }
+
+    private void askUserToCheckRelevantTags()
+    {
+        synchronized (m_postToAdd) {
+
+            final DialogFragment editTagsDialog = new TagSelectionDialog();
+
+            editTagsDialog.show(getSupportFragmentManager(), "");
+            getSupportFragmentManager().executePendingTransactions();
+            editTagsDialog.getDialog().setOnDismissListener((new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    m_postToAdd.setTags(((TagSelectionDialog) editTagsDialog).getSelectedTags());
+
+                    // THE REST OF THE CODE IS HERE //
+
+                    // Send Post to Server and save in DB.
+                    new SendPostToAddToDB(m_postToAdd).execute();
+
+                    // Update Relevant Route.
+                    SpinnerItem itemSelected = m_adapter.getItems().get(m_spinner.getSelectedIndex());
+                    Route updatedRoute = itemSelected.getRoute();
+                    new UpdateRouteInDB(updatedRoute).execute();
+                    // TODO: update the route and coordinates as well
+
+                    //change screen to profile after you've posted a post
+                    Intent intent = new Intent(getApplicationContext(), ProfileScreen.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
+            }));
+        }
     }
 
     private void showRouteOnMap(String i_spinnerItemString)

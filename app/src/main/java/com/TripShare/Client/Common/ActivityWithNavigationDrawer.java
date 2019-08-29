@@ -2,7 +2,9 @@ package com.TripShare.Client.Common;
 
 import android.app.Application;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -38,6 +40,9 @@ public class ActivityWithNavigationDrawer extends AppCompatActivity {
     }
 
     public void initializeDrawerLayout() {
+        //initialize profile picture, takes much time so it is in another thread
+        fetchDrawerProfilePicture();
+
         //Application Drawer initialization
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -79,15 +84,6 @@ public class ActivityWithNavigationDrawer extends AppCompatActivity {
         TextView text = findViewById(R.id.drawer_textView);
         text.setText(ApplicationManager.getLoggedInUser().getuserRealName() + " " + ApplicationManager.getLoggedInUser().getLastName());
 
-        //initialize profile picture
-        String imageString = ApplicationManager.getLoggedInUser().getImageString();
-        if (imageString != null) //if user actually uploaded a custom picture, load it. otherwise we use the default picture
-        {
-            byte[] decodedImageString = Base64.decode(imageString, Base64.DEFAULT);
-            ImageView image = findViewById(R.id.drawer_userImage);
-            image.setImageBitmap(BitmapFactory.decodeByteArray(decodedImageString, 0, decodedImageString.length));
-        }
-
         // specify an adapter
         ArrayList<DrawerItem> list = new ArrayList<DrawerItem>();
         list.add(new DrawerItem("Home", getDrawable(R.drawable.ic_home_black_24dp)));
@@ -99,6 +95,29 @@ public class ActivityWithNavigationDrawer extends AppCompatActivity {
         list.add(new DrawerItem("About", getDrawable(R.drawable.ic_info_black_24dp)));
         m_drawerAdapter = new DrawerAdapter(list);
         m_drawerRecyclerView.setAdapter(m_drawerAdapter);
+
+    }
+
+    public void fetchDrawerProfilePicture()
+    {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                String imageString = ApplicationManager.getLoggedInUser().getImageString();
+                if (imageString != null) //if user actually uploaded a custom picture, load it. otherwise we use the default picture
+                {
+                        byte[] decodedImageString = Base64.decode(imageString, Base64.DEFAULT);
+                        Bitmap bitmapImage = BitmapFactory.decodeByteArray(decodedImageString, 0, decodedImageString.length);
+                        ApplicationManager.setDrawerProfilePicture(bitmapImage);
+                }
+            }
+        });
+    }
+
+    private void updateDrawerPictureView()
+    {
+        ImageView imageView = findViewById(R.id.drawer_userImage);
+        imageView.setImageBitmap(ApplicationManager.getDrawerProfilePicture());
     }
 
     @Override
@@ -107,6 +126,9 @@ public class ActivityWithNavigationDrawer extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        //update drawer profile picture UI
+        updateDrawerPictureView();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {

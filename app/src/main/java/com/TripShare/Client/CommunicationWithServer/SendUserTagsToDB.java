@@ -19,9 +19,10 @@ public class SendUserTagsToDB  extends AsyncTask<String, Integer, String>
     private ArrayList<String> m_userPreferredTags;
     private Long m_userID;
 
-    public SendUserTagsToDB(ArrayList<String> i_userPreferredTags)
+    public SendUserTagsToDB(ArrayList<String> i_userPreferredTags, Long i_userID)
     {
         m_userPreferredTags = i_userPreferredTags;
+        m_userID = i_userID;
     }
 
     protected String doInBackground(String... Args) {

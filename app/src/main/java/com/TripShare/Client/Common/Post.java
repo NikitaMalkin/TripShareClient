@@ -12,7 +12,7 @@ public class Post implements Serializable{
     private long m_routeID;
     private ArrayList<Long> m_usersWhichLikedID;
     private ArrayList<Comment> m_postComments;
-    private ArrayList<String> m_relatedTags;
+    private ArrayList<String> m_relatedTags = new ArrayList<String>();
 
     public Post(int i_userID, String i_title, String i_description)
     {
@@ -77,16 +77,8 @@ public class Post implements Serializable{
         return m_postComments;
     }
 
-    public void addRelatedTag(String i_relatedTag)
+    public void setTags(ArrayList<String> i_relatedTags)
     {
-        if(m_relatedTags == null)
-            m_relatedTags = new ArrayList<>();
-
-        m_relatedTags.add(i_relatedTag);
-    }
-
-    public void intiallizeRelatedTags()
-    {
-        m_relatedTags = new ArrayList<>();
+        m_relatedTags = i_relatedTags;
     }
 }

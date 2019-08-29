@@ -1,6 +1,7 @@
 package com.TripShare.Client.Common;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -12,10 +13,22 @@ public final class ApplicationManager {
 
     private static boolean m_firstHomePageLaunch = true;
     private static User m_loggedInUser;
+    private static Bitmap m_drawerProfilePicture;
+
 
     public static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static void setDrawerProfilePicture(Bitmap i_picture)
+    {
+        m_drawerProfilePicture = i_picture;
+    }
+
+    public static Bitmap getDrawerProfilePicture()
+    {
+        return m_drawerProfilePicture;
     }
 
     public static void setLoggedInUser(User i_loggedInUser)

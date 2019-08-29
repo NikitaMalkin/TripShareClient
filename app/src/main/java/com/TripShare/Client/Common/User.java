@@ -11,7 +11,7 @@ public class User implements Serializable {
     private String m_name;
     private String m_lastName;
     private	String m_password;
-    private ArrayList<String> m_preferredTags;
+    private ArrayList<String> m_preferredTags = new ArrayList<>();
     private String m_profileImageString;
 
     public long getID() { return m_ID; }
@@ -55,12 +55,9 @@ public class User implements Serializable {
         m_password = i_password;
     }
 
-    public void addPreferredTag(String i_preferredTag)
+    public void setPreferredTags(ArrayList<String> i_preferredTags)
     {
-        if(m_preferredTags == null)
-            m_preferredTags = new ArrayList<>();
-
-        m_preferredTags.add(i_preferredTag);
+        m_preferredTags = i_preferredTags;
     }
 
     public void intiallizePreferredTags()
