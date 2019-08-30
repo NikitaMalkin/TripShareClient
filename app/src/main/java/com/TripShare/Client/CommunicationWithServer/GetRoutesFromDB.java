@@ -32,6 +32,8 @@ public class GetRoutesFromDB extends AsyncTask<String, Integer, String>
 
             // Build URI
             URIBuilder builder = new URIBuilder("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/RouteServlet"); //"http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/RouteServlet"
+            //URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/TripShareProject/RouteServlet");
+
             builder.setParameter("m_userID", "0"); // The value is 0 right now but will change in the future to user ID // TODO
 
             // Send request to server
