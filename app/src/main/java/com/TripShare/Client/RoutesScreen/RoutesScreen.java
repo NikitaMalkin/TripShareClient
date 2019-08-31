@@ -159,7 +159,7 @@ public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRo
 
     public void buttonRecordRouteClicked(View view)
     {
-        m_routeToAdd = new Route(0);  ///each time a new recording is started, m_routeToAdd is initialized, 0 is a placeholder for UserID
+        m_routeToAdd = new Route(ApplicationManager.getLoggedInUser().getID());
 
         view.setVisibility(view.GONE);
         View alternateView = findViewById(R.id.view_recording);

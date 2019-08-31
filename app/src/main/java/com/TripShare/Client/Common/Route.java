@@ -8,17 +8,17 @@ public class Route implements Serializable
     private static final long serialVersionUID = 1L;
 
     private long m_ID;
-    private int m_userID;
+    private long m_userID;
     private String m_routeName;
     private String m_createdDate;
     private List<Coordinate> m_routeCoordinates= new ArrayList<>();
 
-    public Route(int i_userID)
+    public Route(long i_userID)
     {
         m_userID = i_userID;
     }
 
-    public int getUserID()
+    public long getUserID()
     {
         return m_userID;
     }

@@ -11,7 +11,7 @@ import cz.msebera.android.httpclient.util.EntityUtils;
 
 public class DeleteRouteRequestFromDB extends AsyncTask<String, Integer, String>
 {
-    String m_routeToDeleteID;// TODO !!! change “1” to be the actual route ID
+    String m_routeToDeleteID;
     int m_indexOfListItemToRemove;
     RemoveItemFromListViewListener m_listener;
 

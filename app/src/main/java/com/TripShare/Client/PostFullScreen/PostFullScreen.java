@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.TripShare.Client.Common.User;
 import com.TripShare.Client.CommunicationWithServer.GetRouteByID;
 import com.TripShare.Client.R;
 import com.TripShare.Client.Common.Coordinate;
@@ -102,11 +103,10 @@ public class PostFullScreen extends AppCompatActivity implements OnMapReadyCallb
         m_mapScreenShot.setImageDrawable(null);
         // Temp TODO: add the Relevant Info
 
-        m_userName_textView.setText("Chandler Bing");
         // Add the user Info
-        //m_userName_textView.setText(.get);
-        //m_postLikesCount.setText(m_postToPresent.getLikeCount());
-        //m_postCommentCount.setText(m_postToPresent.getCommentCount());
+        m_userName_textView.setText(m_postToPresent.getUserFirstName() + m_postToPresent.getUserLastName());
+        m_postLikesCount.setText(m_postToPresent.getLikeCount());
+        m_postCommentCount.setText(m_postToPresent.getCommentCount());
 
         m_mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
@@ -171,19 +171,6 @@ public class PostFullScreen extends AppCompatActivity implements OnMapReadyCallb
         }
 
         MediaStore.Images.Media.insertImage(getContentResolver(), m_screenShotToSave, "screenShotOfPost", "This photo is from TripShare App");
-    }
-
-    // TODO: delete this function after actual info is here from the server
-    private void setTempItem() {
-//        m_postToPresent = new Post(1, "Best Trip Ever", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. ");
-//        m_routeToPresent = new Route(1);
-//        List<Coordinate> coordinates = new ArrayList<>();
-//        coordinates.add(new Coordinate("32.438591", "34.923717"));
-//        coordinates.add(new Coordinate("32.439152", "34.921721"));
-//        coordinates.add(new Coordinate("32.439605", "34.920176"));
-//        coordinates.add(new Coordinate("32.437350", "34.919243"));
-//
-//        m_routeToPresent.setRouteCoorinates(coordinates);
     }
 
     private void setAllActivityItems() {

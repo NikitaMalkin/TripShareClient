@@ -18,7 +18,7 @@ import java.net.URISyntaxException;
 
 public class DeletePostRequestFromDB extends AsyncTask<String, Integer, String>
 {
-    String m_postToDeleteID; // TODO !!! change “1” to be the actual post ID
+    String m_postToDeleteID;
 
     public DeletePostRequestFromDB(String i_postToDeleteID) {
         m_postToDeleteID = i_postToDeleteID;

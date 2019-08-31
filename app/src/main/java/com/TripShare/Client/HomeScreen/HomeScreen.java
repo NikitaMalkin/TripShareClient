@@ -1,7 +1,5 @@
 package com.TripShare.Client.HomeScreen;
 
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +12,6 @@ import android.view.*;
 import android.widget.*;
 import com.TripShare.Client.Common.*;
 import com.TripShare.Client.CommunicationWithServer.GetPostsFromDB;
-import com.TripShare.Client.CommunicationWithServer.SendCommentToAddToPostInDB;
 import com.TripShare.Client.CommunicationWithServer.SendLikeToAddToPostInDB;
 import com.TripShare.Client.CommunicationWithServer.SendUserTagsToDB;
 import com.TripShare.Client.PostFullScreen.PostFullScreen;
@@ -29,8 +26,7 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
     private ArrayList<PostItem> m_posts;
     private PostsAdapter m_PostAdapter;
     private int m_firstPositionToRetrieve;
-    private PopupWindow m_commentsWindow;
-    private CommentAdapter m_commentAdapter;
+    private CommentPopUpWindow m_commentWindow;
     Gson gson = new Gson();
 
     @Override
@@ -50,7 +46,7 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
         m_PostAdapter = adapter;
 
         try {
-            new GetPostsFromDB(this, 0, m_firstPositionToRetrieve).execute().get();
+            new GetPostsFromDB(this, ApplicationManager.getLoggedInUser().getID(), m_firstPositionToRetrieve, true).execute().get();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -75,7 +71,7 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
 
     public void imageButton_refreshPostsOnClick(View view) {
         // retrieve another 5 posts from DB and get from server.
-        new GetPostsFromDB(this, 0, m_firstPositionToRetrieve).execute();
+        new GetPostsFromDB(this, ApplicationManager.getLoggedInUser().getID(), m_firstPositionToRetrieve, true).execute();
     }
 
     @Override
@@ -84,6 +80,7 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
 
             @Override
             public void run() {
+                int howManyPostsAdded = 0;
                 if (i_body.equals("[]"))
                     Toast.makeText(getApplicationContext(), "No more posts to load.", Toast.LENGTH_LONG).show();
                 else {
@@ -92,9 +89,11 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
                         for (int i = 0; i < jsonArr.length(); i++) {
                             JSONObject jsonObj = jsonArr.getJSONObject(i);
                             Post post = new Gson().fromJson(jsonObj.toString(), Post.class);
-                            addItemToListView(post);
-                            m_firstPositionToRetrieve++;
+                            howManyPostsAdded += addItemToListView(post);
                         }
+
+                        if(howManyPostsAdded == 0)
+                            Toast.makeText(getApplicationContext(), "No more posts to load.", Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -103,12 +102,28 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
         });
     }
 
-    public void addItemToListView(Post i_postToAdd) {
+    public int addItemToListView(Post i_postToAdd) {
         // set the new route in the list
-        // TODO: change the default picture to an acutal picture from the route if exists
-        PostItem itemToAdd = new PostItem(i_postToAdd, ContextCompat.getDrawable(getApplicationContext(), R.drawable.post_thumbnail_sample));
-        m_posts.add(itemToAdd);
-        m_PostAdapter.notifyDataSetChanged();
+        if(!postAlreadyAdded(i_postToAdd))
+        {
+            PostItem itemToAdd = new PostItem(i_postToAdd, ContextCompat.getDrawable(getApplicationContext(), R.drawable.post_thumbnail_sample)); // TODO: change the default picture to an acutal picture from the route if exists
+            m_posts.add(itemToAdd);
+            m_PostAdapter.notifyDataSetChanged();
+            m_firstPositionToRetrieve++;
+            return 1;
+        }
+        else
+            return 0;
+    }
+
+    private Boolean postAlreadyAdded(Post i_post)
+    {
+        for (PostItem postItem: m_posts)
+        {
+            if(i_post.getID() == postItem.getPost().getID())
+                return true;
+        }
+        return false;
     }
 
     @Override
@@ -128,81 +143,25 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
     }
 
     @Override
-    public void onLikeButtonClick(int i_position, View i_view) {
-        // TODO: something like, get the current userID and current postID and send them both to server
+    public void onLikeButtonClick(int i_position, View i_view)
+    {
         Post post = m_posts.get(i_position).getPost();
-        if (!post.checkIfLikedByUser(Long.valueOf(0))) // TODO: Change to Actual userID !!!!
+        if(!post.checkIfLikedByUser(ApplicationManager.getLoggedInUser().getID()))
         {
-            new SendLikeToAddToPostInDB(Long.valueOf(0), post.getID()).execute(); // TODO: Change to Actual userID !!!!
-            post.addLikedID(Long.valueOf(0));  // TODO: Change to Actual userID !!!!
+            new SendLikeToAddToPostInDB(ApplicationManager.getLoggedInUser().getID(), post.getID()).execute();
+            post.addLikedID(ApplicationManager.getLoggedInUser().getID());
+            Toast.makeText(getApplicationContext(), "Post Liked!", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "You Already Liked this Post!", Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onCommentButtonClick(int i_position, View i_view) {
-        onShowPopup(i_view, i_position);
-    }
-
-    // call this method when required to show popup
-    public void onShowPopup(View v, final int i_postPosition) {
-        ArrayList<Comment> comments = m_posts.get(i_postPosition).getPost().getCommentsArray();
-        LayoutInflater layoutInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        // inflate the custom popup layout
-        final View inflatedView = layoutInflater.inflate(R.layout.layout_popupwindow_comments, null, false);
-        // find the ListView in the popup layout
-        ListView commentsListView = (ListView) inflatedView.findViewById(R.id.commentsListView);
-        // fill the data to the list items
-        setPopUpWindowListView(commentsListView, comments);
-
-        // set height depends on the device size
-        m_commentsWindow = new PopupWindow(inflatedView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-        // set a background drawable with rounders corners
-        m_commentsWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.popupwindow_background));
-        // make it focusable to show the keyboard to enter in `EditText`
-        m_commentsWindow.setFocusable(true);
-        // make it outside touchable to dismiss the popup window
-        m_commentsWindow.setOutsideTouchable(true);
-
-        // show the popup at bottom of the screen and set some margin at bottom ie,
-        m_commentsWindow.showAtLocation(v, Gravity.CENTER_VERTICAL, 0, 50);
-
-        final Button submitButton = (Button)inflatedView.findViewById(R.id.submit_button);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String comment = ((EditText)inflatedView.findViewById(R.id.writeComment)).getText().toString();
-                saveCommentToLocalPost(comment, m_posts.get(i_postPosition).getPost());
-                sendCommentToServer(comment, m_posts.get(i_postPosition).getPost());
-                ((EditText)inflatedView.findViewById(R.id.writeComment)).setText("");
-            }
-        });
-    }
-
-    void populateList(ArrayList<Comment> i_comments, CommentAdapter i_adapter) {
-        for (Comment comment : i_comments) {
-            i_adapter.add(new CommentItem(comment));
-            i_adapter.notifyDataSetChanged();
-        }
-    }
-
-    void setPopUpWindowListView(ListView i_listView, ArrayList<Comment> i_comments) {
-        m_commentAdapter = new CommentAdapter(HomeScreen.this);
-        populateList(i_comments, m_commentAdapter);
-        i_listView.setAdapter(m_commentAdapter);
-    }
-
-    // TODO: change to current UserName !!!!!!!!!
-
-    void saveCommentToLocalPost(String i_comment, Post i_postToUpdate)
-    {
-        m_commentAdapter.add(new CommentItem(new Comment(i_comment, Long.valueOf(0), "Sivan")));
-        i_postToUpdate.getCommentsArray().add(new Comment(i_comment, Long.valueOf(0), "Sivan"));
-    }
-
-    void sendCommentToServer(String i_comment, Post i_postToUpdate)
-    {
-       new SendCommentToAddToPostInDB(new Comment(i_comment, Long.valueOf(0), "Sivan"), Long.valueOf(i_postToUpdate.getID())).execute();
+        m_commentWindow = new CommentPopUpWindow(this, m_posts);
+        m_commentWindow.onShowPopup(i_view, i_position);
     }
 
     public void onEditTagsButtonClick(View i_view)
@@ -224,8 +183,5 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
                 }
             }
         }));
-
-
-
     }
 }

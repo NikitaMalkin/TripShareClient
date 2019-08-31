@@ -2,6 +2,7 @@ package com.TripShare.Client.CommunicationWithServer;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import com.TripShare.Client.Common.ApplicationManager;
 import cz.msebera.android.httpclient.HttpResponse;
 import cz.msebera.android.httpclient.client.HttpClient;
 import cz.msebera.android.httpclient.client.ResponseHandler;
@@ -31,10 +32,10 @@ public class GetRoutesFromDB extends AsyncTask<String, Integer, String>
             HttpClient httpClient = HttpClientBuilder.create().build();
 
             // Build URI
-            URIBuilder builder = new URIBuilder("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/RouteServlet"); //"http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/RouteServlet"
+            URIBuilder builder = new URIBuilder("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/RouteServlet");
             //URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/TripShareProject/RouteServlet");
 
-            builder.setParameter("m_userID", "0"); // The value is 0 right now but will change in the future to user ID // TODO
+            builder.setParameter("m_userID", String.valueOf(ApplicationManager.getLoggedInUser().getID()));
 
             // Send request to server
             HttpGet http_get = new HttpGet(builder.build());

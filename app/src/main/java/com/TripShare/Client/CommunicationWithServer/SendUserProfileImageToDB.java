@@ -2,7 +2,6 @@ package com.TripShare.Client.CommunicationWithServer;
 
 import android.os.AsyncTask;
 import com.TripShare.Client.Common.User;
-import com.google.gson.JsonArray;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
@@ -27,8 +26,8 @@ public class SendUserProfileImageToDB extends AsyncTask<String, Integer, String>
 
         try {
             // This is getting the url from the string we passed in
-            URL url = new URL("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/UploadProfileImageServlet");//("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/UploadProfileImageServlet");
-            //URL url = new URL("http://10.0.2.2:8080/TripShareProject/UploadProfileImageServlet");//("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/UploadProfileImageServlet");
+            URL url = new URL("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/UploadProfileImageServlet");
+            //URL url = new URL("http://10.0.2.2:8080/TripShareProject/UploadProfileImageServlet");
 
             // Create the urlConnection
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();

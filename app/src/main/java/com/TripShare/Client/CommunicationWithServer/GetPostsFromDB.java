@@ -2,6 +2,7 @@ package com.TripShare.Client.CommunicationWithServer;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import com.TripShare.Client.Common.ApplicationManager;
 import cz.msebera.android.httpclient.HttpResponse;
 import cz.msebera.android.httpclient.client.HttpClient;
 import cz.msebera.android.httpclient.client.ResponseHandler;
@@ -12,16 +13,18 @@ import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 
 public class GetPostsFromDB extends AsyncTask<String, Integer, String>
 {
-    String body;
-    AddAllItemsToListViewListener m_listenerAddItems;
-    long m_userID;
-    int m_firstPositionToRetrieve;
+    private String m_body;
+    private Boolean m_isHomePage;
+    private AddAllItemsToListViewListener m_listenerAddItems;
+    private long m_userID;
+    private int m_firstPositionToRetrieve;
 
-    public GetPostsFromDB(AddAllItemsToListViewListener i_listener, long i_userID, int i_firstPositionToRetrieve)
+    public GetPostsFromDB(AddAllItemsToListViewListener i_listener, long i_userID, int i_firstPositionToRetrieve, Boolean i_isHomePage)
     {
         m_listenerAddItems = i_listener;
         m_userID = i_userID;
         m_firstPositionToRetrieve = i_firstPositionToRetrieve;
+        m_isHomePage = i_isHomePage;
     }
     @Override
     protected String doInBackground(String... Args)
@@ -32,12 +35,21 @@ public class GetPostsFromDB extends AsyncTask<String, Integer, String>
         {
             HttpClient httpClient = HttpClientBuilder.create().build();
 
-            // Build URI
-            URIBuilder builder = new URIBuilder("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/ProfilePostServlet");
-            //URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/TripShareProject/ProfilePostServlet");
+            URIBuilder builder;
 
-            // TODO: change "0" to m_userID !!!!!!!!!!!!!!!!!!!!!!!!
-            builder.setParameter("m_userID", "0"); // The value is 0 right now but will change in the future to user ID // TODO
+            // Build URI
+            if(m_isHomePage)
+            {
+                builder = new URIBuilder("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/HomePagePostsServlet");
+                //builder = new URIBuilder("http://10.0.2.2:8080/TripShareProject/HomePagePostsServlet");
+            }
+            else
+            {
+                builder = new URIBuilder("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/ProfilePostServlet");
+                //builder = new URIBuilder("http://10.0.2.2:8080/TripShareProject/ProfilePostServlet");
+            }
+
+            builder.setParameter("m_userID", String.valueOf(m_userID));
             builder.setParameter("m_firstPositionToRetrieve", String.valueOf(m_firstPositionToRetrieve));
 
             // Send request to server
@@ -46,13 +58,13 @@ public class GetPostsFromDB extends AsyncTask<String, Integer, String>
 
             // Handle response
             ResponseHandler<String> handler = new BasicResponseHandler();
-            body = handler.handleResponse(response);
+            m_body = handler.handleResponse(response);
             int code = response.getStatusLine().getStatusCode();
 
             // retrieve the list of routes from response need to update the list view in the main thread.
             if(code == 200)
             {
-                m_listenerAddItems.addAllItemsToView(body);
+                m_listenerAddItems.addAllItemsToView(m_body);
             }
         }
         catch (Exception e)

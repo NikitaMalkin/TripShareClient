@@ -141,20 +141,14 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
         return bitmap;
     }
 
-    private void initializeViews() //!!!!!!!!!!!!!!!!!!!!  TODO TODO TODO
+    private void initializeViews() // TODO??
     {
         initializeSpinnerWithRoutes();
         m_markerIcon = getBitmapFromVectorDrawable(getApplicationContext(), R.drawable.ic_marker_on_map); //converting image from vector to bitmap
 
-//        MapFragment mapFragment = (MapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
-
         m_mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         m_mapFragment.getMapAsync(this);
-
-//        MapFragment mapFragment = MapFragment.newInstance();
-//        mapFragment.getMapAsync(this);
     }
 
     private void initializeSpinnerWithRoutes()
@@ -221,11 +215,14 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
         TextView postDescription = findViewById(R.id.post_description_editText);
         long routeID = m_adapter.getItems().get(m_spinner.getSelectedIndex()).getRoute().getRouteID();
 
-        m_postToAdd = new Post(0, postTitle.getText().toString(), postDescription.getText().toString());
+        User loggedInUser = ApplicationManager.getLoggedInUser();
+        m_postToAdd = new Post(loggedInUser.getID(), postTitle.getText().toString(), postDescription.getText().toString());
         m_postToAdd.setRouteID(routeID);
+        m_postToAdd.setUserFirstName(loggedInUser.getStringUserName());
+        m_postToAdd.setUserLastName(loggedInUser.getLastName());
+        // TODO: Add a function which grabes out of the coordinates one image if exists otherwise puts a null or default image
 
         askUserToCheckRelevantTags(); //NOTE: the upcoming code had to be moved inside OnDismiss of the dialog in order to sync
-
     }
 
     private void askUserToCheckRelevantTags()
@@ -311,7 +308,7 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
 
     public void settingTheDefaultValueForTheSpinner()
     {
-        Route defaultValue = new Route(0);
+        Route defaultValue = new Route(ApplicationManager.getLoggedInUser().getID());
         defaultValue.setRouteName("Choose Route...");
         m_adapter.getItems().add(0, new SpinnerItem(defaultValue));
         m_spinner.setAdapter(m_adapter);
@@ -324,5 +321,4 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
         settingTheDefaultValueForTheSpinner();
         m_adapter.notifyDataSetChanged();
     }
-
 }
