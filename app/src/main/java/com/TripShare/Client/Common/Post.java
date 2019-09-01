@@ -100,4 +100,8 @@ public class Post implements Serializable{
 
         return returnValue;
     }
+
+    public String getAuthorFirstName() { return m_userFirstName; }
+
+    public String getAuthorLastName() { return m_userLastName; }
 }

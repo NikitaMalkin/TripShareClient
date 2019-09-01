@@ -169,6 +169,10 @@ public class ProfileScreen extends ActivityWithNavigationDrawer implements GetPo
         {
             new SendLikeToAddToPostInDB(ApplicationManager.getLoggedInUser().getID(), post.getID());
             post.addLikedID(ApplicationManager.getLoggedInUser().getID());
+
+            //paint the imagebutton red
+            ImageButton imageButton = i_view.findViewById(R.id.profileItem_imageButtonLike);
+            imageButton.setImageDrawable(getDrawable(R.drawable.ic_favorite_black_24dp_red));
         }
     }
 

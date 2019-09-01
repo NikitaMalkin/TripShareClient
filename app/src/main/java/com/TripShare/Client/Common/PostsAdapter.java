@@ -1,6 +1,8 @@
 package com.TripShare.Client.Common;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,7 +63,16 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
         imageThumbnail.setImageDrawable(post.getImage());
 
         TextView likesAndCommentsNumber = viewHolder.getTextViewLikesAndCommentsNumber();
-        //likesAndCommentsNumber.setText(post.getPost().getLikeCount() + " Likes, " + post.getPost().getCommentCount() + " Comments");
+        likesAndCommentsNumber.setText(post.getPost().getLikeCount() + " Likes, " + post.getPost().getCommentCount() + " Comments");
+
+        TextView authorName = viewHolder.getTextViewAuthorName();
+        authorName.setText("by " + post.getPost().getAuthorFirstName() + " " + post.getPost().getAuthorLastName());
+
+        if (post.getPost().checkIfLikedByUser(ApplicationManager.getLoggedInUser().getID()))
+        {
+            ImageView likeImage = viewHolder.getImageButtonLikeButton();
+            likeImage.setImageDrawable(viewHolder.itemView.getContext().getDrawable(R.drawable.ic_favorite_black_24dp_red));
+        }
     }
 
     // Returns the total count of items in the list
@@ -81,6 +92,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
         private ImageButton m_shareButton;
         private ImageView m_image;
         private TextView m_likesAndCommentsNumber;
+        private TextView m_authorName;
 
         public ViewHolder(View itemView)
         {
@@ -94,6 +106,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
             m_shareButton = itemView.findViewById(R.id.profileItem_imageButtonShare);
             m_image = itemView.findViewById(R.id.profileItem_imageView);
             m_likesAndCommentsNumber = itemView.findViewById(R.id.profileItem_textView_numberOfLikesAndComments);
+            m_authorName = itemView.findViewById(R.id.profileItem_postAuthor);
 
             m_shareButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -167,6 +180,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
         {
             return m_likesAndCommentsNumber;
         }
+
+        public TextView getTextViewAuthorName() { return m_authorName; }
     }
 
     public interface shareButtonClickedListener

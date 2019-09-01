@@ -151,6 +151,10 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
             new SendLikeToAddToPostInDB(ApplicationManager.getLoggedInUser().getID(), post.getID()).execute();
             post.addLikedID(ApplicationManager.getLoggedInUser().getID());
             Toast.makeText(getApplicationContext(), "Post Liked!", Toast.LENGTH_LONG).show();
+
+            //paint the imagebutton red
+            ImageButton imageButton = i_view.findViewById(R.id.profileItem_imageButtonLike);
+            imageButton.setImageDrawable(getDrawable(R.drawable.ic_favorite_black_24dp_red));
         }
         else
         {
