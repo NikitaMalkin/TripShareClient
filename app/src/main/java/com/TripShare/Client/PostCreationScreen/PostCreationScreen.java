@@ -99,7 +99,7 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
         itemSelected.getRoute().getRouteCoordinates().get(m_currentCoordinateIndex).setNote(i_noteToAttach);
         Marker relevantMarker =  m_markers.get(m_currentCoordinateIndex);
         relevantMarker.setTitle(i_noteToAttach);
-        //relevantMarker.showInfoWindow();
+        addNoteIconNearMarker();
     }
 
     @Override
@@ -123,6 +123,14 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
         Bitmap imageToShow = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         Bitmap smallerMarker = Bitmap.createScaledBitmap(imageToShow, 100, 100, false);
         m_map.addMarker(new MarkerOptions().position(i_coordinateToAttachTo).icon(BitmapDescriptorFactory.fromBitmap(smallerMarker))).setAnchor(1f, 1f);
+    }
+
+    private void addNoteIconNearMarker()
+    {
+        LatLng coordinateToAttachTo = m_markers.get(m_currentCoordinateIndex).getPosition();
+        Bitmap iconBitmap = getBitmapFromVectorDrawable(getApplicationContext(), R.drawable.ic_note);
+        Bitmap smallerMarker = Bitmap.createScaledBitmap(iconBitmap, 50, 50, false);
+        m_map.addMarker(new MarkerOptions().position(coordinateToAttachTo).icon(BitmapDescriptorFactory.fromBitmap(smallerMarker))).setAnchor(1f, 0.3f);
     }
 
     public static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId)
@@ -191,7 +199,6 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
         m_map.setOnMarkerClickListener(this);
         initializeMap();
     }
-
 
     public void OnAddRouteButtonClick(View view)
     {
