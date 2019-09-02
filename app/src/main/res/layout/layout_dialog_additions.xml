@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto" android:layout_width="match_parent"
+                                             android:layout_height="match_parent">
+
+        <ImageView
+                android:id="@+id/image_view_coordinate"
+                android:layout_width="match_parent"
+                android:layout_height="252dp"
+                android:padding="6dp"
+                android:background="@drawable/image_background"
+                android:src="@drawable/no_image_available"
+                android:paddingTop="3dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintVertical_bias="0.0"/>
+
+    <TextView
+            android:id="@+id/coordinate_note"
+            android:text="No note attached to selected coordinate..."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="15dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/image_view_coordinate"
+            android:layout_marginStart="20dp" android:layout_marginEnd="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.004" android:textAlignment="center" android:singleLine="false"/>
+
+</android.support.constraint.ConstraintLayout>

@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.TripShare.Client.Common.User;
 import com.TripShare.Client.CommunicationWithServer.GetRouteByID;
+import com.TripShare.Client.PostCreationScreen.ChooseAdditionDialog;
 import com.TripShare.Client.R;
 import com.TripShare.Client.Common.Coordinate;
 import com.TripShare.Client.Common.Post;
@@ -33,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class PostFullScreen extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.SnapshotReadyCallback, GetRouteByID.SetRetrievedRoute
+public class PostFullScreen extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.SnapshotReadyCallback, GetRouteByID.SetRetrievedRoute,  GoogleMap.OnMarkerClickListener
 {
     private static final PatternItem DOT = new Dot();
     private static final PatternItem GAP = new Gap(20);
@@ -56,6 +58,7 @@ public class PostFullScreen extends AppCompatActivity implements OnMapReadyCallb
     private List<Marker> m_markers;
     private View m_viewToScreenShot;
     private boolean m_isShowButton = true;
+    private int m_currentCoordinateIndex;
     Gson gson = new Gson();
 
     public void addImageMarkerAndConvertStringToBitmap(String i_imageString, LatLng i_coordinateToAttachTo) {
@@ -104,9 +107,9 @@ public class PostFullScreen extends AppCompatActivity implements OnMapReadyCallb
         // Temp TODO: add the Relevant Info
 
         // Add the user Info
-        m_userName_textView.setText(m_postToPresent.getUserFirstName() + m_postToPresent.getUserLastName());
-        m_postLikesCount.setText(m_postToPresent.getLikeCount());
-        m_postCommentCount.setText(m_postToPresent.getCommentCount());
+        m_userName_textView.setText("by " + m_postToPresent.getUserFirstName() + " " + m_postToPresent.getUserLastName());
+        m_postLikesCount.setText(String.valueOf(m_postToPresent.getLikeCount()));
+        m_postCommentCount.setText(String.valueOf(m_postToPresent.getCommentCount()));
 
         m_mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
@@ -121,6 +124,7 @@ public class PostFullScreen extends AppCompatActivity implements OnMapReadyCallb
         // Get the post to present from the last activity
         m_postToPresent = gson.fromJson(getIntent().getStringExtra("Post"), Post.class);
         m_isShowButton = (Boolean)getIntent().getSerializableExtra("isShowScreenShotButton");
+
         // Get Post Route From DB
         try { new GetRouteByID(this, m_postToPresent.getPostRoute()).execute().get(); }
         catch(Exception e) { e.printStackTrace(); }
@@ -128,20 +132,30 @@ public class PostFullScreen extends AppCompatActivity implements OnMapReadyCallb
         //setTempItem();
         setAllActivityItems();
         initializeViews();
-
-        m_saveToGalleryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveScreenShotToGallery(v);
-            }
-        });
     }
 
     @Override
     public void onMapReady(GoogleMap map) {
         m_map = map;
+        m_map.setOnMarkerClickListener(this);
         m_map.getUiSettings().setZoomControlsEnabled(true);
         initializeMap();
+    }
+
+    @Override
+    public boolean onMarkerClick(final Marker marker)
+    {
+        // Getting the pressed coordinate index
+        if(m_markers.indexOf(marker) != -1 && m_markers.indexOf(marker) < m_routeToPresent.getRouteCoordinates().size()) {
+            m_currentCoordinateIndex = m_markers.indexOf(marker);
+            DialogFragment dialog = new ShowCoordinateAdditionsDialog();
+            Bundle args = new Bundle();
+            args.putString("note", m_routeToPresent.getRouteCoordinates().get(m_currentCoordinateIndex).getNote());
+            args.putString("image", m_routeToPresent.getRouteCoordinates().get(m_currentCoordinateIndex).getImageString());
+            dialog.setArguments(args);
+            dialog.show(getSupportFragmentManager(), "Coordinate Information");
+        }
+        return true;
     }
 
     @Override
@@ -184,8 +198,18 @@ public class PostFullScreen extends AppCompatActivity implements OnMapReadyCallb
         m_mapScreenShot = findViewById(R.id.map_screenshot_imageView);
         m_markerIcon = getBitmapFromVectorDrawable(getApplicationContext(), R.drawable.ic_marker_on_map); //converting image from vector to bitmap
 
-        if (!m_isShowButton)
+        if (!m_isShowButton) {
             m_saveToGalleryButton.setVisibility(View.GONE);
+        }
+        else
+        {
+            m_saveToGalleryButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    saveScreenShotToGallery(v);
+                }
+            });
+        }
     }
 
     @Override
@@ -205,10 +229,10 @@ public class PostFullScreen extends AppCompatActivity implements OnMapReadyCallb
             marker = m_map.addMarker(new MarkerOptions()
                     .position(currLatLng)
                     .icon(BitmapDescriptorFactory.fromBitmap(m_markerIcon)));
-            marker.setAnchor(0.5f, 0.5f);
+            marker.setAnchor(0f, 0f);
             m_map.addPolyline(m_polyline
                     .add(currLatLng)
-                    .width(24)
+                    .width(30)
                     .color(Color.rgb(100, 186, 105)));
             m_markers.add(marker);
 
@@ -217,19 +241,26 @@ public class PostFullScreen extends AppCompatActivity implements OnMapReadyCallb
                 addImageMarkerAndConvertStringToBitmap(coordinateString, marker.getPosition());
             }
 
-            if (coord.getNote() != null) {
-                marker.setTitle(coord.getNote());
-            }
+            String coordNote = coord.getNote();
+            if(coordNote!= null)
+                addNoteIconNearMarker(marker.getPosition());
         }
 
         CameraUpdate center = CameraUpdateFactory.newLatLng(getCenterCoordinate());
-        CameraUpdate zoom = CameraUpdateFactory.zoomTo(16);
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(10);
 
         m_map.moveCamera(center);
         m_map.animateCamera(zoom);
     }
 
-    private Bitmap takeScreenShot(View i_viewToScreenShot) {
+    private void addNoteIconNearMarker( LatLng i_coordinateToAttachTo)
+    {
+        Bitmap iconBitmap = getBitmapFromVectorDrawable(getApplicationContext(), R.drawable.ic_note);
+        Bitmap smallerMarker = Bitmap.createScaledBitmap(iconBitmap, 50, 50, false);
+        m_map.addMarker(new MarkerOptions().position(i_coordinateToAttachTo).icon(BitmapDescriptorFactory.fromBitmap(smallerMarker))).setAnchor(1f, 0.3f);
+    }
+
+        private Bitmap takeScreenShot(View i_viewToScreenShot) {
         i_viewToScreenShot = i_viewToScreenShot.getRootView();
         i_viewToScreenShot.setDrawingCacheEnabled(true);
         i_viewToScreenShot.buildDrawingCache(true);
