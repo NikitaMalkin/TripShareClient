@@ -226,9 +226,9 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
 
     public void OnPostButtonClick(View view)
     {
-        new AsyncTask<Void, Void, Void>() {
-            protected Void doInBackground(Void... unused)
-            {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
                 TextView postTitle = findViewById(R.id.post_title_editText);
                 TextView postDescription = findViewById(R.id.post_description_editText);
                 long routeID = m_adapter.getItems().get(m_spinner.getSelectedIndex()).getRoute().getRouteID();
@@ -242,11 +242,9 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
                 {
                     m_postToAdd.setThumbnailString(m_postThumbnailString);
                 }
-
-
-                return null;
             }
-        }.execute();
+        });
+
 
         askUserToCheckRelevantTags(); //NOTE: the upcoming code had to be moved inside OnDismiss of the dialog in order to sync
     }
