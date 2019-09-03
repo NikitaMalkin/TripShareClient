@@ -137,8 +137,7 @@ public class ProfileScreen extends ActivityWithNavigationDrawer implements GetPo
     public void addItemToListView(Post i_postToAdd)
     {
         // set the new route in the list
-        // TODO: change the default picture to an actual picture from the route if exists
-        PostItem itemToAdd = new PostItem(i_postToAdd, ContextCompat.getDrawable(getApplicationContext(), R.drawable.post_thumbnail_sample));
+        PostItem itemToAdd = new PostItem(i_postToAdd);
         m_posts.add(itemToAdd);
         m_PostAdapter.notifyDataSetChanged();
     }

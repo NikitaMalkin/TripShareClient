@@ -45,6 +45,7 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
     private static final PatternItem GAP = new Gap(20);
 
     private Post m_postToAdd;
+    private String m_postThumbnailString;
     private NiceSpinner m_spinner;
     private SpinnerAdapter m_adapter;
     private GoogleMap m_map;
@@ -105,10 +106,17 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
     @Override
     public void attachImageToRelevantCoordinate(Bitmap i_imageToAttach)
     {
+        //converting the image to string
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         i_imageToAttach.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream .toByteArray();
         String imageString = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+        //checking if post already has a thumbnail, if not, we set the current image to be the thumbnail
+        if (m_postThumbnailString == null)
+        {
+            m_postThumbnailString = imageString;
+        }
 
         // Attaching the image to the coordinate.
         SpinnerItem itemSelected = m_adapter.getItems().get(m_spinner.getSelectedIndex());
@@ -218,23 +226,33 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
 
     public void OnPostButtonClick(View view)
     {
-        TextView postTitle = findViewById(R.id.post_title_editText);
-        TextView postDescription = findViewById(R.id.post_description_editText);
-        long routeID = m_adapter.getItems().get(m_spinner.getSelectedIndex()).getRoute().getRouteID();
+        new AsyncTask<Void, Void, Void>() {
+            protected Void doInBackground(Void... unused)
+            {
+                TextView postTitle = findViewById(R.id.post_title_editText);
+                TextView postDescription = findViewById(R.id.post_description_editText);
+                long routeID = m_adapter.getItems().get(m_spinner.getSelectedIndex()).getRoute().getRouteID();
 
-        User loggedInUser = ApplicationManager.getLoggedInUser();
-        m_postToAdd = new Post(loggedInUser.getID(), postTitle.getText().toString(), postDescription.getText().toString());
-        m_postToAdd.setRouteID(routeID);
-        m_postToAdd.setUserFirstName(loggedInUser.getStringUserName());
-        m_postToAdd.setUserLastName(loggedInUser.getLastName());
-        // TODO: Add a function which grabes out of the coordinates one image if exists otherwise puts a null or default image
+                User loggedInUser = ApplicationManager.getLoggedInUser();
+                m_postToAdd = new Post(loggedInUser.getID(), postTitle.getText().toString(), postDescription.getText().toString());
+                m_postToAdd.setRouteID(routeID);
+                m_postToAdd.setUserFirstName(loggedInUser.getStringUserName());
+                m_postToAdd.setUserLastName(loggedInUser.getLastName());
+                if (m_postThumbnailString != null)
+                {
+                    m_postToAdd.setThumbnailString(m_postThumbnailString);
+                }
+
+
+                return null;
+            }
+        }.execute();
 
         askUserToCheckRelevantTags(); //NOTE: the upcoming code had to be moved inside OnDismiss of the dialog in order to sync
     }
 
     private void askUserToCheckRelevantTags()
     {
-        synchronized (m_postToAdd) {
 
             final DialogFragment editTagsDialog = new TagSelectionDialog();
 
@@ -262,7 +280,6 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
                     startActivity(intent);
                 }
             }));
-        }
     }
 
     private void showRouteOnMap(String i_spinnerItemString)

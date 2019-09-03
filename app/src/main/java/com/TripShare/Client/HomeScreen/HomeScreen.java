@@ -106,7 +106,7 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
         // set the new route in the list
         if(!postAlreadyAdded(i_postToAdd))
         {
-            PostItem itemToAdd = new PostItem(i_postToAdd, ContextCompat.getDrawable(getApplicationContext(), R.drawable.post_thumbnail_sample)); // TODO: change the default picture to an acutal picture from the route if exists
+            PostItem itemToAdd = new PostItem(i_postToAdd);
             m_posts.add(itemToAdd);
             m_PostAdapter.notifyDataSetChanged();
             m_firstPositionToRetrieve++;
