@@ -1,5 +1,6 @@
 package com.TripShare.Client.PostCreationScreen;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,10 +19,10 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.TripShare.Client.Common.*;
 import com.TripShare.Client.CommunicationWithServer.GetRoutesFromDB;
 import com.TripShare.Client.CommunicationWithServer.SendPostToAddToDB;
-import com.TripShare.Client.CommunicationWithServer.SendUserTagsToDB;
 import com.TripShare.Client.CommunicationWithServer.UpdateRouteInDB;
 import com.TripShare.Client.ProfileScreen.ProfileScreen;
 import com.TripShare.Client.R;
@@ -55,6 +56,7 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
     private List<Marker> m_markers;
     private Bitmap m_markerIcon;
     private int m_currentCoordinateIndex;
+    private AlertDialog m_progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -159,6 +161,7 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
         m_mapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.map);
         m_mapFragment.getMapAsync(this);
+
     }
 
     private void initializeSpinnerWithRoutes()
@@ -220,9 +223,17 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
 
     public void OnPostButtonClick(View view)
     {
-        AsyncTask.execute(new Runnable() {
+
+        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
             @Override
-            public void run() {
+            protected void onPreExecute()
+            {
+
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids)
+            {
                 TextView postTitle = findViewById(R.id.post_title_editText);
                 TextView postDescription = findViewById(R.id.post_description_editText);
                 long routeID = m_adapter.getItems().get(m_spinner.getSelectedIndex()).getRoute().getRouteID();
@@ -239,10 +250,18 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
                 {
                     m_postToAdd.setThumbnailString(m_postThumbnailString);
                 }
+                return null;
             }
-        });
+
+            @Override
+            protected void onPostExecute(Void result)
+            {
+
+            }
+        }.execute();
 
         askUserToCheckRelevantTags(); //NOTE: the upcoming code had to be moved inside OnDismiss of the dialog in order to sync
+
     }
 
     private void askUserToCheckRelevantTags()
@@ -254,6 +273,8 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
             editTagsDialog.getDialog().setOnDismissListener((new DialogInterface.OnDismissListener() {
                 @Override
                 public void onDismiss(DialogInterface dialog) {
+                    Toast.makeText(getApplicationContext(), "Posting... This could take a moment.",
+                            Toast.LENGTH_LONG).show();
                     m_postToAdd.setTags(((TagSelectionDialog) editTagsDialog).getSelectedTags());
 
                     // THE REST OF THE CODE IS HERE //

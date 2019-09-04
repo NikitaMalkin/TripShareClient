@@ -117,7 +117,15 @@ public class ActivityWithNavigationDrawer extends AppCompatActivity {
     private void updateDrawerPictureView()
     {
         ImageView imageView = findViewById(R.id.drawer_userImage);
-        imageView.setImageBitmap(ApplicationManager.getDrawerProfilePicture());
+
+        if (ApplicationManager.getDrawerProfilePicture() == null)
+        {
+            imageView.setImageDrawable(getResources().getDrawable(R.drawable.ic_iconfinder_icon));
+        }
+        else
+        {
+            imageView.setImageBitmap(ApplicationManager.getDrawerProfilePicture());
+        }
     }
 
     @Override

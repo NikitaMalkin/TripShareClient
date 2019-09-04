@@ -28,6 +28,13 @@
                         android:tint="#6B6B6B" android:backgroundTint="#00FFFFFF"
                         android:onClick="onEditTagsButtonClick"/>
             </android.support.constraint.ConstraintLayout>
+            <ProgressBar
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/homescreen_progressBar" android:indeterminateBehavior="repeat"
+                    android:indeterminateDuration="50" android:indeterminate="true" android:indeterminateOnly="true"
+                    android:visibility="gone"/>
             <android.support.constraint.ConstraintLayout
 
                     android:layout_width="match_parent"

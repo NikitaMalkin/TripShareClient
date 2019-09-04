@@ -2,6 +2,8 @@ package com.TripShare.Client.CommunicationWithServer;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import com.TripShare.Client.Common.ApplicationManager;
 import cz.msebera.android.httpclient.HttpResponse;
 import cz.msebera.android.httpclient.client.HttpClient;
@@ -11,6 +13,8 @@ import cz.msebera.android.httpclient.client.utils.URIBuilder;
 import cz.msebera.android.httpclient.impl.client.BasicResponseHandler;
 import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 
+import javax.xml.transform.Result;
+
 public class GetPostsFromDB extends AsyncTask<String, Integer, String>
 {
     private String m_body;
@@ -18,18 +22,29 @@ public class GetPostsFromDB extends AsyncTask<String, Integer, String>
     private AddAllItemsToListViewListener m_listenerAddItems;
     private long m_userID;
     private int m_firstPositionToRetrieve;
+    private ProgressBar m_progressBar;
 
-    public GetPostsFromDB(AddAllItemsToListViewListener i_listener, long i_userID, int i_firstPositionToRetrieve, Boolean i_isHomePage)
+    public GetPostsFromDB(AddAllItemsToListViewListener i_listener, long i_userID, int i_firstPositionToRetrieve, Boolean i_isHomePage, ProgressBar i_progressBarToAnimate)
     {
         m_listenerAddItems = i_listener;
         m_userID = i_userID;
         m_firstPositionToRetrieve = i_firstPositionToRetrieve;
         m_isHomePage = i_isHomePage;
+        m_progressBar = i_progressBarToAnimate;
     }
+
+    @Override
+    protected void onPreExecute()
+    {
+        m_progressBar.setVisibility(View.VISIBLE);
+    }
+
+
     @Override
     protected String doInBackground(String... Args)
     {
         String output = null;
+
 
         try
         {
@@ -72,7 +87,14 @@ public class GetPostsFromDB extends AsyncTask<String, Integer, String>
             Log.e("log_tag", "Error in http connection " + e.toString());
             output = "Error in http connection " + e.toString();
         }
+
         return output;
+    }
+
+    @Override
+    protected void onPostExecute(String result)
+    {
+        m_progressBar.setVisibility(View.GONE);
     }
 
     public interface AddAllItemsToListViewListener

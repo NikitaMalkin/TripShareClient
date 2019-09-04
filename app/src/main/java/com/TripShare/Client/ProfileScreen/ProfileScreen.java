@@ -33,6 +33,8 @@ public class ProfileScreen extends ActivityWithNavigationDrawer implements GetPo
     private ImageView m_profileImageView;
     private TextView m_name_lastname_textView;
     private CommentPopUpWindow m_commentWindow;
+    private ProgressBar m_progressBar;
+
     Gson gson = new Gson();
 
     @Override
@@ -41,16 +43,6 @@ public class ProfileScreen extends ActivityWithNavigationDrawer implements GetPo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_screen);
         setActivityTitle("Profile");
-
-        RecyclerView Posts = findViewById(R.id.profileScreen_recyclerView);
-
-        m_firstPositionToRetrieve = 0;
-        m_posts = new ArrayList<>();
-        // Create adapter passing in the sample user data
-        PostsAdapter adapter = new PostsAdapter(m_posts, this, this, this, this);
-        // Attach the adapter to the recyclerView to populate items
-        Posts.setAdapter(adapter);
-        m_PostAdapter = adapter;
 
         m_name_lastname_textView = findViewById(R.id.profile_name_lastname_textView);
         m_name_lastname_textView.setText(ApplicationManager.getLoggedInUser().getuserRealName() + " " + ApplicationManager.getLoggedInUser().getLastName());
@@ -74,15 +66,21 @@ public class ProfileScreen extends ActivityWithNavigationDrawer implements GetPo
             }});
                 // TODO: add another line that checks if the user has a profile picture already, then set it to the actual photo.
 
-        // Initialize contacts
-        try
-        {
-            new GetPostsFromDB(this, ApplicationManager.getLoggedInUser().getID(), m_firstPositionToRetrieve, false).execute().get();
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+        //Application Drawer initialization
+        initializeDrawerLayout();
+
+        // Initialization of posts
+        RecyclerView Posts = findViewById(R.id.profileScreen_recyclerView);
+        m_firstPositionToRetrieve = 0;
+        m_posts = new ArrayList<>();
+        // Create adapter passing in the sample user data
+        PostsAdapter adapter = new PostsAdapter(m_posts, this, this, this, this);
+        // Attach the adapter to the recyclerView to populate items
+        Posts.setAdapter(adapter);
+        m_PostAdapter = adapter;
+
+        //progressbar initialization
+        m_progressBar = findViewById(R.id.profilescreen_progressbar);
 
         // Set layout manager to position the items
         Posts.setLayoutManager(new LinearLayoutManager(this));
@@ -91,15 +89,27 @@ public class ProfileScreen extends ActivityWithNavigationDrawer implements GetPo
         DividerItemDecoration decoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
         decoration.setDrawable(getDrawable(R.drawable.shadow));
         Posts.addItemDecoration(decoration);
+    }
 
-        //Application Drawer initialization
-        initializeDrawerLayout();
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        try
+        {
+            new GetPostsFromDB(this, ApplicationManager.getLoggedInUser().getID(), m_firstPositionToRetrieve, false, m_progressBar).execute();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
     }
 
     public void imageButton_refreshPostsOnClick(View view)
     {
         // retrieve another 5 posts from DB and get from server.
-       new GetPostsFromDB(this, 0, m_firstPositionToRetrieve, false).execute();
+       new GetPostsFromDB(this, 0, m_firstPositionToRetrieve, false, m_progressBar).execute();
     }
 
     @Override
@@ -172,6 +182,12 @@ public class ProfileScreen extends ActivityWithNavigationDrawer implements GetPo
             //paint the imagebutton red
             ImageButton imageButton = i_view.findViewById(R.id.profileItem_imageButtonLike);
             imageButton.setImageDrawable(getDrawable(R.drawable.ic_favorite_black_24dp_red));
+
+            m_PostAdapter.notifyDataSetChanged();
+        }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "You have already likes this post.", Toast.LENGTH_LONG).show();
         }
     }
 

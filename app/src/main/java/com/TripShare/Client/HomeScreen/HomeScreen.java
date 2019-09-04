@@ -3,6 +3,7 @@ package com.TripShare.Client.HomeScreen;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.RecoverySystem;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
@@ -27,6 +28,7 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
     private PostsAdapter m_PostAdapter;
     private int m_firstPositionToRetrieve;
     private CommentPopUpWindow m_commentWindow;
+    private ProgressBar m_progressBar;
     Gson gson = new Gson();
 
     @Override
@@ -35,7 +37,11 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
         setContentView(R.layout.activiity_home_screen);
         setActivityTitle("Home");
 
+        //Application Drawer initialization
+        initializeDrawerLayout();
+
         RecyclerView Posts = findViewById(R.id.homescreen_recyclerView);
+        m_progressBar = findViewById(R.id.homescreen_progressBar);
 
         m_firstPositionToRetrieve = 0;
         m_posts = new ArrayList<>();
@@ -45,12 +51,6 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
         Posts.setAdapter(adapter);
         m_PostAdapter = adapter;
 
-        try {
-            new GetPostsFromDB(this, ApplicationManager.getLoggedInUser().getID(), m_firstPositionToRetrieve, true).execute().get();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         // Set layout manager to position the items
         Posts.setLayoutManager(new LinearLayoutManager(this));
 
@@ -59,19 +59,30 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
         decoration.setDrawable(getDrawable(R.drawable.shadow));
         Posts.addItemDecoration(decoration);
 
-        //Application Drawer initialization
-        initializeDrawerLayout();
-
         //FirstLaunchDialog
         if (ApplicationManager.getHomePageFirstLaunch()) {
             DialogFragment firstTimeDialog = new FirstLaunchDialog();
             firstTimeDialog.show(getSupportFragmentManager(), "");
         }
+
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+
+        try
+        {
+            new GetPostsFromDB(this, ApplicationManager.getLoggedInUser().getID(), m_firstPositionToRetrieve, true, m_progressBar).execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void imageButton_refreshPostsOnClick(View view) {
         // retrieve another 5 posts from DB and get from server.
-        new GetPostsFromDB(this, ApplicationManager.getLoggedInUser().getID(), m_firstPositionToRetrieve, true).execute();
+        new GetPostsFromDB(this, ApplicationManager.getLoggedInUser().getID(), m_firstPositionToRetrieve, true, m_progressBar).execute();
     }
 
     @Override
@@ -155,10 +166,12 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
             //paint the imagebutton red
             ImageButton imageButton = i_view.findViewById(R.id.profileItem_imageButtonLike);
             imageButton.setImageDrawable(getDrawable(R.drawable.ic_favorite_black_24dp_red));
+
+            m_PostAdapter.notifyDataSetChanged();
         }
         else
         {
-            Toast.makeText(getApplicationContext(), "You Already Liked this Post!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "You have already likes this post.", Toast.LENGTH_LONG).show();
         }
     }
 

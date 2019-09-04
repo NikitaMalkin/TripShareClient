@@ -15,6 +15,12 @@
             android:isScrollContainer="true" android:fitsSystemWindows="true">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:orientation="vertical">
+            <ProgressBar
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/profilescreen_progressbar" android:indeterminate="true" android:indeterminateDuration="50"
+                    android:indeterminateOnly="true" android:indeterminateBehavior="cycle"/>
             <android.support.constraint.ConstraintLayout
 
                     android:layout_width="match_parent"
