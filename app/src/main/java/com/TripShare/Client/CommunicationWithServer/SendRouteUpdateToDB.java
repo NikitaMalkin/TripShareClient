@@ -26,8 +26,8 @@ public class SendRouteUpdateToDB extends AsyncTask<String, Integer, String>
 
         try {
             // build the post request to send to the server
-            URIBuilder builder = new URIBuilder("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/RouteNameUpdateServlet");//("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/RouteNameUpdateServlet");
-            //URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/TripShareProject/RouteNameUpdateServlet");
+            //URIBuilder builder = new URIBuilder("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/RouteNameUpdateServlet");//("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/RouteNameUpdateServlet");
+            URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/TripShareProject/RouteNameUpdateServlet");
 
             builder.setParameter("m_routeID", m_routeIDToUpdate);
             builder.setParameter("m_newRouteName", m_routeNewName);

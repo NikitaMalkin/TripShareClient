@@ -13,6 +13,7 @@ public class Post implements Serializable{
     private String m_postThumbnailString;
     private String m_description;
     private long m_routeID;
+    private Boolean m_isPrivatePost;
     private ArrayList<Long> m_usersWhichLikedID;
     private ArrayList<Comment> m_postComments;
     private ArrayList<String> m_relatedTags;
@@ -104,4 +105,8 @@ public class Post implements Serializable{
     public String getAuthorFirstName() { return m_userFirstName; }
 
     public String getAuthorLastName() { return m_userLastName; }
+
+    public Boolean getIsPrivatePost() {return m_isPrivatePost; }
+
+    public void setIsPrivatePost(Boolean i_isPrivatePost) { m_isPrivatePost = i_isPrivatePost; }
 }

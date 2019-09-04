@@ -1,12 +1,14 @@
 package com.TripShare.Client.Common;
 
 import android.content.Context;
+import android.media.Image;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.TripShare.Client.R;
 
@@ -51,6 +53,8 @@ public class CommentAdapter extends ArrayAdapter<CommentItem>
         CommentItem currentItem = (CommentItem)getItem(position);
         viewHolder.itemName.setText(currentItem.getUserName());
         viewHolder.itemComment.setText(currentItem.getComment());
+        if(currentItem.getUserImage() != null)
+            viewHolder.itemImage.setImageBitmap(currentItem.getUserImage());
 
         return convertView;
     }
@@ -59,11 +63,13 @@ public class CommentAdapter extends ArrayAdapter<CommentItem>
     {
         TextView itemName;
         TextView itemComment;
+        ImageView itemImage;
 
         public ViewHolder(View view)
         {
             itemName = (TextView)view.findViewById(R.id.username_textView);
             itemComment = (TextView)view.findViewById(R.id.comment_textView);
+            itemImage = (ImageView)view.findViewById(R.id.comment_user_image_view);
         }
     }
 }

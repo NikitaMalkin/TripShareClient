@@ -52,12 +52,16 @@ public class ValidateUserInfo extends AsyncTask<String, Integer, String>
             // Send request to server
             HttpGet http_get = new HttpGet(builder.build());
             HttpResponse httpResponse = httpClient.execute(http_get);
-            HttpEntity httpEntity = httpResponse.getEntity();
-            output = EntityUtils.toString(httpEntity);
-            JSONArray jsonArr = new JSONArray(output);
-            User userReceived = new Gson().fromJson(jsonArr.getString(0), User.class);
-            m_isUserNamePasswordValid = jsonArr.getBoolean(1);
-            m_listener.showAppropriateMessage(m_isUserNamePasswordValid, userReceived);
+
+            if(httpResponse.getStatusLine().getStatusCode() == 200)
+            {
+                HttpEntity httpEntity = httpResponse.getEntity();
+                output = EntityUtils.toString(httpEntity);
+                JSONArray jsonArr = new JSONArray(output);
+                User userReceived = new Gson().fromJson(jsonArr.getString(0), User.class);
+                m_isUserNamePasswordValid = jsonArr.getBoolean(1);
+                m_listener.showAppropriateMessage(m_isUserNamePasswordValid, userReceived);
+            }
         }
         catch (Exception e)
         {

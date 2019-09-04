@@ -26,8 +26,8 @@ public class SendUserProfileImageToDB extends AsyncTask<String, Integer, String>
 
         try {
             // This is getting the url from the string we passed in
-            URL url = new URL("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/UploadProfileImageServlet");
-            //URL url = new URL("http://10.0.2.2:8080/TripShareProject/UploadProfileImageServlet");
+            //URL url = new URL("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/UploadProfileImageServlet");
+            URL url = new URL("http://10.0.2.2:8080/TripShareProject/UploadProfileImageServlet");
 
             // Create the urlConnection
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();

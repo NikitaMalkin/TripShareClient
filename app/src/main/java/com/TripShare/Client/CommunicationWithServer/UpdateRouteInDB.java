@@ -35,8 +35,8 @@ public class UpdateRouteInDB extends AsyncTask<String, Integer, String>
                 if (coord.getAddition() != null)
                 {
                     // This is getting the url from the string we passed in
-                    URL url = new URL("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/CoordinateUpdateServlet");
-                    //URL url = new URL("http://10.0.2.2:8080/TripShareProject/CoordinateUpdateServlet");
+                    //URL url = new URL("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/CoordinateUpdateServlet");
+                    URL url = new URL("http://10.0.2.2:8080/TripShareProject/CoordinateUpdateServlet");
                     // Create the urlConnection
                     HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
 

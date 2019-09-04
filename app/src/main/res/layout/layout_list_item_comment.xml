@@ -9,13 +9,33 @@
                                              android:orientation="horizontal" android:background="#F2F3F5"
                                              android:layout_marginTop="5dp" android:layout_marginBottom="5dp" android:layout_marginLeft="8dp" android:layout_marginRight="8dp">
 
-    <ImageView
-            android:src="@drawable/ic_iconfinder_icon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="16dp" android:id="@+id/imageView5" app:layout_constraintVertical_bias="0.4"/>
+    <!--<ImageView-->
+            <!--android:src="@drawable/ic_iconfinder_icon"-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"-->
+            <!--android:layout_marginStart="16dp" android:id="@+id/comment_user_image_view" app:layout_constraintVertical_bias="0.4"/>-->
+
+    <android.support.v7.widget.CardView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:elevation="24dp"
+            android:id="@+id/drawer_userImage_ring"
+            app:cardCornerRadius="64dp"
+            app:layout_constraintRight_toLeftOf="@+id/username_textView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/drawer_textView" app:cardElevation="4dp">
+        <ImageView
+                android:layout_height="35dp"
+                android:layout_width="35dp"
+                android:id="@+id/comment_user_image_view"
+                android:src="@drawable/ic_iconfinder_icon"
+                android:scaleType="centerCrop"/>
+
+        IMPORTANT: CornerRadius must always be half of layout_width and layout_height in order for this to display
+        correctly!
+    </android.support.v7.widget.CardView>
 
     <TextView
             android:id="@+id/username_textView"
@@ -27,7 +47,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:textAlignment="center"
-            app:layout_constraintStart_toEndOf="@+id/imageView5" android:layout_marginStart="20dp"/>
+            app:layout_constraintStart_toEndOf="@+id/drawer_userImage_ring" android:layout_marginStart="20dp"/>
 
     <TextView
             android:id="@+id/comment_textView"
