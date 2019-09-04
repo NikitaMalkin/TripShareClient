@@ -1,9 +1,12 @@
 package com.TripShare.Client.Common;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,8 +62,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
         TextView postDescription = viewHolder.getTextViewPostDescription();
         postDescription.setText(post.getPostDescription());
 
+        // converting the stored string (if it has one) into bitmap and applying it to the view
         ImageView imageThumbnail = viewHolder.getImageViewImage();
-        imageThumbnail.setImageDrawable(post.getImage());
+        String imageString = post.getPost().getThumbnailString();
+        if (imageString != null)
+        {
+            byte[] decodedString = Base64.decode(imageString, Base64.DEFAULT);
+            Bitmap image = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            imageThumbnail.setImageBitmap(image);
+        }
 
         TextView likesAndCommentsNumber = viewHolder.getTextViewLikesAndCommentsNumber();
         likesAndCommentsNumber.setText(post.getPost().getLikeCount() + " Likes, " + post.getPost().getCommentCount() + " Comments");
