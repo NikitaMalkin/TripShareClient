@@ -112,12 +112,6 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
         byte[] byteArray = byteArrayOutputStream .toByteArray();
         String imageString = Base64.encodeToString(byteArray, Base64.DEFAULT);
 
-        //checking if post already has a thumbnail, if not, we set the current image to be the thumbnail
-        if (m_postThumbnailString == null)
-        {
-            m_postThumbnailString = imageString;
-        }
-
         // Attaching the image to the coordinate.
         SpinnerItem itemSelected = m_adapter.getItems().get(m_spinner.getSelectedIndex());
         itemSelected.getRoute().getRouteCoordinates().get(m_currentCoordinateIndex).setImageString(imageString);
@@ -232,6 +226,9 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
                 TextView postTitle = findViewById(R.id.post_title_editText);
                 TextView postDescription = findViewById(R.id.post_description_editText);
                 long routeID = m_adapter.getItems().get(m_spinner.getSelectedIndex()).getRoute().getRouteID();
+                SpinnerItem itemSelected = m_adapter.getItems().get(m_spinner.getSelectedIndex());
+                Route updatedRoute = itemSelected.getRoute();
+                setThumbnailForPost(updatedRoute);
 
                 User loggedInUser = ApplicationManager.getLoggedInUser();
                 m_postToAdd = new Post(loggedInUser.getID(), postTitle.getText().toString(), postDescription.getText().toString());
@@ -245,13 +242,11 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
             }
         });
 
-
         askUserToCheckRelevantTags(); //NOTE: the upcoming code had to be moved inside OnDismiss of the dialog in order to sync
     }
 
     private void askUserToCheckRelevantTags()
     {
-
             final DialogFragment editTagsDialog = new TagSelectionDialog();
 
             editTagsDialog.show(getSupportFragmentManager(), "");
@@ -262,15 +257,14 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
                     m_postToAdd.setTags(((TagSelectionDialog) editTagsDialog).getSelectedTags());
 
                     // THE REST OF THE CODE IS HERE //
-
-                    // Send Post to Server and save in DB.
-                    new SendPostToAddToDB(m_postToAdd).execute();
-
                     // Update Relevant Route.
                     SpinnerItem itemSelected = m_adapter.getItems().get(m_spinner.getSelectedIndex());
                     Route updatedRoute = itemSelected.getRoute();
                     new UpdateRouteInDB(updatedRoute).execute();
                     // TODO: update the route and coordinates as well
+
+                    // Send Post to Server and save in DB.
+                    new SendPostToAddToDB(m_postToAdd).execute();
 
                     //change screen to profile after you've posted a post
                     Intent intent = new Intent(getApplicationContext(), ProfileScreen.class);
@@ -278,6 +272,20 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
                     startActivity(intent);
                 }
             }));
+    }
+
+    private void setThumbnailForPost(Route i_route)
+    {
+        List<Coordinate> coordinates = i_route.getRouteCoordinates();
+
+        for(int i=0; i < coordinates.size(); i++)
+        {
+            String imageString = coordinates.get(i).getAddition().getImageString();
+            if(imageString != null) {
+                m_postThumbnailString = imageString;
+                break;
+            }
+        }
     }
 
     private void showRouteOnMap(String i_spinnerItemString)

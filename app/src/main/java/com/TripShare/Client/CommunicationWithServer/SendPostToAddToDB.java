@@ -12,9 +12,10 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 import cz.msebera.android.httpclient.util.EntityUtils;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
+import java.net.URL;
 
 public class SendPostToAddToDB extends AsyncTask<String, Integer, String>
 {
@@ -31,30 +32,39 @@ public class SendPostToAddToDB extends AsyncTask<String, Integer, String>
     {
         String output = null;
 
-        try
-        {
+        try {
+            // This is getting the url from the string we passed in
+            URL url = new URL("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/ProfilePostServlet");
+            //URL url = new URL("http://10.0.2.2:8080/TripShareProject/ProfilePostServlet");
+
+            // Create the urlConnection
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+
+            urlConnection.setDoInput(true);
+            urlConnection.setDoOutput(true);
+            urlConnection.setRequestProperty("Content-Type", "application/json");
+            urlConnection.setRequestMethod("POST");
+
             // convert the object we want to send to the server
             //  to a json format and create an entity from it
+            OutputStreamWriter writer = new OutputStreamWriter(urlConnection.getOutputStream());
             String postInJsonFormat = m_utils.convertToJson(m_postToAdd);
-            StringEntity postRouteEntity = new StringEntity(postInJsonFormat);
+            writer.write(postInJsonFormat);
+            writer.flush();
 
-            //URIBuilder builder = new URIBuilder("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/ProfilePostServlet");//("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/ProfilePostServlet");
-            URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/TripShareProject/ProfilePostServlet");
+            int statusCode = urlConnection.getResponseCode();
 
-            builder.setParameter("m_PostToAddToDB", postInJsonFormat);
-            HttpClient httpClient = HttpClientBuilder.create().build();
-            HttpPost http_Post = new HttpPost(builder.build());
-            http_Post.setEntity(postRouteEntity);
-
-            // set request headers
-            http_Post.setHeader("Accept", "application/json");
-            http_Post.setHeader("Content-type", "application/json; charset-UTF-8");
-
-            // get the response of the server
-            HttpResponse httpResponse = httpClient.execute(http_Post);
-            HttpEntity httpEntity = httpResponse.getEntity();
-            output = EntityUtils.toString(httpEntity);
-            postIDFromServer = output;
+            if (statusCode == 200)
+            {
+                InputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
+                postIDFromServer = m_utils.convertInputStreamToString(inputStream);
+            }
+            else
+            {
+                // Status code is not 200
+                // Do something to handle the error
+            }
+            urlConnection.disconnect();
         }
         catch (Exception e)
         {

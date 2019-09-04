@@ -36,8 +36,8 @@ public class GetUserImageByID extends AsyncTask<String, Integer, String> {
             HttpClient httpClient = HttpClientBuilder.create().build();
 
             // Build URI
-            //URIBuilder builder = new URIBuilder("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/RouteServlet");
-            URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/TripShareProject/UserImageByIDServlet");
+            URIBuilder builder = new URIBuilder("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/UserImageByIDServlet");
+            //URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/TripShareProject/UserImageByIDServlet");
 
             builder.setParameter("m_userID", String.valueOf(m_userID));
 

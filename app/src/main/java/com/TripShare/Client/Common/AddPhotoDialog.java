@@ -139,8 +139,9 @@ public class AddPhotoDialog extends AppCompatDialogFragment {
             {
                 bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), selectedImage); //here we take the image selected
                 m_image.setImageBitmap(bitmap);  //and pass the image to the ImageView
-                ApplicationManager.setDrawerProfilePicture(bitmap);
-
+                //ApplicationManager.setDrawerProfilePicture(bitmap); // THE FUCK IS THIS?????????
+                if(m_isProfileScreen)
+                    ApplicationManager.setDrawerProfilePicture(bitmap);
             }
             catch (FileNotFoundException e)
             {

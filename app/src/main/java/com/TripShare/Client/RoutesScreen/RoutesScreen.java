@@ -167,7 +167,7 @@ public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRo
         alternateView.setVisibility(View.VISIBLE);
 
         m_handler = new Handler();  /// initializes m_handler so that every 10 seconds it invokes updateRoute() method
-        final int delay = 1000; //milliseconds // CHANGED TO 1s FOR TEST SHOULD CHANGE BACK!!!!!!!!!! //TODO
+        final int delay = 7000; // TODO: Decide if 7 second is the right interval
 
         m_handler.postDelayed(new Runnable() {
             public void run() {

@@ -63,9 +63,9 @@ public class Coordinate implements Serializable{
 
         return m_addition.getImageString();
     }
-
-    @Override
-    public String toString() {
-        return String.format("%d, %d", this.m_latitude, this.m_longitude);
-    }
+//
+//    @Override
+//    public String toString() {
+//        return String.format("%d, %d", this.m_latitude, this.m_longitude);
+//    }
 }
