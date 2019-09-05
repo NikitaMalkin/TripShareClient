@@ -40,8 +40,10 @@ public class SendLikeToAddToPostInDB extends AsyncTask<String, Integer, String>
 
             // get the response of the server
             HttpResponse httpResponse = httpClient.execute(http_Post);
-            HttpEntity httpEntity = httpResponse.getEntity();
-            output = EntityUtils.toString(httpEntity);
+            if(httpResponse.getStatusLine().getStatusCode() == 200) {
+                HttpEntity httpEntity = httpResponse.getEntity();
+                output = EntityUtils.toString(httpEntity);
+            }
         }
         catch (Exception e)
         {

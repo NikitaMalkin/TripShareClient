@@ -40,7 +40,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PostCreationScreen extends ActivityWithNavigationDrawer
-    implements OnMapReadyCallback , GoogleMap.OnMarkerClickListener, AddPhotoDialog.AttachImageToCoordinateListener, AddNoteDialog.AttachNoteToCoordinateListener, GetRoutesFromDB.AddAllItemsToListViewListener, GetRoutesFromDB.UpdateRelevantView
+    implements OnMapReadyCallback , GoogleMap.OnMarkerClickListener, AddPhotoDialog.AttachImageToCoordinateListener, AddNoteDialog.AttachNoteToCoordinateListener
 {
     private static final PatternItem DOT = new Dot();
     private static final PatternItem GAP = new Gap(20);
@@ -74,24 +74,13 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
         m_adapter.add(new SpinnerItem(i_route));
     }
 
-    public void addAllItemsToView(final String i_body)
+    public void addAllItemsToView()
     {
-        runOnUiThread(new Runnable() {
+        ArrayList<Route> routes = ApplicationManager.getUserRoutes();
 
-            @Override
-            public void run() {
-                try {
-                    JSONArray jsonArr = new JSONArray(i_body);
-                    for (int i = 0; i < jsonArr.length(); i++) {
-                        JSONObject jsonObj = jsonArr.getJSONObject(i);
-                        Route route = new Gson().fromJson(jsonObj.toString(), Route.class);
-                        addItemToSpinner(route);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        for (int i = 0; i < routes.size(); i++) {
+            addItemToSpinner(routes.get(i));
+        }
     }
 
     @Override
@@ -162,6 +151,8 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
                 .findFragmentById(R.id.map);
         m_mapFragment.getMapAsync(this);
 
+        addAllItemsToView();
+        updateRelevantViewWithSource();
     }
 
     private void initializeSpinnerWithRoutes()
@@ -186,7 +177,6 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
             @Override
             public void onNothingSelected(AdapterView<?> parent) { }
         });
-        new GetRoutesFromDB(this, this).execute();
     }
 
     private void initializeMap()

@@ -38,8 +38,12 @@ public class DeletePostRequestFromDB extends AsyncTask<String, Integer, String>
 
             // get the response of the server
             HttpResponse httpResponse = httpClient.execute(http_delete);
-            HttpEntity httpEntity = httpResponse.getEntity();
-            output = EntityUtils.toString(httpEntity);
+
+            if(httpResponse.getStatusLine().getStatusCode() == 200)
+            {
+                HttpEntity httpEntity = httpResponse.getEntity();
+                output = EntityUtils.toString(httpEntity);
+            }
 
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();

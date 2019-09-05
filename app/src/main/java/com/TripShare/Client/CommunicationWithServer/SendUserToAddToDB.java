@@ -49,9 +49,11 @@ public class SendUserToAddToDB extends AsyncTask<String, Integer, String>
 
             // get the response of the server
             HttpResponse httpResponse = httpClient.execute(http_Post);
-            HttpEntity httpEntity = httpResponse.getEntity();
-            output = EntityUtils.toString(httpEntity);
-            userIDFromServer = Long.valueOf(output);
+            if(httpResponse.getStatusLine().getStatusCode() == 200) {
+                HttpEntity httpEntity = httpResponse.getEntity();
+                output = EntityUtils.toString(httpEntity);
+                userIDFromServer = Long.valueOf(output);
+            }
         }
         catch (Exception e)
         {

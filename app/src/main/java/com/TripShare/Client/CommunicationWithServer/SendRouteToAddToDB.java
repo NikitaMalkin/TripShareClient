@@ -1,6 +1,7 @@
 package com.TripShare.Client.CommunicationWithServer;
 
 import android.os.AsyncTask;
+import com.TripShare.Client.Common.ApplicationManager;
 import com.TripShare.Client.Common.Route;
 import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.HttpResponse;
@@ -48,9 +49,12 @@ public class SendRouteToAddToDB extends AsyncTask<String, Integer, String>
 
             // get the response of the server
             HttpResponse httpResponse = httpClient.execute(http_Post);
-            HttpEntity httpEntity = httpResponse.getEntity();
-            output = EntityUtils.toString(httpEntity);
-            routeIDFromServer = output;
+            if(httpResponse.getStatusLine().getStatusCode() == 200) {
+                HttpEntity httpEntity = httpResponse.getEntity();
+                output = EntityUtils.toString(httpEntity);
+                routeIDFromServer = output;
+                m_routeToSend.setRouteID(Long.valueOf(routeIDFromServer));
+            }
         }
         catch (Exception e)
         {
@@ -62,7 +66,11 @@ public class SendRouteToAddToDB extends AsyncTask<String, Integer, String>
     @Override
     protected void onPostExecute(String result)
     {
-        m_listener.addItemToListView(m_routeToSend);
+        if(m_listener != null)
+        {
+            ApplicationManager.addUserRoute(m_routeToSend);
+            m_listener.addItemToListView(m_routeToSend);
+        }
     }
 
     public interface AddItemToListViewListener

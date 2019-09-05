@@ -14,14 +14,7 @@ import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 public class GetRoutesFromDB extends AsyncTask<String, Integer, String>
 {
     String body;
-    AddAllItemsToListViewListener m_listenerAddItems;
-    UpdateRelevantView m_listenerUpdateView;
 
-    public GetRoutesFromDB(AddAllItemsToListViewListener i_listener, UpdateRelevantView i_listenerUpdateView)
-    {
-        m_listenerAddItems = i_listener;
-        m_listenerUpdateView = i_listenerUpdateView;
-    }
     @Override
     protected String doInBackground(String... Args)
     {
@@ -49,7 +42,7 @@ public class GetRoutesFromDB extends AsyncTask<String, Integer, String>
             // retrieve the list of routes from response need to update the list view in the main thread.
             if(code == 200)
             {
-                m_listenerAddItems.addAllItemsToView(body);
+                ApplicationManager.setUserRoutes(body);
             }
         }
         catch (Exception e)
@@ -58,21 +51,5 @@ public class GetRoutesFromDB extends AsyncTask<String, Integer, String>
             output = "Error in http connection " + e.toString();
         }
         return output;
-    }
-
-    protected void onPostExecute(String result)
-    {
-        if(m_listenerUpdateView != null)
-            m_listenerUpdateView.updateRelevantViewWithSource();
-    }
-
-    public interface AddAllItemsToListViewListener
-    {
-        void addAllItemsToView(String i_body);
-    }
-
-    public interface UpdateRelevantView
-    {
-        void updateRelevantViewWithSource();
     }
 }

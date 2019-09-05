@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.os.Bundle;
@@ -20,7 +19,6 @@ import android.widget.Toast;
 
 import com.TripShare.Client.Common.ApplicationManager;
 import com.TripShare.Client.CommunicationWithServer.DeleteRouteRequestFromDB;
-import com.TripShare.Client.CommunicationWithServer.GetRoutesFromDB;
 import com.TripShare.Client.CommunicationWithServer.SendRouteToAddToDB;
 import com.TripShare.Client.CommunicationWithServer.SendRouteUpdateToDB;
 import com.TripShare.Client.Common.ActivityWithNavigationDrawer;
@@ -34,29 +32,21 @@ import com.TripShare.Client.Common.Route;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRouteDialog.EditDialogListener, SendRouteToAddToDB.AddItemToListViewListener, GetRoutesFromDB.AddAllItemsToListViewListener, DeleteRouteRequestFromDB.RemoveItemFromListViewListener
+public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRouteDialog.EditDialogListener, DeleteRouteRequestFromDB.RemoveItemFromListViewListener, SendRouteToAddToDB.AddItemToListViewListener
 {
-    // This value will be set to a route when the server isn't in reach
-    private static final long m_defaultID = -1;
-    private static final String m_localRoutesFileName = "localRoutes.json";
-    private File m_localRoutesFile;
     private Route m_routeToAdd;
     private Chronometer m_chronometer;
     private TextView m_longDisplay;
     private TextView m_latDisplay;
     private Handler m_handler;
     private ListAdapter m_adapter;
-    private boolean m_serverIsOnline = true;
     private int m_currentlyClickedListItem;
     SwipeMenuListView m_swipeListView;
     Gson gson = new Gson();
@@ -67,44 +57,22 @@ public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_routes_screen);
         setActivityTitle("Manage your routes");
-        try
-        {
-            //new checkServerStatus("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com").execute().get();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
 
         initializeDrawerLayout();
         initializeViews();
         initializeLocationModules();
+        initializeRouteList();
         initializeExistingRoutes();
     }
 
-    public void addAllItemsToView(final String i_body)
+    public void initializeExistingRoutes()
     {
-        runOnUiThread(new Runnable()
-        {
+        ArrayList<Route> routes = ApplicationManager.getUserRoutes();
 
-            @Override
-            public void run()
-            {
-                try
-                {
-                    JSONArray jsonArr = new JSONArray(i_body);
-                    for (int i = 0; i < jsonArr.length(); i++) {
-                        JSONObject jsonObj = jsonArr.getJSONObject(i);
-                        Route route = new Gson().fromJson(jsonObj.toString(), Route.class);
-                        addItemToListView(route);
-                    }
-                }
-                catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        });
+        for (int i = 0; i < routes.size(); i++) {
+            addItemToListView(routes.get(i));
+        }
+
     }
 
     public void addItemToListView(Route i_routeToAdd)
@@ -145,12 +113,12 @@ public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRo
             routeName.setText(null); //emptying the name for further use
         }
 
-        if (m_serverIsOnline)
+        if (ApplicationManager.getIsServerOnline())
             new SendRouteToAddToDB(m_routeToAdd, this).execute(); // Send the route to the server to save in the DB
         else
         {
-            m_routeToAdd.setRouteID(m_defaultID);
             addItemToListView(m_routeToAdd);
+            ApplicationManager.addUserRoute(m_routeToAdd);
         }
 
         ApplicationManager.hideKeyboardFrom(getApplicationContext(), findViewById(R.id.layout_main));
@@ -202,46 +170,10 @@ public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRo
         m_chronometer.stop();
     }
 
-    private class checkServerStatus extends AsyncTask<String, Integer, String>
-    {
-        String url;
-
-        public checkServerStatus(String i_URL)
-        {
-            url = i_URL;
-        }
-        int code;
-
-        @Override
-        protected String doInBackground(String... strings)
-        {
-            String output;
-            try
-            {
-                URL siteURL = new URL(url);
-                HttpURLConnection connection = (HttpURLConnection) siteURL.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setConnectTimeout(3000);
-                connection.connect();
-
-                code = connection.getResponseCode();
-                if (code == 200)
-                    m_serverIsOnline = true;
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-            output = url + "\t\tStatus:" + m_serverIsOnline;
-
-            return output;
-        }
-    }
-
     private void deleteRoute()
     {
         long routeIDToDelete = m_adapter.getItem(m_currentlyClickedListItem).getRoute().getRouteID();
-        if(m_serverIsOnline)
+        if(ApplicationManager.getIsServerOnline())
             new DeleteRouteRequestFromDB(String.valueOf(routeIDToDelete), m_currentlyClickedListItem, this).execute();
         else
             removeItemFromListView(m_currentlyClickedListItem);
@@ -259,23 +191,6 @@ public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRo
         String currentDateString = i_dateFormat.format(currentDate);
 
         return currentDateString;
-    }
-
-    private void initializeExistingRoutes()
-    {
-        initializeRouteList();
-        m_localRoutesFile = new File(getFilesDir(), m_localRoutesFileName);
-
-        if (m_serverIsOnline)
-        {
-            sendLocallySavedRoutesToServer();
-            new GetRoutesFromDB(this, null).execute();
-        }
-        else
-        {
-            Toast.makeText(getApplicationContext(), "Could not connect to server, unable to fetch existing routes.", Toast.LENGTH_LONG).show();
-            loadLocalRoutesIfExist();
-        }
     }
 
     private void initializeRouteList()
@@ -395,51 +310,16 @@ public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRo
         }
     }
 
-    private void loadLocalRoutesIfExist()
-    {
-        if(m_localRoutesFile.exists())
-        {
-            try
-            {
-                FileInputStream fileInputStream = openFileInput(m_localRoutesFileName);
-                InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-                BufferedReader reader = new BufferedReader(inputStreamReader);
-                StringBuilder stringBuilder = new StringBuilder();
-                String fileContentLineByLine;
-
-                while((fileContentLineByLine = reader.readLine()) != null)
-                {
-                    stringBuilder.append(fileContentLineByLine);
-                }
-
-
-                JSONArray routesFromFile = new JSONArray(stringBuilder.toString());
-                for (int i = 0; i < routesFromFile.length(); i++)
-                {
-                    JSONObject currentRouteString = routesFromFile.getJSONObject(i);
-                    Route currentRoute = gson.fromJson(currentRouteString.get("m_route").toString(), Route.class);
-                    m_adapter.add(new ListItem(currentRoute));
-                }
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-    }
-
     @Override
     protected void onStop()
     {
         super.onStop();
-        ArrayList<ListItem> routes_list = m_adapter.getItems();
-
-        if(!m_serverIsOnline) {
+        if(!ApplicationManager.getIsServerOnline()) {
             FileOutputStream fileOutputStream = null;
             try {
-                m_localRoutesFile.createNewFile();
-                JSONArray routesArray = new JSONArray(new Gson().toJson(routes_list));
-                fileOutputStream = openFileOutput(m_localRoutesFileName, MODE_PRIVATE);
+                ApplicationManager.getRoutesFile().createNewFile();
+                JSONArray routesArray = new JSONArray(new Gson().toJson(ApplicationManager.getUserRoutes()));
+                fileOutputStream = openFileOutput(ApplicationManager.getRoutesFileName(), getBaseContext().MODE_PRIVATE);
                 fileOutputStream.write(routesArray.toString().getBytes());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -470,40 +350,9 @@ public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRo
     public void removeItemFromListView(int i_indexOfListItemToRemove)
     {
         m_adapter.remove(i_indexOfListItemToRemove);
+        ApplicationManager.getUserRoutes().remove(i_indexOfListItemToRemove);
     }
 
-    private void sendLocallySavedRoutesToServer()
-    {
-        if(m_localRoutesFile.exists() && m_localRoutesFile.length() != 0)
-        {
-            try
-            {
-                FileInputStream fileInputStream = openFileInput(m_localRoutesFileName);
-                InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-                BufferedReader reader = new BufferedReader(inputStreamReader);
-                StringBuilder stringBuilder = new StringBuilder();
-                String fileContentLineByLine;
-
-                while((fileContentLineByLine = reader.readLine()) != null)
-                {
-                    stringBuilder.append(fileContentLineByLine);
-                }
-
-                JSONArray routesFromFile = new JSONArray(stringBuilder.toString());
-                for (int i = 0; i < routesFromFile.length(); i++)
-                {
-                    JSONObject currentRouteString = routesFromFile.getJSONObject(i);
-                    Route currentRoute = gson.fromJson(currentRouteString.get("m_route").toString(), Route.class);
-                    new SendRouteToAddToDB(currentRoute, this).execute().get();
-                }
-                m_localRoutesFile.delete();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-    }
 
     public void textviewRouteNameOnClick(View v) ///clears text on click
     {
@@ -521,8 +370,9 @@ public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRo
     {
         ListItem selectedItem =  m_adapter.getItems().get(m_currentlyClickedListItem);
         selectedItem.getRoute().setRouteName(i_newRouteName);
+        ApplicationManager.getUserRoutes().get(m_currentlyClickedListItem).setRouteName(i_newRouteName);
         m_adapter.updateItemInDataSource(i_newRouteName, m_currentlyClickedListItem);
-        if(m_serverIsOnline)
+        if(ApplicationManager.getIsServerOnline())
             new SendRouteUpdateToDB(String.valueOf(selectedItem.getRoute().getRouteID()), i_newRouteName).execute();
     }
 }

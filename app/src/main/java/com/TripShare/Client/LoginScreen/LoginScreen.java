@@ -5,22 +5,25 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.TripShare.Client.Common.ApplicationManager;
+import com.TripShare.Client.CommunicationWithServer.CheckServerStatus;
 import com.TripShare.Client.CommunicationWithServer.SendUserToAddToDB;
 import com.TripShare.Client.CommunicationWithServer.ValidateUserInfo;
 import com.TripShare.Client.HomeScreen.HomeScreen;
 import com.TripShare.Client.R;
 import com.TripShare.Client.Common.User;
+import com.TripShare.Client.RoutesScreen.RoutesScreen;
 import com.google.common.hash.Hashing;
 
 import java.nio.charset.StandardCharsets;
 
-public class LoginScreen extends AppCompatActivity implements ValidateUserInfo.NotifyIfValidInfoListener, SignUpDialog.SendUserSignUpInfoListener, SendUserToAddToDB.SetUserIDIfNotExistListener
+public class LoginScreen extends AppCompatActivity implements ValidateUserInfo.NotifyIfValidInfoListener, SignUpDialog.SendUserSignUpInfoListener, SendUserToAddToDB.SetUserIDIfNotExistListener, CheckServerStatus.UpdatedServerStatus
 {
     private User m_user;
     private EditText m_userName;
@@ -30,7 +33,8 @@ public class LoginScreen extends AppCompatActivity implements ValidateUserInfo.N
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_screen);
         getSupportActionBar().hide();
@@ -48,7 +52,7 @@ public class LoginScreen extends AppCompatActivity implements ValidateUserInfo.N
         m_LoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                validate(m_userName.getText().toString(), m_password.getText().toString());
+                validate(m_userName.getText().toString(), m_password.getText().toString(), false);
             }
         });
 
@@ -59,6 +63,9 @@ public class LoginScreen extends AppCompatActivity implements ValidateUserInfo.N
                 signUpDialog.show(getSupportFragmentManager(), "Sign Up");
             }
         });
+
+        try{ new CheckServerStatus("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com", LoginScreen.this).execute().get(); }
+        catch (Exception e) { e.printStackTrace(); }
     }
 
     private String encrypt(String i_password)
@@ -68,9 +75,12 @@ public class LoginScreen extends AppCompatActivity implements ValidateUserInfo.N
                 .toString();
     }
 
-    private void validate(String i_userName, String i_password)
+    public void validate(String i_userName, String i_password, Boolean i_isEncrypted)
     {
-        new ValidateUserInfo(this, i_userName, encrypt(i_password)).execute();
+        if(i_isEncrypted)
+            new ValidateUserInfo(this, i_userName, i_password).execute();
+        else
+            new ValidateUserInfo(this, i_userName, encrypt(i_password)).execute();
     }
 
     @Override
@@ -84,6 +94,8 @@ public class LoginScreen extends AppCompatActivity implements ValidateUserInfo.N
                 {
                     Toast.makeText(getApplicationContext(), "Logging In!", Toast.LENGTH_SHORT).show();
                     ApplicationManager.setLoggedInUser(i_user);
+                    ApplicationManager.saveUserInfoLocally(LoginScreen.this);
+                    ApplicationManager.retrieveUserRoutes(LoginScreen.this);
                     Intent intent = new Intent(getApplication(), HomeScreen.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); //this line clears the application activity stack, so that user can't logout and then press 'back' and be logged in again
                     startActivity(intent);
@@ -121,5 +133,20 @@ public class LoginScreen extends AppCompatActivity implements ValidateUserInfo.N
                 }
             }
         });
+    }
+
+    @Override
+    public void updateServerStatus(Boolean i_isOnline)
+    {
+        ApplicationManager.setIsServerOnline(i_isOnline);
+        ApplicationManager.retrieveUserInfo(this);
+    }
+
+    public void offlineModeConfiguration()
+    {
+        //TODO: Nick Should add here the wanted changes to the hamburger and so on...
+        Intent intent = new Intent(getApplication(), RoutesScreen.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); //this line clears the application activity stack, so that user can't logout and then press 'back' and be logged in again
+        startActivity(intent);
     }
 }
