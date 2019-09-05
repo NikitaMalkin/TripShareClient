@@ -22,7 +22,6 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.TripShare.Client.Common.*;
-import com.TripShare.Client.CommunicationWithServer.GetRoutesFromDB;
 import com.TripShare.Client.CommunicationWithServer.SendPostToAddToDB;
 import com.TripShare.Client.CommunicationWithServer.UpdateRouteInDB;
 import com.TripShare.Client.ProfileScreen.ProfileScreen;
@@ -30,10 +29,7 @@ import com.TripShare.Client.R;
 import com.TripShare.Client.RoutesScreen.RoutesScreen;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
-import com.google.gson.Gson;
 import org.angmarch.views.NiceSpinner;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -75,7 +71,7 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
         m_adapter.add(new SpinnerItem(i_route));
     }
 
-    public void addAllItemsToView()
+    private void addAllItemsToView()
     {
         ArrayList<Route> routes = ApplicationManager.getUserRoutes();
 
@@ -111,7 +107,7 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
         showImageNearCoordinate(i_imageToAttach);
     }
 
-    public void addImageMarkerAndConvertStringToBitmap(String i_imageString, LatLng i_coordinateToAttachTo)
+    private void addImageMarkerAndConvertStringToBitmap(String i_imageString, LatLng i_coordinateToAttachTo)
     {
         byte[] decodedString = Base64.decode(i_imageString, Base64.DEFAULT);
         Bitmap imageToShow = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
@@ -127,7 +123,7 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
         m_map.addMarker(new MarkerOptions().position(coordinateToAttachTo).icon(BitmapDescriptorFactory.fromBitmap(smallerMarker))).setAnchor(1f, 0.3f);
     }
 
-    public static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId)
+    private static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId)
     {
         Drawable drawable = ContextCompat.getDrawable(context, drawableId);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
@@ -345,14 +341,14 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
         m_map.animateCamera(zoom);
     }
 
-    public void showImageNearCoordinate(Bitmap i_imageToAttach)
+    private void showImageNearCoordinate(Bitmap i_imageToAttach)
     {
         LatLng coordinateToAttachTo = m_markers.get(m_currentCoordinateIndex).getPosition();
         Bitmap smallerMarker = Bitmap.createScaledBitmap(i_imageToAttach, 100, 100, false);
         m_map.addMarker(new MarkerOptions().position(coordinateToAttachTo).icon(BitmapDescriptorFactory.fromBitmap(smallerMarker))).setAnchor(1f, 1f);
     }
 
-    public void settingTheDefaultValueForTheSpinner()
+    private void settingTheDefaultValueForTheSpinner()
     {
         Route defaultValue = new Route(ApplicationManager.getLoggedInUser().getID());
         defaultValue.setRouteName("Choose Route...");
@@ -361,7 +357,7 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
         m_spinner.setSelectedIndex(0);
     }
 
-    public void updateRelevantViewWithSource()
+    private void updateRelevantViewWithSource()
     {
         m_spinner.setAdapter(m_adapter);
         settingTheDefaultValueForTheSpinner();

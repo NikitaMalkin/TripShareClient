@@ -19,9 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.TripShare.Client.Common.User;
 import com.TripShare.Client.CommunicationWithServer.GetRouteByID;
-import com.TripShare.Client.PostCreationScreen.ChooseAdditionDialog;
 import com.TripShare.Client.R;
 import com.TripShare.Client.Common.Coordinate;
 import com.TripShare.Client.Common.Post;
@@ -59,16 +57,16 @@ public class PostFullScreen extends AppCompatActivity implements OnMapReadyCallb
     private View m_viewToScreenShot;
     private boolean m_isShowButton = true;
     private int m_currentCoordinateIndex;
-    Gson gson = new Gson();
+    private Gson gson = new Gson();
 
-    public void addImageMarkerAndConvertStringToBitmap(String i_imageString, LatLng i_coordinateToAttachTo) {
+    private void addImageMarkerAndConvertStringToBitmap(String i_imageString, LatLng i_coordinateToAttachTo) {
         byte[] decodedString = Base64.decode(i_imageString, Base64.DEFAULT);
         Bitmap imageToShow = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         Bitmap smallerMarker = Bitmap.createScaledBitmap(imageToShow, 100, 100, false);
         m_map.addMarker(new MarkerOptions().position(i_coordinateToAttachTo).icon(BitmapDescriptorFactory.fromBitmap(smallerMarker))).setAnchor(1f, 1f);
     }
 
-    public static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
+    private static Bitmap getBitmapFromVectorDrawable(Context context, int drawableId) {
         Drawable drawable = ContextCompat.getDrawable(context, drawableId);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             drawable = (DrawableCompat.wrap(drawable)).mutate();
@@ -83,7 +81,7 @@ public class PostFullScreen extends AppCompatActivity implements OnMapReadyCallb
         return bitmap;
     }
 
-    public LatLng getCenterCoordinate() {
+    private LatLng getCenterCoordinate() {
         LatLng returnedValue = null;
         List<Coordinate> coordinateList = m_routeToPresent.getRouteCoordinates();
         Coordinate middleCoordinate = m_routeToPresent.getRouteCoordinates().get(coordinateList.size() / 2);

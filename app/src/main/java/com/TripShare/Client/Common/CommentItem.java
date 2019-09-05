@@ -2,9 +2,9 @@ package com.TripShare.Client.Common;
 
 import android.graphics.Bitmap;
 
-public class CommentItem
+class CommentItem
 {
-    private Comment m_comment;
+    private final Comment m_comment;
     private Bitmap m_userProfileImage;
 
     public CommentItem(Comment i_comment) {  m_comment = i_comment; }

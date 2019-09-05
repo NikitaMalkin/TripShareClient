@@ -35,11 +35,11 @@ public class Post implements Serializable{
     public void setUserID(Long i_userID) { m_userID = i_userID; }
 
     public String getTitle() { return m_title; }
-    public void setTitle(String i_title) { m_title = new String(i_title); }
+    private void setTitle(String i_title) { m_title = new String(i_title); }
 
     public String getDescription() { return m_description; }
 
-    public void setDescription(String i_description) { m_description = new String(i_description); }
+    private void setDescription(String i_description) { m_description = new String(i_description); }
 
     public long getPostRoute() { return m_routeID; }
 

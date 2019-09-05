@@ -48,8 +48,8 @@ public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRo
     private Handler m_handler;
     private ListAdapter m_adapter;
     private int m_currentlyClickedListItem;
-    SwipeMenuListView m_swipeListView;
-    Gson gson = new Gson();
+    private SwipeMenuListView m_swipeListView;
+    private Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -65,7 +65,7 @@ public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRo
         initializeExistingRoutes();
     }
 
-    public void initializeExistingRoutes()
+    private void initializeExistingRoutes()
     {
         ArrayList<Route> routes = ApplicationManager.getUserRoutes();
 
@@ -335,7 +335,7 @@ public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRo
         }
     }
 
-    public void openEditRouteDialog(String i_currentRouteName)
+    private void openEditRouteDialog(String i_currentRouteName)
     {
         Bundle bundle = new Bundle();
         EditRouteDialog editDialog = new EditRouteDialog();

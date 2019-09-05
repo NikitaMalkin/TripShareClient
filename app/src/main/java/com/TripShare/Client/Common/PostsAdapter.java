@@ -3,8 +3,6 @@ package com.TripShare.Client.Common;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -111,7 +109,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
         private TextView m_likesAndCommentsNumber;
         private TextView m_authorName;
 
-        public ViewHolder(View itemView)
+        ViewHolder(View itemView)
         {
             super(itemView);
 
@@ -159,19 +157,19 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
             });
         }
 
-        public ImageView getPrivacyIcon() { return m_privacyIcon; }
+         ImageView getPrivacyIcon() { return m_privacyIcon; }
 
-        public TextView getTextViewPostName()
+         TextView getTextViewPostName()
         {
             return m_postName;
         }
 
-        public TextView getTextViewPostDescription()
+         TextView getTextViewPostDescription()
         {
             return m_postDescription;
         }
 
-        public ImageButton getImageButtonLikeButton()
+         ImageButton getImageButtonLikeButton()
         {
             return m_likeButton;
         }
@@ -191,17 +189,17 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
             return m_mapButton;
         }
 
-        public ImageView getImageViewImage()
+         ImageView getImageViewImage()
         {
             return m_image;
         }
 
-        public TextView getTextViewLikesAndCommentsNumber()
+         TextView getTextViewLikesAndCommentsNumber()
         {
             return m_likesAndCommentsNumber;
         }
 
-        public TextView getTextViewAuthorName() { return m_authorName; }
+         TextView getTextViewAuthorName() { return m_authorName; }
     }
 
     public interface shareButtonClickedListener

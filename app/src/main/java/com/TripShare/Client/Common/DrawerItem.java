@@ -2,7 +2,7 @@ package com.TripShare.Client.Common;
 
 import android.graphics.drawable.Drawable;
 
-public class DrawerItem {
+class DrawerItem {
     private String m_string;
     private Drawable m_image;
 

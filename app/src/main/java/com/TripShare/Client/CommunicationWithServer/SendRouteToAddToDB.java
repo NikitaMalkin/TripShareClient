@@ -16,8 +16,8 @@ public class SendRouteToAddToDB extends AsyncTask<String, Integer, String>
 {
     private Utils m_utils = new Utils();
     private String routeIDFromServer;
-    Route m_routeToSend;
-    AddItemToListViewListener m_listener;
+    private Route m_routeToSend;
+    private AddItemToListViewListener m_listener;
 
     public SendRouteToAddToDB(Route i_routeToAdd, AddItemToListViewListener i_listener)
     {

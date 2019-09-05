@@ -5,7 +5,7 @@ import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 
-public class SpinnerAdapter extends ArrayAdapter
+ class SpinnerAdapter extends ArrayAdapter
 {
     private Context context; //context
     private ArrayList<SpinnerItem> items; //data source of the array adapter

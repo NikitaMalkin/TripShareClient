@@ -1,8 +1,5 @@
 package com.TripShare.Client.Common;
 
-import android.graphics.drawable.Drawable;
-import com.TripShare.Client.Common.Post;
-
 public class PostItem
 {
     private Post m_post;

@@ -16,9 +16,9 @@ import java.net.URISyntaxException;
 
 // TODO: check if this is necessary, This class is yet used!!!!
 
-public class DeletePostRequestFromDB extends AsyncTask<String, Integer, String>
+class DeletePostRequestFromDB extends AsyncTask<String, Integer, String>
 {
-    String m_postToDeleteID;
+    private String m_postToDeleteID;
 
     public DeletePostRequestFromDB(String i_postToDeleteID) {
         m_postToDeleteID = i_postToDeleteID;

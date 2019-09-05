@@ -6,19 +6,14 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDialogFragment;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
-import com.TripShare.Client.Common.ApplicationManager;
 import com.TripShare.Client.R;
-import com.TripShare.Client.RoutesScreen.EditRouteDialog;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class TagSelectionDialog extends AppCompatDialogFragment {
 

@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import com.TripShare.Client.Common.ApplicationManager;
 import cz.msebera.android.httpclient.HttpResponse;
 import cz.msebera.android.httpclient.client.HttpClient;
 import cz.msebera.android.httpclient.client.ResponseHandler;
@@ -12,8 +11,6 @@ import cz.msebera.android.httpclient.client.methods.HttpGet;
 import cz.msebera.android.httpclient.client.utils.URIBuilder;
 import cz.msebera.android.httpclient.impl.client.BasicResponseHandler;
 import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
-
-import javax.xml.transform.Result;
 
 public class GetPostsFromDB extends AsyncTask<String, Integer, String>
 {

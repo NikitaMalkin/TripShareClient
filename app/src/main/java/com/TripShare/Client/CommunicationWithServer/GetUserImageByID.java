@@ -1,7 +1,6 @@
 package com.TripShare.Client.CommunicationWithServer;
 
 import android.os.AsyncTask;
-import com.TripShare.Client.Common.ApplicationManager;
 import cz.msebera.android.httpclient.HttpResponse;
 import cz.msebera.android.httpclient.client.HttpClient;
 import cz.msebera.android.httpclient.client.ResponseHandler;
@@ -9,12 +8,6 @@ import cz.msebera.android.httpclient.client.methods.HttpGet;
 import cz.msebera.android.httpclient.client.utils.URIBuilder;
 import cz.msebera.android.httpclient.impl.client.BasicResponseHandler;
 import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
-
-import java.io.BufferedInputStream;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public class GetUserImageByID extends AsyncTask<String, Integer, String> {
     private Utils m_utils = new Utils();

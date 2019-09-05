@@ -3,7 +3,6 @@ package com.TripShare.Client.Common;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.util.Base64;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,10 +22,10 @@ public class CommentPopUpWindow implements GetUserImageByID.GetUserProfileImageL
 {
     private PopupWindow m_commentsWindow;
     private CommentAdapter m_commentAdapter;
-    private ArrayList<PostItem> m_posts;
-    private Context m_screen;
+    private final ArrayList<PostItem> m_posts;
+    private final Context m_screen;
     private ArrayList<Comment> m_comments = new ArrayList<>();
-    private PostsAdapter m_postsAdapter;
+    private final PostsAdapter m_postsAdapter;
 
     public CommentPopUpWindow(Context i_screen,  ArrayList<PostItem> i_posts, PostsAdapter i_adapter)
     {
@@ -72,7 +71,7 @@ public class CommentPopUpWindow implements GetUserImageByID.GetUserProfileImageL
         });
     }
 
-    void populateList() {
+    private void populateList() {
         for (int i = 0; i < m_comments.size(); i++) {
             Comment comment = m_comments.get(i);
             try {
@@ -83,14 +82,14 @@ public class CommentPopUpWindow implements GetUserImageByID.GetUserProfileImageL
         }
     }
 
-    void setPopUpWindowListView(ListView i_listView)
+    private void setPopUpWindowListView(ListView i_listView)
     {
         m_commentAdapter = new CommentAdapter(m_screen);
         populateList();
         i_listView.setAdapter(m_commentAdapter);
     }
 
-    void saveCommentToLocalPost(String i_comment, Post i_postToUpdate)
+    private void saveCommentToLocalPost(String i_comment, Post i_postToUpdate)
     {
         CommentItem commentItem =  new CommentItem(new Comment(i_comment, ApplicationManager.getLoggedInUser().getID(), ApplicationManager.getLoggedInUser().getuserRealName()));
         commentItem.setUserImage(ApplicationManager.getDrawerProfilePicture());
@@ -98,7 +97,7 @@ public class CommentPopUpWindow implements GetUserImageByID.GetUserProfileImageL
         i_postToUpdate.getCommentsArray().add(new Comment(i_comment,ApplicationManager.getLoggedInUser().getID(), ApplicationManager.getLoggedInUser().getuserRealName()));
     }
 
-    void sendCommentToServer(String i_comment, Post i_postToUpdate)
+    private void sendCommentToServer(String i_comment, Post i_postToUpdate)
     {
         new SendCommentToAddToPostInDB(new Comment(i_comment, ApplicationManager.getLoggedInUser().getID(), ApplicationManager.getLoggedInUser().getuserRealName()), Long.valueOf(i_postToUpdate.getID())).execute();
     }

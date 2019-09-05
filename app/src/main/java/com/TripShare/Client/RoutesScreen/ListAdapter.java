@@ -11,7 +11,7 @@ import com.TripShare.Client.R;
 
 import java.util.ArrayList;
 
-public class ListAdapter extends ArrayAdapter<ListItem>
+class ListAdapter extends ArrayAdapter<ListItem>
 {
     private Context context; //context
     private ArrayList<ListItem> items; //data source of the list adapter
@@ -87,7 +87,7 @@ public class ListAdapter extends ArrayAdapter<ListItem>
         TextView itemName;
         TextView itemDate;
 
-        public ViewHolder(View view)
+        ViewHolder(View view)
         {
             itemName = (TextView)view.findViewById(R.id.text_view_item_name);
             itemDate = (TextView)view.findViewById(R.id.Item_Created_Date);

@@ -1,9 +1,7 @@
 package com.TripShare.Client.Common;
 
 import android.content.Context;
-import android.media.Image;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +12,10 @@ import com.TripShare.Client.R;
 
 import java.util.ArrayList;
 
-public class CommentAdapter extends ArrayAdapter<CommentItem>
+class CommentAdapter extends ArrayAdapter<CommentItem>
 {
-    private Context context; //context
-    private ArrayList<CommentItem> items; //data source of the list adapter
+    private final Context context; //context
+    private final ArrayList<CommentItem> items; //data source of the list adapter
 
     //public constructor
     public CommentAdapter(Context i_context)
@@ -61,11 +59,11 @@ public class CommentAdapter extends ArrayAdapter<CommentItem>
 
     private class ViewHolder
     {
-        TextView itemName;
-        TextView itemComment;
-        ImageView itemImage;
+        final TextView itemName;
+        final TextView itemComment;
+        final ImageView itemImage;
 
-        public ViewHolder(View view)
+        ViewHolder(View view)
         {
             itemName = (TextView)view.findViewById(R.id.username_textView);
             itemComment = (TextView)view.findViewById(R.id.comment_textView);

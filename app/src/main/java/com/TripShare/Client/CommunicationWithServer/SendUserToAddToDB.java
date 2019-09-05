@@ -13,10 +13,10 @@ import cz.msebera.android.httpclient.util.EntityUtils;
 
 public class SendUserToAddToDB extends AsyncTask<String, Integer, String>
 {
-    Utils m_utils = new Utils();
-    User m_userToAdd;
-    long userIDFromServer;
-    SetUserIDIfNotExistListener m_listener;
+    private Utils m_utils = new Utils();
+    private User m_userToAdd;
+    private long userIDFromServer;
+    private SetUserIDIfNotExistListener m_listener;
 
     public SendUserToAddToDB(User i_userToAdd, SetUserIDIfNotExistListener i_listener)
     {

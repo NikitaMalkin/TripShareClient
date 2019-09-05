@@ -6,13 +6,9 @@ import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.CheckBox;
-import android.widget.Toast;
 import com.TripShare.Client.CommunicationWithServer.GetRoutesFromDB;
 import com.TripShare.Client.CommunicationWithServer.SendRouteToAddToDB;
-import com.TripShare.Client.CommunicationWithServer.Utils;
 import com.TripShare.Client.LoginScreen.LoginScreen;
-import com.TripShare.Client.RoutesScreen.ListItem;
 import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,7 +21,7 @@ public final class ApplicationManager {
     private static User m_loggedInUser;
     private static Bitmap m_drawerProfilePicture;
     private static ArrayList<Route> m_userRoutes = new ArrayList<>();
-    private static String m_userLocalInfoFileName = "localInfo.json";
+    private static final String m_userLocalInfoFileName = "localInfo.json";
     private static File m_userLocalInfoFile;
     private static final String m_localRoutesFileName = "localRoutes.json";
     private static File m_localRoutesFile;
@@ -132,7 +128,7 @@ public final class ApplicationManager {
 
     }
 
-    public static void retrieveApplicationManagerData(Activity i_activity) {
+    private static void retrieveApplicationManagerData(Activity i_activity) {
         m_userLocalInfoFile = new File(i_activity.getFilesDir(), m_userLocalInfoFileName);
 
         if (m_userLocalInfoFile.exists() && m_userLocalInfoFile.length() != 0) {

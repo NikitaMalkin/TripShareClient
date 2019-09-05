@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,8 +33,7 @@ public class ProfileScreen extends ActivityWithNavigationDrawer implements GetPo
     private TextView m_name_lastname_textView;
     private CommentPopUpWindow m_commentWindow;
     private ProgressBar m_progressBar;
-
-    Gson gson = new Gson();
+    private Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -144,7 +142,7 @@ public class ProfileScreen extends ActivityWithNavigationDrawer implements GetPo
         });
     }
 
-    public void addItemToListView(Post i_postToAdd)
+     void addItemToListView(Post i_postToAdd)
     {
         // set the new route in the list
         PostItem itemToAdd = new PostItem(i_postToAdd);

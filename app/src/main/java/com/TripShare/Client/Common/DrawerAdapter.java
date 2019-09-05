@@ -18,27 +18,27 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.DrawerRecy
 
     public static class DrawerRecyclerViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView m_textView;
-        public ImageView m_imageView;
+         TextView m_textView;
+         ImageView m_imageView;
 
-        public DrawerRecyclerViewHolder(View view) {
+         DrawerRecyclerViewHolder(View view) {
             super(view);
             m_textView = view.findViewById(R.id.drawerItem_text);
             m_imageView = view.findViewById(R.id.drawerItem_image);
         }
 
-        public TextView getTextView()
+         TextView getTextView()
         {
             return m_textView;
         }
 
-        public ImageView getImageview()
+        ImageView getImageview()
         {
             return m_imageView;
         }
     }
 
-    public DrawerAdapter(ArrayList<DrawerItem> i_list)
+     DrawerAdapter(ArrayList<DrawerItem> i_list)
     {
         m_drawerItems = i_list;
     }

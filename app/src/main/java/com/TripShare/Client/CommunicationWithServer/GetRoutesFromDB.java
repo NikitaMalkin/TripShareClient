@@ -13,7 +13,7 @@ import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 
 public class GetRoutesFromDB extends AsyncTask<String, Integer, String>
 {
-    String body;
+    private String body;
 
     @Override
     protected String doInBackground(String... Args)

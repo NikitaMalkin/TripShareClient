@@ -1,6 +1,5 @@
 package com.TripShare.Client.Common;
 
-import android.app.Application;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -34,12 +33,12 @@ public class ActivityWithNavigationDrawer extends AppCompatActivity {
     private DrawerLayout m_DrawerLayout;
     private String m_ActivityTitle;
 
-    public void setActivityTitle(String i_title) //setter for activity title, initializeDrawerLayout() uses the title in order to initialize the action bar
+    protected void setActivityTitle(String i_title) //setter for activity title, initializeDrawerLayout() uses the title in order to initialize the action bar
     {
         m_ActivityTitle = i_title;
     }
 
-    public void initializeDrawerLayout() {
+    protected void initializeDrawerLayout() {
         //initialize profile picture, takes much time so it is in another thread
         fetchDrawerProfilePicture();
 
@@ -98,7 +97,7 @@ public class ActivityWithNavigationDrawer extends AppCompatActivity {
 
     }
 
-    public void fetchDrawerProfilePicture()
+    private void fetchDrawerProfilePicture()
     {
         AsyncTask.execute(new Runnable() {
             @Override

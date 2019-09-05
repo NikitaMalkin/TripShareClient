@@ -30,14 +30,14 @@ public class ChooseAdditionDialog extends AppCompatDialogFragment
         return dialog;
     }
 
-    public void openAddNoteDialog()
+    private void openAddNoteDialog()
     {
         AddNoteDialog dialog = new AddNoteDialog();
 
         dialog.show(getFragmentManager(), "Add Note Dialog");
     }
 
-    public void openAddPhotoDialog()
+    private void openAddPhotoDialog()
     {
         AddPhotoDialog dialog = new AddPhotoDialog();
         Bundle args = new Bundle();

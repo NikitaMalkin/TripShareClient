@@ -12,9 +12,9 @@ import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 
 public class GetRouteByID extends AsyncTask<String, Integer, String>
 {
-    String body;
-    SetRetrievedRoute m_listenerAddItems;
-    long m_routeID;
+    private String body;
+    private SetRetrievedRoute m_listenerAddItems;
+    private long m_routeID;
 
     public GetRouteByID(SetRetrievedRoute i_listener, long i_routeID)
     {

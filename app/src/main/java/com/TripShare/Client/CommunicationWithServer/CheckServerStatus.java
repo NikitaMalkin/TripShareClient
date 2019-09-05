@@ -7,10 +7,10 @@ import java.net.URL;
 
 public class CheckServerStatus extends AsyncTask<String, Integer, String>
 {
-    private String url;
+    private final String url;
     private int code;
     private Boolean m_serverIsOnline;
-    private UpdatedServerStatus m_listener;
+    private final UpdatedServerStatus m_listener;
 
     public CheckServerStatus(String i_URL, UpdatedServerStatus i_listener)
     {

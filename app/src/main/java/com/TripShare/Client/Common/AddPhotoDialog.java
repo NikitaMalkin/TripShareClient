@@ -29,7 +29,7 @@ public class AddPhotoDialog extends AppCompatDialogFragment {
     private Button m_browseButton;
     private ImageView m_image;
     private float m_currentImageRotation = 0.0f;
-    static final int PICK_IMAGE_REQUEST = 1;  // The request code
+    private static final int PICK_IMAGE_REQUEST = 1;  // The request code
     private AttachImageToCoordinateListener m_listenerPostCreation;
     private SendImageToServerAndUpdateProfileViewListener m_listenerProfile;
     private Boolean m_isProfileScreen;

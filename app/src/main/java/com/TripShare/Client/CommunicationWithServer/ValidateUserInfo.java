@@ -1,7 +1,6 @@
 package com.TripShare.Client.CommunicationWithServer;
 
 import android.os.AsyncTask;
-import com.TripShare.Client.Common.Route;
 import com.TripShare.Client.Common.User;
 import com.google.gson.Gson;
 import cz.msebera.android.httpclient.HttpEntity;
@@ -12,15 +11,14 @@ import cz.msebera.android.httpclient.client.utils.URIBuilder;
 import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
 import cz.msebera.android.httpclient.util.EntityUtils;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class ValidateUserInfo extends AsyncTask<String, Integer, String>
 {
     private Utils m_utils = new Utils();
-    String m_userName;
-    String m_password;
-    boolean m_isUserNamePasswordValid;
-    NotifyIfValidInfoListener m_listener;
+    private String m_userName;
+    private String m_password;
+    private boolean m_isUserNamePasswordValid;
+    private NotifyIfValidInfoListener m_listener;
 
     public ValidateUserInfo(NotifyIfValidInfoListener i_listener, String i_userName, String i_password)
     {

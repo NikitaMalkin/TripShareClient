@@ -3,9 +3,7 @@ package com.TripShare.Client.HomeScreen;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.RecoverySystem;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,7 +27,7 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
     private int m_firstPositionToRetrieve;
     private CommentPopUpWindow m_commentWindow;
     private ProgressBar m_progressBar;
-    Gson gson = new Gson();
+    private Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +111,7 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
         });
     }
 
-    public int addItemToListView(Post i_postToAdd) {
+    private int addItemToListView(Post i_postToAdd) {
         // set the new route in the list
         if(!postAlreadyAdded(i_postToAdd))
         {

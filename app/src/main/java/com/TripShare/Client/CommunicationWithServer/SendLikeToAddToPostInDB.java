@@ -12,8 +12,8 @@ import cz.msebera.android.httpclient.util.EntityUtils;
 public class SendLikeToAddToPostInDB extends AsyncTask<String, Integer, String>
 {
     private Utils m_utils = new Utils();
-    Long m_userIDWhcihLikedToSend;
-    Long m_postID;
+    private Long m_userIDWhcihLikedToSend;
+    private Long m_postID;
 
     public SendLikeToAddToPostInDB(Long i_userIDWhcihLikedToSend, Long i_postID)
     {

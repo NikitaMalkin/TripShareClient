@@ -2,19 +2,9 @@ package com.TripShare.Client.CommunicationWithServer;
 
 import android.os.AsyncTask;
 import com.TripShare.Client.Common.Post;
-import cz.msebera.android.httpclient.HttpEntity;
-import cz.msebera.android.httpclient.HttpResponse;
-import cz.msebera.android.httpclient.client.ClientProtocolException;
-import cz.msebera.android.httpclient.client.HttpClient;
-import cz.msebera.android.httpclient.client.methods.HttpPost;
-import cz.msebera.android.httpclient.client.utils.URIBuilder;
-import cz.msebera.android.httpclient.entity.StringEntity;
-import cz.msebera.android.httpclient.impl.client.HttpClientBuilder;
-import cz.msebera.android.httpclient.util.EntityUtils;
 
 import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.URISyntaxException;
 import java.net.URL;
 
 public class SendPostToAddToDB extends AsyncTask<String, Integer, String>
