@@ -177,7 +177,7 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
 
     @Override
     public void onCommentButtonClick(int i_position, View i_view) {
-        m_commentWindow = new CommentPopUpWindow(this, m_posts);
+        m_commentWindow = new CommentPopUpWindow(this, m_posts, m_PostAdapter);
         m_commentWindow.onShowPopup(i_view, i_position);
     }
 

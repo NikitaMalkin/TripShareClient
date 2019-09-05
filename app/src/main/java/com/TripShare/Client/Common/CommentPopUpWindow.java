@@ -26,11 +26,13 @@ public class CommentPopUpWindow implements GetUserImageByID.GetUserProfileImageL
     private ArrayList<PostItem> m_posts;
     private Context m_screen;
     private ArrayList<Comment> m_comments = new ArrayList<>();
+    private PostsAdapter m_postsAdapter;
 
-    public CommentPopUpWindow(Context i_screen,  ArrayList<PostItem> i_posts)
+    public CommentPopUpWindow(Context i_screen,  ArrayList<PostItem> i_posts, PostsAdapter i_adapter)
     {
         m_posts = i_posts;
         m_screen = i_screen;
+        m_postsAdapter = i_adapter;
     }
 
     // call this method when required to show popup
@@ -65,6 +67,7 @@ public class CommentPopUpWindow implements GetUserImageByID.GetUserProfileImageL
                 saveCommentToLocalPost(comment, m_posts.get(i_postPosition).getPost());
                 sendCommentToServer(comment, m_posts.get(i_postPosition).getPost());
                 ((EditText)inflatedView.findViewById(R.id.writeComment)).setText("");
+                m_postsAdapter.notifyDataSetChanged();
             }
         });
     }

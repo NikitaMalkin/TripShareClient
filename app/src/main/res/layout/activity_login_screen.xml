@@ -6,7 +6,7 @@
                                              android:layout_height="match_parent"
                                              android:background="@drawable/background"
                                              tools:context=".LoginScreen.LoginScreen"
-                                             tools:layout_editor_absoluteY="81dp">
+                                             tools:layout_editor_absoluteY="81dp" android:id="@+id/login_screen">
 
     <EditText
             android:id="@+id/Email_Text_Box"

@@ -83,6 +83,12 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
             ImageView likeImage = viewHolder.getImageButtonLikeButton();
             likeImage.setImageDrawable(viewHolder.itemView.getContext().getDrawable(R.drawable.ic_favorite_black_24dp_red));
         }
+
+        if (post.getPost().getIsPrivatePost())
+        {
+            ImageView privacyIcon = viewHolder.getPrivacyIcon();
+            privacyIcon.setImageDrawable(viewHolder.itemView.getContext().getDrawable(R.drawable.ic_lock_black_24dp));
+        }
     }
 
     // Returns the total count of items in the list
@@ -101,6 +107,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
         private ImageButton m_mapButton;
         private ImageButton m_shareButton;
         private ImageView m_image;
+        private ImageView m_privacyIcon;
         private TextView m_likesAndCommentsNumber;
         private TextView m_authorName;
 
@@ -117,6 +124,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
             m_image = itemView.findViewById(R.id.profileItem_imageView);
             m_likesAndCommentsNumber = itemView.findViewById(R.id.profileItem_textView_numberOfLikesAndComments);
             m_authorName = itemView.findViewById(R.id.profileItem_postAuthor);
+            m_privacyIcon = itemView.findViewById(R.id.profileItem_publicity_icon);
 
             m_shareButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -150,6 +158,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder>
                 }
             });
         }
+
+        public ImageView getPrivacyIcon() { return m_privacyIcon; }
 
         public TextView getTextViewPostName()
         {

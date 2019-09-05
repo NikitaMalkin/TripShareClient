@@ -12,39 +12,36 @@
             android:layout_height="wrap_content"
             android:id="@+id/userName_textview"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="16dp"
             android:textSize="14sp"
-            android:textAlignment="viewStart" android:layout_marginEnd="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/profileItem_imageButtonLike"
-            app:layout_constraintHorizontal_bias="0.0" app:layout_constraintTop_toBottomOf="@+id/TripName_textview"
+            android:textAlignment="viewStart"
+            app:layout_constraintTop_toBottomOf="@+id/TripName_textview"
     />
     <View
-            android:layout_width="375dp"
+            android:layout_width="0dp"
             android:layout_height="1dp"
             android:background="#90909090"
             android:id="@+id/view" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="20dp" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="20dp" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHorizontal_bias="1.0" android:layout_marginTop="68dp"/>
+            android:layout_marginEnd="16dp" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="16dp"
+            app:layout_constraintHorizontal_bias="1.0" app:layout_constraintTop_toBottomOf="@+id/userName_textview"
+            android:layout_marginTop="8dp"/>
 
     <ImageButton
             android:layout_width="43dp"
             android:layout_height="41dp" app:srcCompat="@drawable/ic_chat_bubble_black_24dp"
             android:id="@+id/profileItem_imageButtonComment"
             style="@style/Widget.AppCompat.ImageButton" android:backgroundTint="@color/colorAccent"
-            android:layout_marginTop="76dp" app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginEnd="76dp"
-            app:layout_constraintEnd_toEndOf="parent"
-    />
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/view"
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toStartOf="@+id/Comment_count_textView"/>
     <ImageButton
             android:layout_width="45dp"
             android:layout_height="41dp" app:srcCompat="@drawable/ic_favorite_black_24dp"
             android:id="@+id/profileItem_imageButtonLike"
             style="@style/Widget.AppCompat.ImageButton" android:backgroundTint="@color/colorAccent"
-            android:layout_marginTop="76dp" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_bias="0.581"/>
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/view" android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/Like_count_textview"/>
     <TextView
             android:text="Trip Name"
             android:layout_width="wrap_content"
@@ -52,61 +49,54 @@
             android:id="@+id/TripName_textview" android:textSize="20sp"
             android:textAlignment="textStart"
             android:singleLine="false"
-            android:textStyle="bold" android:layout_marginTop="10dp" app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="20dp"
+            android:textStyle="bold" android:layout_marginTop="16dp" app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginEnd="15dp" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"/>
+            android:textColor="@color/common_google_signin_btn_text_dark_focused"/>
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:map="http://schemas.android.com/apk/res-auto"
               android:id="@+id/map"
               android:name="com.google.android.gms.maps.MapFragment"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_width="0dp"
+              android:layout_height="0dp"
               map:mapType="satellite"
               map:uiZoomGestures="true"
               map:uiScrollGestures="true"
               map:uiRotateGestures="false"
               app:layout_constraintStart_toStartOf="parent"
-              android:layout_marginLeft="20dp"
-              android:layout_marginRight="20dp"
-              app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="170dp"
-              android:layout_marginTop="120dp"
-              app:layout_constraintBottom_toTopOf="@+id/button_save_to_gallery"
               app:layout_constraintVertical_bias="0.0" app:layout_constraintHorizontal_bias="0.4"
-              app:layout_constraintEnd_toEndOf="parent"/>
+              app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="16dp"
+              android:layout_marginEnd="16dp" map:layout_constraintBottom_toTopOf="@+id/Trip_description_textview"
+              android:layout_marginBottom="8dp"
+              android:layout_marginTop="8dp"
+              map:layout_constraintTop_toBottomOf="@+id/profileItem_imageButtonLike"/>
 
 
     <TextView
             android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. "
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:id="@+id/Trip_description_textview" app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="8dp"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/map_screenshot_imageView"
-            android:layout_marginStart="20dp" android:layout_marginEnd="20dp"
+            android:layout_marginStart="16dp" android:layout_marginEnd="16dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/imageView_TripShare_Ad"/>
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/button_save_to_gallery"/>
     <TextView
             android:text="10K"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/Like_count_textview"
-            android:layout_marginTop="84dp" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/profileItem_imageButtonLike" android:layout_marginStart="4dp"
-            app:layout_constraintEnd_toStartOf="@+id/profileItem_imageButtonComment" android:layout_marginEnd="8dp"
-            app:layout_constraintHorizontal_bias="0.437"/>
+            android:layout_marginTop="18dp" app:layout_constraintTop_toBottomOf="@+id/view"
+            app:layout_constraintEnd_toStartOf="@+id/profileItem_imageButtonComment" android:layout_marginEnd="8dp"/>
     <TextView
             android:text="2.5K"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/Comment_count_textView"
-            android:layout_marginTop="84dp"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/profileItem_imageButtonComment"
-            android:layout_marginStart="8dp"/>
+            android:layout_marginTop="18dp"
+            app:layout_constraintTop_toBottomOf="@+id/view" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="16dp"/>
     <Button
             android:id="@+id/button_save_to_gallery"
             style="@style/Widget.AppCompat.Button.Colored"
@@ -114,37 +104,33 @@
             android:layout_height="wrap_content"
             android:onClick="OnPostButtonClick"
             android:text="Save To Gallery"
-            android:layout_marginTop="625dp"
-            android:layout_marginBottom="25dp"
+            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
-            app:layout_constraintTop_toBottomOf="@+id/map_screenshot_imageView"/>
+            app:layout_constraintHorizontal_bias="0.0"
+    />
 
     <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content" app:srcCompat="@drawable/ic_app_adv"
-            android:id="@+id/imageView_TripShare_Ad" android:layout_marginTop="625dp"
-            android:layout_marginBottom="25dp"
+            android:id="@+id/imageView_TripShare_Ad"
+            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginStart="8dp" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0" app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"/>
+            app:layout_constraintHorizontal_bias="0.0"
+    />
 
     <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" app:srcCompat="@drawable/applogodesign"
+            android:layout_width="0dp"
+            android:layout_height="0dp" app:srcCompat="@drawable/applogodesign"
             android:id="@+id/map_screenshot_imageView" app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="170dp"
-            android:layout_marginTop="120dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="1.0"/>
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp" android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/profileItem_imageButtonLike" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/Trip_description_textview"/>
 </android.support.constraint.ConstraintLayout>
 
 

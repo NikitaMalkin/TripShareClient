@@ -168,7 +168,7 @@ public class PostFullScreen extends AppCompatActivity implements OnMapReadyCallb
     }
 
     private void saveScreenShotToGallery(View v) {
-        m_saveToGalleryButton.setVisibility(View.GONE);
+        m_saveToGalleryButton.setVisibility(View.INVISIBLE);
         m_tripShareAdImageView.setVisibility(View.VISIBLE);
         m_viewToScreenShot = v;
         m_map.snapshot(this);
@@ -199,7 +199,7 @@ public class PostFullScreen extends AppCompatActivity implements OnMapReadyCallb
         m_markerIcon = getBitmapFromVectorDrawable(getApplicationContext(), R.drawable.ic_marker_on_map); //converting image from vector to bitmap
 
         if (!m_isShowButton) {
-            m_saveToGalleryButton.setVisibility(View.GONE);
+            m_saveToGalleryButton.setVisibility(View.INVISIBLE);
         }
         else
         {

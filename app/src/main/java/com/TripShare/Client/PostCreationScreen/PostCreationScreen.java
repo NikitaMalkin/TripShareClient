@@ -18,6 +18,7 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.TripShare.Client.Common.*;
@@ -226,6 +227,8 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
             {
                 TextView postTitle = findViewById(R.id.post_title_editText);
                 TextView postDescription = findViewById(R.id.post_description_editText);
+                CheckBox postIsPrivate = findViewById(R.id.post_isPrivatePostCheckbox);
+
                 long routeID = m_adapter.getItems().get(m_spinner.getSelectedIndex()).getRoute().getRouteID();
                 SpinnerItem itemSelected = m_adapter.getItems().get(m_spinner.getSelectedIndex());
                 Route updatedRoute = itemSelected.getRoute();
@@ -236,6 +239,8 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
                 m_postToAdd.setRouteID(routeID);
                 m_postToAdd.setUserFirstName(loggedInUser.getStringUserName());
                 m_postToAdd.setUserLastName(loggedInUser.getLastName());
+                m_postToAdd.setIsPrivatePost(postIsPrivate.isChecked());
+
                 if (m_postThumbnailString != null)
                 {
                     m_postToAdd.setThumbnailString(m_postThumbnailString);

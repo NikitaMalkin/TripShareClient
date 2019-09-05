@@ -52,6 +52,8 @@ public class LoginScreen extends AppCompatActivity implements ValidateUserInfo.N
         m_LoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ApplicationManager.hideKeyboardFrom(getApplicationContext(), findViewById(R.id.login_screen));
+                validate(m_userName.getText().toString(), m_password.getText().toString());
                 validate(m_userName.getText().toString(), m_password.getText().toString(), false);
             }
         });
@@ -59,6 +61,7 @@ public class LoginScreen extends AppCompatActivity implements ValidateUserInfo.N
         m_signUpLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ApplicationManager.hideKeyboardFrom(getApplicationContext(), findViewById(R.id.login_screen));
                 SignUpDialog signUpDialog = new SignUpDialog();
                 signUpDialog.show(getSupportFragmentManager(), "Sign Up");
             }
