@@ -57,6 +57,7 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
         decoration.setDrawable(getDrawable(R.drawable.shadow));
         Posts.addItemDecoration(decoration);
 
+
         //FirstLaunchDialog
         if (ApplicationManager.getHomePageFirstLaunch()) {
             DialogFragment firstTimeDialog = new FirstLaunchDialog();
@@ -69,7 +70,6 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
     protected void onResume()
     {
         super.onResume();
-
         try
         {
             new GetPostsFromDB(this, ApplicationManager.getLoggedInUser().getID(), m_firstPositionToRetrieve, true, m_progressBar).execute();
@@ -98,7 +98,12 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
                         for (int i = 0; i < jsonArr.length(); i++) {
                             JSONObject jsonObj = jsonArr.getJSONObject(i);
                             Post post = new Gson().fromJson(jsonObj.toString(), Post.class);
-                            howManyPostsAdded += addItemToListView(post);
+
+                            // If the post is public OR if the post is private but the poster's ID is the same as the current user's ID
+                            if (!post.getIsPrivatePost() ||  (post.getIsPrivatePost() && (post.getUserID() == ApplicationManager.getLoggedInUser().getID())))
+                            {
+                                howManyPostsAdded += addItemToListView(post);
+                            }
                         }
 
                         if(howManyPostsAdded == 0)
@@ -195,6 +200,12 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
                     ApplicationManager.getLoggedInUser().setPreferredTags(((TagSelectionDialog) editTagsDialog).getSelectedTags());
                     SendUserTagsToDB sendToServer = new SendUserTagsToDB(ApplicationManager.getLoggedInUser().getPreferredTags(), ApplicationManager.getLoggedInUser().getID());
                     sendToServer.execute();
+
+                    m_posts.clear();
+                    m_firstPositionToRetrieve = 0;
+                    m_PostAdapter.notifyDataSetChanged();
+                    // retrieve another 5 posts from DB and get from server.
+                    new GetPostsFromDB(HomeScreen.this, ApplicationManager.getLoggedInUser().getID(), m_firstPositionToRetrieve, true, m_progressBar).execute();
                 }
             }
         }));

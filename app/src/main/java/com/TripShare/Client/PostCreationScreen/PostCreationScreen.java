@@ -63,7 +63,13 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
         setActivityTitle("Create a new post");
         initializeDrawerLayout();
         initializeViews();
-        ApplicationManager.hideKeyboardFrom(getApplicationContext(), findViewById(R.id.post_creation_screen_layout_main));
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        ApplicationManager.hideKeyboardFrom(PostCreationScreen.this, findViewById(R.id.post_creation_screen_layout_main));
     }
 
     private void addItemToSpinner(Route i_route)

@@ -1,5 +1,6 @@
 package com.TripShare.Client.Common;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -164,6 +165,7 @@ public class ActivityWithNavigationDrawer extends AppCompatActivity {
 
         if (textview.getText() == "Logout")
         {
+            ApplicationManager.DeleteUserSavedInfo((Activity) view.getContext());
             Intent intent = new Intent(this, LoginScreen.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); //this line clears the application activity stack, so that user can't logout and then press 'back' and be logged in again
             startActivity(intent);

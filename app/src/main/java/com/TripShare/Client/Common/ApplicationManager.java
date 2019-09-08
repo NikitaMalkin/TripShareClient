@@ -243,4 +243,11 @@ public final class ApplicationManager {
             }
         }
     }
+
+    public static void DeleteUserSavedInfo(Activity i_activity)
+    {
+        m_userLocalInfoFile = new File(i_activity.getFilesDir(), m_userLocalInfoFileName);
+        m_userLocalInfoFile.delete();
+        m_loggedInUser = null;
+    }
 }

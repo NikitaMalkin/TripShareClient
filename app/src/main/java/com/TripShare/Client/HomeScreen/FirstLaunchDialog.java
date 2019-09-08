@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import com.TripShare.Client.Common.ApplicationManager;
 import com.TripShare.Client.Common.TagSelectionDialog;
+import com.TripShare.Client.CommunicationWithServer.GetPostsFromDB;
 import com.TripShare.Client.CommunicationWithServer.SendUserTagsToDB;
 import com.TripShare.Client.R;
 

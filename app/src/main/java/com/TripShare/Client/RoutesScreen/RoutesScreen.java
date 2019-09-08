@@ -139,23 +139,28 @@ public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRo
 
         m_handler.postDelayed(new Runnable() {
             public void run() {
-                updateRoute();
                 m_handler.postDelayed(this, delay);
+                updateRoute();
+
             }
         }, delay);
 
 
         m_chronometer = findViewById(R.id.chronometer);
 
-        m_chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+        m_chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener(){
             @Override
-            public void onChronometerTick(Chronometer c) {
-                m_chronometer = c;
-                long t = SystemClock.elapsedRealtime() - c.getBase();
-                c.setText(DateFormat.format("kk:mm:ss", t));
+            public void onChronometerTick(Chronometer chronometer) {
+                long time = SystemClock.elapsedRealtime() - chronometer.getBase();
+                int h   = (int)(time /3600000);
+                int m = (int)(time - h*3600000)/60000;
+                int s= (int)(time - h*3600000- m*60000)/1000 ;
+                String t = (h < 10 ? "0"+h: h)+":"+(m < 10 ? "0"+m: m)+":"+ (s < 10 ? "0"+s: s);
+                chronometer.setText(t);
             }
         });
         m_chronometer.setBase(SystemClock.elapsedRealtime());
+        m_chronometer.setText("00:00:00");
         m_chronometer.start();
     }
 

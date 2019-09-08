@@ -7,11 +7,11 @@
                                         android:layout_gravity="start"
 
 >
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:overScrollMode="always" android:nestedScrollingEnabled="true"
+            android:overScrollMode="always"
             android:isScrollContainer="true" android:fitsSystemWindows="true">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:orientation="vertical">
@@ -48,8 +48,8 @@
                         app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
                         android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
                         android:id="@+id/homescreen_recyclerView"
-                        android:nestedScrollingEnabled="true" app:layout_constraintTop_toTopOf="parent"
-                        android:layout_marginTop="8dp"/>
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="8dp" android:nestedScrollingEnabled="false"/>
                 <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" app:srcCompat="@drawable/ic_refresh_black_24dp"
@@ -65,7 +65,7 @@
 
             </android.support.constraint.ConstraintLayout>
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
     <include layout="@layout/layout_navigation_drawer"/>
 
