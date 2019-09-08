@@ -30,6 +30,7 @@ public final class ApplicationManager {
     public static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
     }
 
     public static void setDrawerProfilePicture(Bitmap i_picture) {

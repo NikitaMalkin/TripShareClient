@@ -69,7 +69,6 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
     protected void onResume()
     {
         super.onResume();
-        ApplicationManager.hideKeyboardFrom(PostCreationScreen.this, findViewById(R.id.post_creation_screen_layout_main));
     }
 
     private void addItemToSpinner(Route i_route)
