@@ -339,7 +339,7 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
         }
 
         CameraUpdate center = CameraUpdateFactory.newLatLng(clickedItem.getCenterCoordinate());
-        CameraUpdate zoom = CameraUpdateFactory.zoomTo(13);
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(10);
 
         m_map.moveCamera(center);
         m_map.animateCamera(zoom);

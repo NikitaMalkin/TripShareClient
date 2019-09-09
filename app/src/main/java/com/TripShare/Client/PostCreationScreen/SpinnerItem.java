@@ -26,8 +26,10 @@ public class SpinnerItem
     {
         LatLng returnedValue = null;
         List<Coordinate> coordinateList = m_route.getRouteCoordinates();
-        if(coordinateList != null && coordinateList.size() != 0) {
-            Coordinate middleCoordinate = m_route.getRouteCoordinates().get(coordinateList.size() / 2);
+        if(coordinateList != null && coordinateList.size() != 0)
+        {
+            int index = Integer.valueOf(coordinateList.size() / 2);
+            Coordinate middleCoordinate = m_route.getRouteCoordinates().get(index);
             returnedValue = new LatLng(Double.valueOf(middleCoordinate.getLatitude()), Double.valueOf(middleCoordinate.getLongitude()));
         }
         return returnedValue;
