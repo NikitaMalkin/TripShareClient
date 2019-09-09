@@ -144,7 +144,7 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
         return bitmap;
     }
 
-    private void initializeViews() // TODO??
+    private void initializeViews()
     {
         initializeSpinnerWithRoutes();
         m_markerIcon = getBitmapFromVectorDrawable(getApplicationContext(), R.drawable.ic_marker_on_map); //converting image from vector to bitmap
@@ -278,7 +278,6 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
                     SpinnerItem itemSelected = m_adapter.getItems().get(m_spinner.getSelectedIndex());
                     Route updatedRoute = itemSelected.getRoute();
                     new UpdateRouteInDB(updatedRoute).execute();
-                    // TODO: update the route and coordinates as well
 
                     // Send Post to Server and save in DB.
                     new SendPostToAddToDB(m_postToAdd).execute();

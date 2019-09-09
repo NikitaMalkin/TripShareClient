@@ -11,6 +11,7 @@ public class Route implements Serializable
     private long m_userID;
     private String m_routeName;
     private String m_createdDate;
+    private Date m_createdDateObject;
     private Boolean m_isDeletedButUsedInPost;
     private List<Coordinate> m_routeCoordinates= new ArrayList<>();
 
@@ -18,6 +19,7 @@ public class Route implements Serializable
     {
         m_userID = i_userID;
         m_isDeletedButUsedInPost = false;
+        m_createdDateObject = new Date();
     }
 
     public long getUserID()
@@ -59,5 +61,9 @@ public class Route implements Serializable
     public Boolean getIsDeletedButUsedInPost() { return m_isDeletedButUsedInPost; }
 
     public void setIsDeletedButUsedInPost(Boolean i_isDeletedButUsedInPost) { m_isDeletedButUsedInPost = i_isDeletedButUsedInPost; }
+
+    public void setCreatedDateObject(Date i_Date) { m_createdDateObject = i_Date; }
+
+    public Date getCreatedDateObject() { return m_createdDateObject; }
 }
 

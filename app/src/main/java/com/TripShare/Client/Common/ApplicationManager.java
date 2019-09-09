@@ -250,5 +250,7 @@ public final class ApplicationManager {
         m_userLocalInfoFile = new File(i_activity.getFilesDir(), m_userLocalInfoFileName);
         m_userLocalInfoFile.delete();
         m_loggedInUser = null;
+        m_userRoutes = new ArrayList<>();
+        m_drawerProfilePicture = null;
     }
 }

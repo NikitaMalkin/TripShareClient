@@ -13,6 +13,7 @@ public class User implements Serializable {
     private	String m_password;
     private ArrayList<String> m_preferredTags = new ArrayList<>();
     private String m_profileImageString;
+    private static boolean m_firstHomePageLaunch = true;
 
     public long getID() { return m_ID; }
 
@@ -76,4 +77,8 @@ public class User implements Serializable {
 
         m_profileImageString = i_imageString;
     }
+
+    public void setfirstHomePageLaunch(Boolean i_firstHomePageLaunch) { m_firstHomePageLaunch = i_firstHomePageLaunch; }
+
+    public Boolean getfirstHomePageLaunch() { return m_firstHomePageLaunch; }
 }

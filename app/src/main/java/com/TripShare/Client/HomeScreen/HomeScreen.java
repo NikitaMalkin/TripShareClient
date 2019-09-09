@@ -32,7 +32,7 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activiity_home_screen);
+        setContentView(R.layout.activity_home_screen);
         setActivityTitle("Home");
 
         //Application Drawer initialization
@@ -98,12 +98,7 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
                         for (int i = 0; i < jsonArr.length(); i++) {
                             JSONObject jsonObj = jsonArr.getJSONObject(i);
                             Post post = new Gson().fromJson(jsonObj.toString(), Post.class);
-
-                            // If the post is public OR if the post is private but the poster's ID is the same as the current user's ID
-                            if (!post.getIsPrivatePost() ||  (post.getIsPrivatePost() && (post.getUserID() == ApplicationManager.getLoggedInUser().getID())))
-                            {
-                                howManyPostsAdded += addItemToListView(post);
-                            }
+                            howManyPostsAdded += addItemToListView(post);
                         }
 
                         if(howManyPostsAdded == 0)

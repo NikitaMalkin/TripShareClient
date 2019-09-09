@@ -62,7 +62,6 @@ public class ProfileScreen extends ActivityWithNavigationDrawer implements GetPo
                 dialog.setArguments(args);
                 dialog.show(getSupportFragmentManager(), "Choose Profile Picture");
             }});
-                // TODO: add another line that checks if the user has a profile picture already, then set it to the actual photo.
 
         //Application Drawer initialization
         initializeDrawerLayout();

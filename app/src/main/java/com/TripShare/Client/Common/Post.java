@@ -1,6 +1,7 @@
 package com.TripShare.Client.Common;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Post implements Serializable{
     private static final long serialVersionUID = 1L;
@@ -14,6 +15,7 @@ public class Post implements Serializable{
     private String m_description;
     private long m_routeID;
     private Boolean m_isPrivatePost;
+    private Date m_createdDate;
     private ArrayList<Long> m_usersWhichLikedID;
     private ArrayList<Comment> m_postComments;
     private ArrayList<String> m_relatedTags;
@@ -26,6 +28,7 @@ public class Post implements Serializable{
         m_usersWhichLikedID = new ArrayList<>();
         m_postComments = new ArrayList<>();
         m_relatedTags = new ArrayList<>();
+        m_createdDate = new Date();
     }
 
     public long getID() { return m_ID; }
@@ -109,4 +112,8 @@ public class Post implements Serializable{
     public Boolean getIsPrivatePost() {return m_isPrivatePost; }
 
     public void setIsPrivatePost(Boolean i_isPrivatePost) { m_isPrivatePost = i_isPrivatePost; }
+
+    public void setCreatedDate(Date i_Date) { m_createdDate = i_Date; }
+
+    public Date getCreatedDate() { return m_createdDate; }
 }
