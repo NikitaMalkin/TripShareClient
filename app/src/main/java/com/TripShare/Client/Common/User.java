@@ -13,7 +13,7 @@ public class User implements Serializable {
     private	String m_password;
     private ArrayList<String> m_preferredTags = new ArrayList<>();
     private String m_profileImageString;
-    private static boolean m_firstHomePageLaunch = true;
+    private boolean m_firstHomePageLaunch = true;
 
     public long getID() { return m_ID; }
 

@@ -88,7 +88,6 @@ public final class ApplicationManager {
     public static ArrayList<String> getTagList() {
         ArrayList<String> labels = new ArrayList<>();
 
-        //TODO try to find a better way to get the tag names, maybe get them from the server
         labels.add("Forest");
         labels.add("Desert");
         labels.add("City");
