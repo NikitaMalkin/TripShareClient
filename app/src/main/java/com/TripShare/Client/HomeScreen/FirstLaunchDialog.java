@@ -22,8 +22,6 @@ public class FirstLaunchDialog extends AppCompatDialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.layout_dialog_first_time_enter_homepage, null);
 
-        ApplicationManager.setHomePageFirstTimeAccessed();
-
         builder.setView(view).setTitle("Greetings!")
         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override

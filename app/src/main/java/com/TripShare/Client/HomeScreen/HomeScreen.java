@@ -13,6 +13,7 @@ import com.TripShare.Client.Common.*;
 import com.TripShare.Client.CommunicationWithServer.GetPostsFromDB;
 import com.TripShare.Client.CommunicationWithServer.SendLikeToAddToPostInDB;
 import com.TripShare.Client.CommunicationWithServer.SendUserTagsToDB;
+import com.TripShare.Client.CommunicationWithServer.UpdateFirstHomePageLaunch;
 import com.TripShare.Client.PostFullScreen.PostFullScreen;
 import com.TripShare.Client.R;
 import com.google.gson.Gson;
@@ -59,9 +60,12 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
 
 
         //FirstLaunchDialog
-        if (ApplicationManager.getHomePageFirstLaunch()) {
+        if (ApplicationManager.getLoggedInUser().getfirstHomePageLaunch())
+        {
             DialogFragment firstTimeDialog = new FirstLaunchDialog();
             firstTimeDialog.show(getSupportFragmentManager(), "");
+            ApplicationManager.getLoggedInUser().setfirstHomePageLaunch(false);
+            new UpdateFirstHomePageLaunch(ApplicationManager.getLoggedInUser().getID()).execute();
         }
 
     }

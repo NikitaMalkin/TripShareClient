@@ -58,11 +58,21 @@ public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRo
         setContentView(R.layout.activity_routes_screen);
         setActivityTitle("Manage your routes");
 
-        initializeDrawerLayout();
-        initializeViews();
-        initializeLocationModules();
-        initializeRouteList();
-        initializeExistingRoutes();
+        // If server is offline, we want to prevent the user from navigating away from the Routes Screen, since this is the only offline functionality available.
+        if (ApplicationManager.getIsServerOnline())
+        {
+            initializeDrawerLayout();
+        }
+        else
+        {
+            initializeOfflineDrawerLayout();
+        }
+
+            initializeViews();
+            initializeLocationModules();
+            initializeRouteList();
+            initializeExistingRoutes();
+
     }
 
     private void initializeExistingRoutes()

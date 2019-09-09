@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,6 +34,7 @@ public class ActivityWithNavigationDrawer extends AppCompatActivity {
     private ActionBarDrawerToggle m_DrawerToggle;
     private DrawerLayout m_DrawerLayout;
     private String m_ActivityTitle;
+    private boolean m_isOfflineMode;
 
     protected void setActivityTitle(String i_title) //setter for activity title, initializeDrawerLayout() uses the title in order to initialize the action bar
     {
@@ -40,6 +42,8 @@ public class ActivityWithNavigationDrawer extends AppCompatActivity {
     }
 
     protected void initializeDrawerLayout() {
+        m_isOfflineMode = false;
+
         //initialize profile picture, takes much time so it is in another thread
         fetchDrawerProfilePicture();
 
@@ -98,6 +102,17 @@ public class ActivityWithNavigationDrawer extends AppCompatActivity {
 
     }
 
+    protected void initializeOfflineDrawerLayout()
+    {
+        m_isOfflineMode = true;
+
+        //Application Drawer initialization
+        getSupportActionBar().setIcon(R.drawable.ic_signal_wifi_off_black_24dp);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("   " + m_ActivityTitle + " Offline");
+        m_DrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+    }
+
     private void fetchDrawerProfilePicture()
     {
         AsyncTask.execute(new Runnable() {
@@ -154,7 +169,11 @@ public class ActivityWithNavigationDrawer extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        m_DrawerToggle.syncState();
+
+        if (!m_isOfflineMode)
+        {
+            m_DrawerToggle.syncState();
+        }
     }
 
     public void drawerItem_OnClick(View view) //method responsible for handling drawer menu item click events

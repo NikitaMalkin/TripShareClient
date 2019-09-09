@@ -1,6 +1,8 @@
 package com.TripShare.Client.CommunicationWithServer;
 
 import android.os.AsyncTask;
+import android.widget.Toast;
+import com.TripShare.Client.LoginScreen.LoginScreen;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -39,6 +41,7 @@ public class CheckServerStatus extends AsyncTask<String, Integer, String>
         catch (Exception e)
         {
             e.printStackTrace();
+            m_listener.updateServerStatus(false);
         }
         output = url + "\t\tStatus:" + m_serverIsOnline;
 

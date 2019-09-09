@@ -17,7 +17,6 @@ import java.io.*;
 import java.util.ArrayList;
 
 public final class ApplicationManager {
-    private static boolean m_firstHomePageLaunch = true;
     private static User m_loggedInUser;
     private static Bitmap m_drawerProfilePicture;
     private static ArrayList<Route> m_userRoutes = new ArrayList<>();
@@ -78,21 +77,12 @@ public final class ApplicationManager {
         m_userRoutes.add(i_route);
     }
 
-    public static void setHomePageFirstTimeAccessed()  //this method is called once the homepage is accessed for the first time
-    {
-        m_firstHomePageLaunch = false;
-    }
-
     public static void setIsServerOnline(Boolean i_serverStatus) {
         m_serverIsOnline = i_serverStatus;
     }
 
     public static Boolean getIsServerOnline() {
         return m_serverIsOnline;
-    }
-
-    public static boolean getHomePageFirstLaunch() {
-        return m_firstHomePageLaunch;
     }
 
     public static ArrayList<String> getTagList() {
@@ -145,11 +135,10 @@ public final class ApplicationManager {
                 }
 
                 JSONArray userInfo = new JSONArray(stringBuilder.toString());
-                m_firstHomePageLaunch = userInfo.getBoolean(0);
                 m_loggedInUser = new User();
-                m_loggedInUser.setUserID(Long.valueOf(userInfo.getString(1)));
-                m_loggedInUser.setUserName(userInfo.getString(2));
-                m_loggedInUser.setPassword(userInfo.getString(3));
+                m_loggedInUser.setUserID(Long.valueOf(userInfo.getString(0)));
+                m_loggedInUser.setUserName(userInfo.getString(1));
+                m_loggedInUser.setPassword(userInfo.getString(2));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -225,7 +214,6 @@ public final class ApplicationManager {
             m_userLocalInfoFile.delete();
             m_userLocalInfoFile.createNewFile();
             JSONArray userInfo = new JSONArray();
-            userInfo.put(m_firstHomePageLaunch);
             userInfo.put(m_loggedInUser.getID());
             userInfo.put(m_loggedInUser.getStringUserName());
             userInfo.put(m_loggedInUser.getPassword());

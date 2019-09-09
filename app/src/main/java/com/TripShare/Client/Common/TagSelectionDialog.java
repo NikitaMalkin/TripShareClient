@@ -60,8 +60,6 @@ public class TagSelectionDialog extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.layout_dialog_tag_selection, null);
         m_view = view;
 
-        ApplicationManager.setHomePageFirstTimeAccessed();
-
         builder.setView(view).setTitle("Edit your tags").setNegativeButton("Cancel", new DialogInterface.OnClickListener()
         {
             @Override
