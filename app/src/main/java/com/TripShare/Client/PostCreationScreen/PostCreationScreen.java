@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.TripShare.Client.Common.*;
 import com.TripShare.Client.CommunicationWithServer.SendPostToAddToDB;
 import com.TripShare.Client.CommunicationWithServer.UpdateRouteInDB;
+import com.TripShare.Client.HomeScreen.HomeScreen;
 import com.TripShare.Client.ProfileScreen.ProfileScreen;
 import com.TripShare.Client.R;
 import com.TripShare.Client.RoutesScreen.RoutesScreen;
@@ -215,17 +216,9 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
 
     public void OnPostButtonClick(View view)
     {
-
-        AsyncTask<Void, Void, Void> task = new AsyncTask<Void, Void, Void>() {
+        AsyncTask.execute(new Runnable() {
             @Override
-            protected void onPreExecute()
-            {
-
-            }
-
-            @Override
-            protected Void doInBackground(Void... voids)
-            {
+            public void run() {
                 TextView postTitle = findViewById(R.id.post_title_editText);
                 TextView postDescription = findViewById(R.id.post_description_editText);
                 CheckBox postIsPrivate = findViewById(R.id.post_isPrivatePostCheckbox);
@@ -246,15 +239,8 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
                 {
                     m_postToAdd.setThumbnailString(m_postThumbnailString);
                 }
-                return null;
             }
-
-            @Override
-            protected void onPostExecute(Void result)
-            {
-
-            }
-        }.execute();
+        });
 
         askUserToCheckRelevantTags(); //NOTE: the upcoming code had to be moved inside OnDismiss of the dialog in order to sync
 
@@ -283,8 +269,8 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
                     new SendPostToAddToDB(m_postToAdd).execute();
 
                     //change screen to profile after you've posted a post
-                    Intent intent = new Intent(getApplicationContext(), ProfileScreen.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    Intent intent = new Intent(getApplicationContext(), HomeScreen.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
             }));
