@@ -142,7 +142,7 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
     @Override
     public void onShareButtonClick(int i_position, View i_view) {
         Intent postFullScreen = new Intent(HomeScreen.this, PostFullScreen.class);
-        postFullScreen.putExtra("Post", gson.toJson(m_posts.get(i_position).getPost()));
+        ApplicationManager.setPostToPresent(m_posts.get(i_position).getPost());
         postFullScreen.putExtra("isShowScreenShotButton", true);
         startActivity(postFullScreen);
     }
@@ -150,7 +150,7 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
     @Override
     public void onMapButtonClick(int i_position, View i_view) {
         Intent postFullScreen = new Intent(HomeScreen.this, PostFullScreen.class);
-        postFullScreen.putExtra("Post", gson.toJson(m_posts.get(i_position).getPost()));
+        ApplicationManager.setPostToPresent(m_posts.get(i_position).getPost());
         postFullScreen.putExtra("isShowScreenShotButton", false);
         startActivity(postFullScreen);
     }

@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.TripShare.Client.Common.ApplicationManager;
 import com.TripShare.Client.CommunicationWithServer.GetRouteByID;
 import com.TripShare.Client.R;
 import com.TripShare.Client.Common.Coordinate;
@@ -119,7 +120,7 @@ public class PostFullScreen extends AppCompatActivity implements OnMapReadyCallb
         setContentView(R.layout.layout_post_full_screen);
 
         // Get the post to present from the last activity
-        m_postToPresent = gson.fromJson(getIntent().getStringExtra("Post"), Post.class);
+        m_postToPresent = ApplicationManager.getPostToPresent();
         m_isShowButton = (Boolean)getIntent().getSerializableExtra("isShowScreenShotButton");
 
         // Get Post Route From DB
@@ -226,7 +227,7 @@ public class PostFullScreen extends AppCompatActivity implements OnMapReadyCallb
             marker = m_map.addMarker(new MarkerOptions()
                     .position(currLatLng)
                     .icon(BitmapDescriptorFactory.fromBitmap(m_markerIcon)));
-            marker.setAnchor(0f, 0f);
+            marker.setAnchor(0.5f, 0.5f);
             m_map.addPolyline(m_polyline
                     .add(currLatLng)
                     .width(30)

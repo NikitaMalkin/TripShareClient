@@ -25,6 +25,7 @@ public final class ApplicationManager {
     private static final String m_localRoutesFileName = "localRoutes.json";
     private static File m_localRoutesFile;
     private static Boolean m_serverIsOnline = true;
+    private static Post m_postToPresent;
 
     public static void hideKeyboardFrom(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(AppCompatActivity.INPUT_METHOD_SERVICE);
@@ -240,4 +241,8 @@ public final class ApplicationManager {
         m_userRoutes = new ArrayList<>();
         m_drawerProfilePicture = null;
     }
+
+    public static Post getPostToPresent() {return m_postToPresent; }
+
+    public static void setPostToPresent(Post i_postToPresent) { m_postToPresent = i_postToPresent; }
 }
