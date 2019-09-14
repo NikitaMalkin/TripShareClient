@@ -42,7 +42,6 @@ public class ValidateUserInfo extends AsyncTask<String, Integer, String>
 
             // Build URI
             URIBuilder builder = new URIBuilder("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/UserInfoValidation");
-            //URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/TripShareProject/UserInfoValidation");
 
             builder.setParameter("m_userName", userNameInJsonFormat);
             builder.setParameter("m_password", passwordInJsonFormat);

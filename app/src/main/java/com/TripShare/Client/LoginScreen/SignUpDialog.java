@@ -48,7 +48,6 @@ public class SignUpDialog extends AppCompatDialogFragment
                 String lastName = m_lastName.getText().toString();
 
                 m_listener.sendUserToServer(userName, password, name, lastName);
-                // TODO: Move to the next screen for example: Home Page.
             }
         });
 

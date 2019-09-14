@@ -63,10 +63,12 @@ public class CommentPopUpWindow implements GetUserImageByID.GetUserProfileImageL
             @Override
             public void onClick(View view) {
                 String comment = ((EditText)inflatedView.findViewById(R.id.writeComment)).getText().toString();
-                saveCommentToLocalPost(comment, m_posts.get(i_postPosition).getPost());
-                sendCommentToServer(comment, m_posts.get(i_postPosition).getPost());
-                ((EditText)inflatedView.findViewById(R.id.writeComment)).setText("");
-                m_postsAdapter.notifyDataSetChanged();
+                if(comment != "") {
+                    saveCommentToLocalPost(comment, m_posts.get(i_postPosition).getPost());
+                    sendCommentToServer(comment, m_posts.get(i_postPosition).getPost());
+                    ((EditText) inflatedView.findViewById(R.id.writeComment)).setText("");
+                    m_postsAdapter.notifyDataSetChanged();
+                }
             }
         });
     }

@@ -27,7 +27,6 @@ public class SendLikeToAddToPostInDB extends AsyncTask<String, Integer, String>
         try {
             // build the post request to send to the server
             URIBuilder builder = new URIBuilder("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/LikeServlet");
-            //URIBuilder builder = new URIBuilder("http://10.0.2.2:8080/TripShareProject/LikeServlet");
 
             builder.setParameter("m_PostID", String.valueOf(m_postID));
             builder.setParameter("m_LikeToAddToPostInDB",String.valueOf(m_userIDWhcihLikedToSend));

@@ -49,7 +49,6 @@ public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRo
     private ListAdapter m_adapter;
     private int m_currentlyClickedListItem;
     private SwipeMenuListView m_swipeListView;
-    private Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -145,7 +144,7 @@ public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRo
         alternateView.setVisibility(View.VISIBLE);
 
         m_handler = new Handler();  /// initializes m_handler so that every 10 seconds it invokes updateRoute() method
-        final int delay = 7000; // TODO: Decide if 7 second is the right interval
+        final int delay = 10000;
 
         m_handler.postDelayed(new Runnable() {
             public void run() {

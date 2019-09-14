@@ -145,7 +145,6 @@ public class LoginScreen extends AppCompatActivity implements ValidateUserInfo.N
 
     public void offlineModeConfiguration()
     {
-        //TODO: Nick Should add here the wanted changes to the hamburger and so on...
         Intent intent = new Intent(getApplication(), RoutesScreen.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); //this line clears the application activity stack, so that user can't logout and then press 'back' and be logged in again
         startActivity(intent);

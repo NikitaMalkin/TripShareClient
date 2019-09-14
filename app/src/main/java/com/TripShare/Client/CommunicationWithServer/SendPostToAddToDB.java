@@ -25,7 +25,6 @@ public class SendPostToAddToDB extends AsyncTask<String, Integer, String>
         try {
             // This is getting the url from the string we passed in
             URL url = new URL("http://tripshare-env.cqpn2tvmsr.us-east-1.elasticbeanstalk.com/ProfilePostServlet");
-            //URL url = new URL("http://10.0.2.2:8080/TripShareProject/ProfilePostServlet");
 
             // Create the urlConnection
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
