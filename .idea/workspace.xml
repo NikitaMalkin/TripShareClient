@@ -80,7 +80,7 @@
     <last-search-timestamp>1567682784680</last-search-timestamp>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fa845fa1-339a-4057-8ce8-a4b89fd94a63" name="Default Changelist" comment="">
+    <list default="true" id="fa845fa1-339a-4057-8ce8-a4b89fd94a63" name="Default Changelist" comment="Final changes - Sivan - 14.9.19">
       <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/fileHashes/fileHashes.bin" afterDir="false" />
@@ -89,27 +89,8 @@
       <change beforePath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/5.1.1/javaCompile/javaCompile.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/Common/CommentPopUpWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/Common/CommentPopUpWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/DeletePostRequestFromDB.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/DeleteRouteRequestFromDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/DeleteRouteRequestFromDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/GetPostsFromDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/GetPostsFromDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/GetRouteByID.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/GetRouteByID.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/GetRoutesFromDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/GetRoutesFromDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/GetUserImageByID.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/GetUserImageByID.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendCommentToAddToPostInDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendCommentToAddToPostInDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendLikeToAddToPostInDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendLikeToAddToPostInDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendPostToAddToDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendPostToAddToDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendRouteToAddToDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendRouteToAddToDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendRouteUpdateToDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendRouteUpdateToDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendUserProfileImageToDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendUserProfileImageToDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendUserTagsToDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendUserTagsToDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendUserToAddToDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendUserToAddToDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/UpdateFirstHomePageLaunch.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/UpdateFirstHomePageLaunch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/UpdateRouteInDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/UpdateRouteInDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/ValidateUserInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/ValidateUserInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/LoginScreen/LoginScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/LoginScreen/LoginScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/LoginScreen/SignUpDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/LoginScreen/SignUpDialog.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/RoutesScreen/RoutesScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/RoutesScreen/RoutesScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/PostCreationScreen/PostCreationScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/PostCreationScreen/PostCreationScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/PostFullScreen/PostFullScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/PostFullScreen/PostFullScreen.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/classes/" />
@@ -191,10 +172,41 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendRouteToAddToDB.java">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/LoginScreen/LoginScreen.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="39" selection-start-line="39" selection-end-line="39" />
+            <state relative-caret-position="-1192">
+              <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+              <folding>
+                <marker date="1568467112898" expanded="true" signature="2801:2984" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/PostFullScreen/PostFullScreen.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="547">
+              <caret line="261" column="77" selection-start-line="261" selection-start-column="77" selection-end-line="261" selection-end-column="77" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/PostCreationScreen/PostCreationScreen.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="235">
+              <caret line="341" column="77" selection-start-line="341" selection-start-column="77" selection-end-line="341" selection-end-column="77" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#2552#2553#0" expanded="true" />
+                <element signature="e#2584#2585#0" expanded="true" />
+                <element signature="e#2640#2641#0" expanded="true" />
+                <element signature="e#2695#2696#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -202,7 +214,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendRouteUpdateToDB.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
+            <state relative-caret-position="240">
               <caret line="28" column="12" selection-start-line="28" selection-start-column="12" selection-end-line="28" selection-end-column="12" />
             </state>
           </provider>
@@ -212,7 +224,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendUserProfileImageToDB.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="98">
-              <caret line="29" selection-start-line="29" selection-end-line="29" />
+              <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -223,7 +235,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendUserTagsToDB.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
+            <state relative-caret-position="180">
               <caret line="38" selection-start-line="38" selection-end-line="38" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -236,11 +248,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendUserToAddToDB.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="178">
-              <caret line="38" selection-start-line="38" selection-end-line="38" />
-              <folding>
-                <element signature="e#2686#2687#0" expanded="true" />
-                <element signature="e#2750#2751#0" expanded="true" />
-              </folding>
+              <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
             </state>
           </provider>
         </entry>
@@ -249,7 +257,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/UpdateFirstHomePageLaunch.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="255">
-              <caret line="25" selection-start-line="25" selection-end-line="25" />
+              <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#573#574#0" expanded="true" />
@@ -272,31 +280,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/ValidateUserInfo.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="170">
-              <caret line="44" selection-start-line="44" selection-end-line="44" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/RoutesScreen/RoutesScreen.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="155">
-              <caret line="146" column="32" selection-start-line="146" selection-start-column="32" selection-end-line="146" selection-end-column="32" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendPostToAddToDB.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="27" selection-start-line="27" selection-end-line="27" />
+              <caret line="44" lean-forward="true" selection-start-line="44" selection-end-line="44" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -317,9 +301,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>m_routeToAdd</find>
-      <find>setRouteID</find>
-      <find>= 0;</find>
       <find>sendLocallySavedRoutesToServer</find>
       <find>m_userLocalInfoFileName</find>
       <find>m_routeToAdd =</find>
@@ -347,10 +328,14 @@
       <find>key</find>
       <find>setCreated</find>
       <find>getc</find>
+      <find>map</find>
+      <find>Camera</find>
+      <find>10%</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/app</dir>
       <dir>$PROJECT_DIR$/app/src/main/res/layout</dir>
+      <dir>$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/Common</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -386,24 +371,22 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/Utils.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/Common/CommentAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/Common/CommentItem.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/Common/ActivityWithNavigationDrawer.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/Common/Route.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/Common/Post.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/Common/User.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/PostCreationScreen/SpinnerItem.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/PostCreationScreen/PostCreationScreen.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/Common/ObejctsToSendToServer.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/Common/ApplicationManager.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/ProfileScreen/ProfileScreen.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/HomeScreen/HomeScreen.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/PostFullScreen/PostFullScreen.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/Common/CommentPopUpWindow.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/LoginScreen/SignUpDialog.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/DeletePostRequestFromDB.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/CheckServerStatus.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/LoginScreen/LoginScreen.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/RoutesScreen/RoutesScreen.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/Common/ActivityWithNavigationDrawer.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/DeleteRouteRequestFromDB.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/GetPostsFromDB.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/GetRouteByID.java" />
@@ -420,7 +403,9 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/UpdateFirstHomePageLaunch.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/UpdateRouteInDB.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/ValidateUserInfo.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/RoutesScreen/RoutesScreen.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/LoginScreen/LoginScreen.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/PostFullScreen/PostFullScreen.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/PostCreationScreen/PostCreationScreen.java" />
       </list>
     </option>
   </component>
@@ -516,56 +501,7 @@
               <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="java" type="edd41e36:AndroidSourceTypeNode" />
               <item name="Client" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="Common" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="TripShareClient" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="Client" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="CommunicationWithServer" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="TripShareClient" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="Client" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="HomeScreen" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="TripShareClient" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="Client" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="LoginScreen" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="TripShareClient" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="Client" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="PostCreationScreen" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="TripShareClient" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="Client" type="cbb59c9e:AndroidPsiDirectoryNode" />
               <item name="PostFullScreen" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="TripShareClient" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="Client" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="ProfileScreen" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="TripShareClient" type="1abcf292:AndroidViewProjectNode" />
-              <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="Client" type="cbb59c9e:AndroidPsiDirectoryNode" />
-              <item name="RoutesScreen" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -883,7 +819,14 @@
       <option name="project" value="LOCAL" />
       <updated>1568134250729</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Final changes - Sivan - 14.9.19">
+      <created>1568460121246</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1568460121246</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TodoView">
@@ -900,7 +843,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" side_tool="true" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" sideWeight="0.49375" visible="true" weight="0.24555735" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.49375" visible="true" weight="0.24555735" />
       <window_info id="Structure" order="2" sideWeight="0.50625" side_tool="true" weight="0.25605816" />
       <window_info id="Favorites" order="3" sideWeight="0.50625" side_tool="true" weight="0.25605816" />
       <window_info id="Build Variants" order="4" side_tool="true" />
@@ -910,7 +853,7 @@
       <window_info id="Resources Explorer" order="8" weight="0.32956383" />
       <window_info anchor="bottom" id="Run" order="0" sideWeight="0.49626866" weight="0.32739726" />
       <window_info anchor="bottom" id="Logcat" order="1" sideWeight="0.4978678" weight="0.32739726" />
-      <window_info active="true" anchor="bottom" id="TODO" order="2" sideWeight="0.49840087" visible="true" weight="0.32739726" />
+      <window_info anchor="bottom" id="TODO" order="2" sideWeight="0.49840087" weight="0.32739726" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.34246576" />
       <window_info anchor="bottom" id="Terminal" order="4" sideWeight="0.49840087" weight="0.32739726" />
       <window_info anchor="bottom" id="Event Log" order="5" sideWeight="0.5105008" side_tool="true" weight="0.33835617" />
@@ -918,7 +861,7 @@
       <window_info anchor="bottom" id="Build" order="7" sideWeight="0.48949918" weight="0.33835617" />
       <window_info anchor="bottom" id="Android Profiler" order="8" weight="0.32876712" />
       <window_info anchor="bottom" id="Find" order="9" sideWeight="0.49946696" weight="0.32739726" />
-      <window_info active="true" anchor="bottom" id="Messages" order="10" visible="true" weight="0.32876712" />
+      <window_info anchor="bottom" id="Messages" order="10" weight="0.32876712" />
       <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.32876712" />
       <window_info anchor="right" id="Device File Explorer" order="0" side_tool="true" weight="0.45315024" />
       <window_info anchor="right" id="Capture Analysis" order="1" />
@@ -1024,7 +967,8 @@
     <MESSAGE value="Changed Route Object" />
     <MESSAGE value="Fixed the sorting problem in both Routes and Posts screens" />
     <MESSAGE value="Fixed the sorting problem in both Routes and Posts screens + small fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed the sorting problem in both Routes and Posts screens + small fix" />
+    <MESSAGE value="Final changes - Sivan - 14.9.19" />
+    <option name="LAST_COMMIT_MESSAGE" value="Final changes - Sivan - 14.9.19" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1267,24 +1211,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/PostCreationScreen/PostCreationScreen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="264" selection-start-line="264" selection-end-line="264" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2552#2553#0" expanded="true" />
-            <element signature="e#2584#2585#0" expanded="true" />
-            <element signature="e#2640#2641#0" expanded="true" />
-            <element signature="e#2695#2696#0" expanded="true" />
-            <element signature="e#8169#9486#0" expanded="true" />
-            <element signature="e#9485#9486#0" expanded="true" />
-            <element signature="e#9952#11141#0" expanded="true" />
-            <element signature="e#11140#11141#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -1328,16 +1254,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="284">
           <caret line="56" column="70" selection-start-line="56" selection-start-column="70" selection-end-line="56" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/PostFullScreen/PostFullScreen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1517">
-          <caret line="245" selection-start-line="245" selection-end-line="245" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1402,16 +1318,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/Common/ActivityWithNavigationDrawer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-847">
-          <caret line="120" selection-start-line="120" selection-end-line="120" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/CheckServerStatus.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="353">
@@ -1423,23 +1329,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/LoginScreen/LoginScreen.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" selection-start-line="13" selection-end-line="13" />
-          <folding>
-            <marker date="1568459633611" expanded="true" signature="2801:2984" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/LoginScreen/SignUpDialog.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="233">
-          <caret line="49" column="80" selection-start-line="49" selection-start-column="80" selection-end-line="49" selection-end-column="80" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/DeletePostRequestFromDB.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
@@ -1447,9 +1336,36 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/RoutesScreen/RoutesScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="146" column="32" selection-start-line="146" selection-start-column="32" selection-end-line="146" selection-end-column="32" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/LoginScreen/SignUpDialog.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="28" column="73" selection-start-line="28" selection-start-column="73" selection-end-line="28" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/Common/ActivityWithNavigationDrawer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="434">
+          <caret line="106" column="28" selection-start-line="106" selection-start-column="28" selection-end-line="106" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/DeleteRouteRequestFromDB.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="254">
+        <state relative-caret-position="354">
           <caret line="31" selection-start-line="31" selection-end-line="31" />
         </state>
       </provider>
@@ -1473,7 +1389,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/GetRoutesFromDB.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
+        <state relative-caret-position="225">
           <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
         </state>
       </provider>
@@ -1498,14 +1414,14 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendLikeToAddToPostInDB.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
-          <caret line="29" selection-start-line="29" selection-end-line="29" />
+          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendPostToAddToDB.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
-          <caret line="27" selection-start-line="27" selection-end-line="27" />
+          <caret line="27" lean-forward="true" selection-start-line="27" selection-end-line="27" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1515,13 +1431,13 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendRouteToAddToDB.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
-          <caret line="39" selection-start-line="39" selection-end-line="39" />
+          <caret line="39" lean-forward="true" selection-start-line="39" selection-end-line="39" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendRouteUpdateToDB.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
+        <state relative-caret-position="240">
           <caret line="28" column="12" selection-start-line="28" selection-start-column="12" selection-end-line="28" selection-end-column="12" />
         </state>
       </provider>
@@ -1529,7 +1445,7 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendUserProfileImageToDB.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="98">
-          <caret line="29" selection-start-line="29" selection-end-line="29" />
+          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1538,7 +1454,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendUserTagsToDB.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
+        <state relative-caret-position="180">
           <caret line="38" selection-start-line="38" selection-end-line="38" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -1549,18 +1465,14 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/SendUserToAddToDB.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="178">
-          <caret line="38" selection-start-line="38" selection-end-line="38" />
-          <folding>
-            <element signature="e#2686#2687#0" expanded="true" />
-            <element signature="e#2750#2751#0" expanded="true" />
-          </folding>
+          <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/UpdateFirstHomePageLaunch.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
+          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#573#574#0" expanded="true" />
@@ -1579,19 +1491,43 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/CommunicationWithServer/ValidateUserInfo.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
-          <caret line="44" selection-start-line="44" selection-end-line="44" />
+          <caret line="44" lean-forward="true" selection-start-line="44" selection-end-line="44" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/RoutesScreen/RoutesScreen.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/LoginScreen/LoginScreen.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="155">
-          <caret line="146" column="32" selection-start-line="146" selection-start-column="32" selection-end-line="146" selection-end-column="32" />
+        <state relative-caret-position="-1192">
+          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+          <folding>
+            <marker date="1568467112898" expanded="true" signature="2801:2984" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/PostFullScreen/PostFullScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="547">
+          <caret line="261" column="77" selection-start-line="261" selection-start-column="77" selection-end-line="261" selection-end-column="77" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/TripShare/Client/PostCreationScreen/PostCreationScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="235">
+          <caret line="341" column="77" selection-start-line="341" selection-start-column="77" selection-end-line="341" selection-end-column="77" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2552#2553#0" expanded="true" />
+            <element signature="e#2584#2585#0" expanded="true" />
+            <element signature="e#2640#2641#0" expanded="true" />
+            <element signature="e#2695#2696#0" expanded="true" />
           </folding>
         </state>
       </provider>

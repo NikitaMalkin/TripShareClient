@@ -244,11 +244,26 @@ public class PostFullScreen extends AppCompatActivity implements OnMapReadyCallb
                 addNoteIconNearMarker(marker.getPosition());
         }
 
-        CameraUpdate center = CameraUpdateFactory.newLatLng(getCenterCoordinate());
-        CameraUpdate zoom = CameraUpdateFactory.zoomTo(10);
+        zoomRoute();
+    }
 
-        m_map.moveCamera(center);
-        m_map.animateCamera(zoom);
+    private void zoomRoute()
+    {
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+        //the include method will calculate the min and max bound.
+        for(Marker marker: m_markers)
+            builder.include(marker.getPosition());
+
+        LatLngBounds bounds = builder.build();
+
+        int width = getResources().getDisplayMetrics().widthPixels;
+        int height = getResources().getDisplayMetrics().heightPixels;
+        int padding = (int) (width * 0.20); // offset from edges of the map 20% of screen
+
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
+
+        m_map.animateCamera(cameraUpdate);
     }
 
     private void addNoteIconNearMarker( LatLng i_coordinateToAttachTo)
