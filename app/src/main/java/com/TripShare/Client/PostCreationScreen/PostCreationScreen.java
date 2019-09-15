@@ -196,6 +196,22 @@ public class PostCreationScreen extends ActivityWithNavigationDrawer
         m_map = map;
         m_map.setOnMarkerClickListener(this);
         initializeMap();
+
+
+        // Here we check if we had gotten any additional information while getting to this screen, if yes, we select the relevant route and display it.
+        Intent intent = getIntent();
+        int routeIndexToSelect = intent.getIntExtra("RouteIndexToSelect", -1);
+
+        if (routeIndexToSelect != -1)
+        {
+            m_spinner.setSelectedIndex(routeIndexToSelect+1); // index must be index+1 since at index=0 we have the default choice which was not available in the previous screen
+            m_map.clear();
+            initializeMap();
+
+            String spinnerItemString = m_adapter.getItem(routeIndexToSelect+1);
+            if (!((spinnerItemString.equals("Choose Route..."))))
+                showRouteOnMap(spinnerItemString);
+        }
     }
 
     public void OnAddRouteButtonClick(View view)

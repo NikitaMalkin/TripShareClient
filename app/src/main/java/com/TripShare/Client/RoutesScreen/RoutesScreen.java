@@ -1,6 +1,7 @@
 package com.TripShare.Client.RoutesScreen;
 
 import android.Manifest;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
@@ -22,6 +23,7 @@ import com.TripShare.Client.CommunicationWithServer.DeleteRouteRequestFromDB;
 import com.TripShare.Client.CommunicationWithServer.SendRouteToAddToDB;
 import com.TripShare.Client.CommunicationWithServer.SendRouteUpdateToDB;
 import com.TripShare.Client.Common.ActivityWithNavigationDrawer;
+import com.TripShare.Client.PostCreationScreen.PostCreationScreen;
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
@@ -231,6 +233,7 @@ public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRo
                 editItem.setIcon(R.drawable.ic_edit_black_24dp);
                 // add to menu
                 menu.addMenuItem(editItem);
+
                 SwipeMenuItem deleteItem = new SwipeMenuItem(
                         getApplicationContext());
                 // set item background
@@ -241,6 +244,17 @@ public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRo
                 deleteItem.setIcon(R.drawable.ic_delete_black_24dp);
                 // add to menu
                 menu.addMenuItem(deleteItem);
+
+                SwipeMenuItem createPost = new SwipeMenuItem(
+                        getApplicationContext());
+                // set item background
+                createPost.setBackground(new ColorDrawable(Color.rgb(142, 196, 135)));
+                // set item width
+                createPost.setWidth(150);
+                // set a icon
+                createPost.setIcon(R.drawable.ic_publish_black_24dp);
+                // add to menu
+                menu.addMenuItem(createPost);
             }
         };
 
@@ -263,11 +277,22 @@ public class RoutesScreen extends ActivityWithNavigationDrawer implements EditRo
                         // delete
                         deleteRoute();
                         break;
+                    case 2:
+                        // createPost
+                        takeRouteToPostCreationScreen();
+                        break;
                 }
                 // false : close the menu; true : not close the menu
                 return false;
             }
         });
+    }
+
+    private void takeRouteToPostCreationScreen()
+    {
+        Intent intent = new Intent(this, PostCreationScreen.class);
+        intent.putExtra("RouteIndexToSelect", m_currentlyClickedListItem);
+        startActivity(intent);
     }
 
     private void initializeViews()

@@ -14,8 +14,10 @@ import com.TripShare.Client.CommunicationWithServer.GetPostsFromDB;
 import com.TripShare.Client.CommunicationWithServer.SendLikeToAddToPostInDB;
 import com.TripShare.Client.CommunicationWithServer.SendUserTagsToDB;
 import com.TripShare.Client.CommunicationWithServer.UpdateFirstHomePageLaunch;
+import com.TripShare.Client.PostCreationScreen.PostCreationScreen;
 import com.TripShare.Client.PostFullScreen.PostFullScreen;
 import com.TripShare.Client.R;
+import com.TripShare.Client.RoutesScreen.RoutesScreen;
 import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -38,6 +40,9 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
 
         //Application Drawer initialization
         initializeDrawerLayout();
+
+        //Shortcuts Bar Initialization
+        initializeShortcutsBar();
 
         RecyclerView Posts = findViewById(R.id.homescreen_recyclerView);
         m_progressBar = findViewById(R.id.homescreen_progressBar);
@@ -70,6 +75,13 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
 
     }
 
+
+    private void initializeShortcutsBar()
+    {
+        ImageButton tags = findViewById(R.id.editTags_imagebutton);
+        ImageButton post = findViewById(R.id.newPost_imagebutton);
+        ImageButton route = findViewById(R.id.newRoute_imagebutton);
+    }
     @Override
     protected void onResume()
     {
@@ -208,5 +220,17 @@ public class HomeScreen extends ActivityWithNavigationDrawer implements GetPosts
                 }
             }
         }));
+    }
+
+    public void onNewPostButtonClick(View i_view)
+    {
+        Intent intent = new Intent(this, PostCreationScreen.class);
+        startActivity(intent);
+    }
+
+    public void onNewRouteButtonClick(View i_view)
+    {
+        Intent intent = new Intent(this, RoutesScreen.class);
+        startActivity(intent);
     }
 }

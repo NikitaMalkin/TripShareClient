@@ -94,9 +94,7 @@ public class ActivityWithNavigationDrawer extends AppCompatActivity {
         list.add(new DrawerItem("Profile", getDrawable(R.drawable.ic_account_box_black_24dp)));
         list.add(new DrawerItem("Create new route", getDrawable(R.drawable.ic_explore_black_24dp)));
         list.add(new DrawerItem("Create new post", getDrawable(R.drawable.ic_public_black_24dp)));
-        list.add(new DrawerItem("Settings", getDrawable(R.drawable.ic_settings_black_24dp)));
         list.add(new DrawerItem("Logout", getDrawable(R.drawable.ic_exit_to_app_black_24dp)));
-        list.add(new DrawerItem("About", getDrawable(R.drawable.ic_info_black_24dp)));
         m_drawerAdapter = new DrawerAdapter(list);
         m_drawerRecyclerView.setAdapter(m_drawerAdapter);
 
